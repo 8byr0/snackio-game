@@ -42,6 +42,7 @@ git commit -m "style: Add missing semicolon in myFunction"
 git checkout develop # Switch to develop branch
 git pull # get last updates
 git flow feature start 123 # Start a new feature development (123 is an exemple an would be the one for issue #123 in gitlab board)
+git push --set-upstream origin feature/123 # Push your branch to remote repository
 ```
 What these commands will basically do is create a new branch `feature/123` on which you'll be able to push all your code without disturbing other running developments.
 
