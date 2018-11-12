@@ -67,14 +67,14 @@ All the code must be written in english.
 
 ## Variables
 Variables must be lowerCamelCase
-```Java
+```java
 int myLongString = 0;
 ```
 Do not use short variables like `a`, `varAbc`... All the content must be readable without comments !
 
 ## Functions / Methods
 Functions must be lowerCamelCase
-```Java
+```java
 public int multiplyTwoVariables(int firstVariable, int secondVariable) {
     return firstVariable + secondVariable;
 }
@@ -82,7 +82,7 @@ public int multiplyTwoVariables(int firstVariable, int secondVariable) {
 Do not use short functions like `a`, `doSmth`... All the content must be readable without comments !
 
 Don't forget to properly write javadoc
-```Java
+```java
 /**
  * Returns the result of a multiplication.
  * @param firstVariable the first variable to multiply
