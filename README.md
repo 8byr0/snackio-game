@@ -45,7 +45,7 @@ git flow feature start 123 # Start a new feature development (123 is an exemple 
 ```
 What these commands will basically do is create a new branch `feature/123` on which you'll be able to push all your code without disturbing other running developments.
 
-## Realising a feature
+## Releasing a feature
 Once your dev is ready and you're sure it works properly, you must rebase your branch on develop (e.g. place your work on the top of develop). To do so:
 ```sh
 git checkout develop # Switch to develop branch
