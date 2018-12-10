@@ -21,28 +21,17 @@ public class Test extends Application {
 
     @Override
     public void start(Stage primaryStage) {
-        logger.info("TEST info");
-        logger.debug("TEST");
-        // Launch the stuff
+        logger.info("Snackio game started");
+
+
+        logger.info("Initialisation started...");
+        logger.info("Fetching menu controller");
         MenuController controller = MenuController.getInstance(primaryStage);
 
+        logger.info("Opening main menu");
         controller.openMenu(MenuController.Menus.MAIN_MENU);
 
-        Properties props = new Properties();
-        try {
-            final InputStream inStream = Test.class.getClassLoader().getResourceAsStream("log4j.properties");
-            if (inStream != null) {
-                props.load(inStream);
-            } else {
-                System.out.println("not on classpath");
-            }
-        } catch (IOException e) {
-            logger.error("Exception ", e);
-        }
-
-        for (Map.Entry<Object, Object> entry : props.entrySet()) {
-            System.out.println(entry);
-        }
+        logger.info("...Initialisation finished");
     }
 
 }
