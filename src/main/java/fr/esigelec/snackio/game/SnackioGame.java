@@ -11,7 +11,7 @@ import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.TmxMapLoader;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
 
-public class Snackio extends ApplicationAdapter {
+public class SnackioGame extends ApplicationAdapter {
     // Map
     private TiledMap map;
     private AssetManager manager;

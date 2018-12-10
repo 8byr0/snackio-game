@@ -6,14 +6,9 @@ import javafx.stage.Stage;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import java.io.IOException;
-import java.io.InputStream;
-import java.util.Map;
-import java.util.Properties;
 
-
-public class Test extends Application {
-    public static final Logger logger = LogManager.getLogger(Test.class);
+public class Snackio extends Application {
+    public static final Logger logger = LogManager.getLogger(Snackio.class);
 
     public static void main(String[] args) {
         launch(args);
@@ -21,8 +16,7 @@ public class Test extends Application {
 
     @Override
     public void start(Stage primaryStage) {
-        logger.info("Snackio game started");
-
+        logger.info("Snackio Game started");
 
         logger.info("Initialisation started...");
         logger.info("Fetching menu controller");

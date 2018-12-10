@@ -67,7 +67,7 @@ public class SnackioClient {
 
         // Request the user's name.
         input = (String)JOptionPane.showInputDialog(null, "Name:", "Connect to chat server", JOptionPane.QUESTION_MESSAGE, null,
-                null, "Test");
+                null, "SnackioGame");
         if (input == null || input.trim().length() == 0) System.exit(1);
         final String name = input.trim();
 

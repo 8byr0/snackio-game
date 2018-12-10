@@ -1,8 +1,8 @@
 package fr.esigelec.snackio.ui;
 
-import com.badlogic.gdx.backends.lwjgl.LwjglApplication;
-import com.badlogic.gdx.backends.lwjgl.LwjglApplicationConfiguration;
-import fr.esigelec.snackio.game.Snackio;
+import com.badlogic.gdx.backends.lwjgl3.Lwjgl3Application;
+import com.badlogic.gdx.backends.lwjgl3.Lwjgl3ApplicationConfiguration;
+import fr.esigelec.snackio.game.SnackioGame;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -38,10 +38,8 @@ public class MainMenu implements Initializable {
 
 
     public void openSoloMenu(ActionEvent actionEvent) {
-        LwjglApplicationConfiguration config = new LwjglApplicationConfiguration();
-        config.width  = 640;
-        config.height = 360;
-        new LwjglApplication(new Snackio(), config);
+        Lwjgl3ApplicationConfiguration config = new Lwjgl3ApplicationConfiguration();
+        new Lwjgl3Application(new SnackioGame(), config);
     }
 
     public void openMultiMenu(ActionEvent actionEvent) {

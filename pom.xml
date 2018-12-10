@@ -46,7 +46,7 @@
         </dependency>
         <dependency>
             <groupId>com.badlogicgames.gdx</groupId>
-            <artifactId>gdx-backend-lwjgl</artifactId>
+            <artifactId>gdx-backend-lwjgl3</artifactId>
             <version>1.9.9</version>
             <scope>compile</scope>
         </dependency>
