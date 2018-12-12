@@ -8,7 +8,7 @@ import com.badlogic.gdx.backends.lwjgl3.Lwjgl3ApplicationConfiguration;
 public class SnackioGame  {
     private static SnackioGame instance = null;
     private SnackioMap the_map;
-    private GameRenderer gameRenderer = new GameRenderer();
+    private GameRenderer gameRenderer = GameRenderer.getInstance();
 
     public static SnackioGame getInstance(){
         if(null == instance){

@@ -1,32 +1,212 @@
 package fr.esigelec.snackio.game;
 
+import com.badlogic.gdx.ApplicationListener;
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.graphics.GL20;
+import com.badlogic.gdx.Input;
+import com.badlogic.gdx.graphics.Camera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Animation;
-import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.esotericsoftware.kryonet.Listener;
+import fr.esigelec.snackio.networking.Position;
 
 import java.util.ArrayList;
 
 /**
  * Character instance is the GUI projection of a player on the map
  */
-public class Character {
-    private int speed = 1;
+public class Character implements ApplicationListener {
+
+
+    enum CharacterStatus {
+        // STATIC
+        STATIC_NORTH,
+        STATIC_WEST,
+        STATIC_SOUTH,
+        STATIC_EAST,
+        //MOVING
+        MOVING_NORTH,
+        MOVING_WEST,
+        MOVING_SOUTH,
+        MOVING_EAST
+    }
+
+    private Position position = new Position(150, 150);
+
+    private int speed = 5;
     private int lives = 3;
     private boolean active = true;
     private boolean invincible = false;
     private Direction direction = Direction.NORTH;
+    private boolean moving;
+    private Animation<TextureRegion>[] animations;
+    private float stateTime = 0f;
 
     private ArrayList<Listener.ThreadedListener> onMoveListeners = new ArrayList<>();
     private ArrayList<Listener.ThreadedListener> onLiveLostListeners = new ArrayList<>();
 
+    private Texture characterTexture;
+    private TextureRegion[][] character;
+    private SpriteBatch batch;
+    private Camera cam;
+
+    public Character(Camera cam) {
+        // Fill character frames array
+        characterTexture = new Texture(Gdx.files.internal("sprites/inspector.png"));
+
+        character = new TextureRegion[9][4];
+        animations = new Animation[8];
+        processCharacter();
+        batch = new SpriteBatch();
+        this.cam = cam;
+//        batch.setProjectionMatrix(cam.combined);
+
+//        batch.setProjectionMatrix(cam.combined);
+
+    }
 
     public Character(CharacterState state) {
 
+    }
+
+    public void setDirection(Direction direction) {
+        this.direction = direction;
+    }
+
+    public void setMoving(boolean moving) {
+        this.moving = moving;
+    }
+
+    private void processCharacter() {
+        // LOAD STATIC TEXTURES
+        // Static NORTH
+        loadCharacter(characterTexture, 0, 1, 0, CharacterStatus.STATIC_NORTH);
+        // Static WEST
+        loadCharacter(characterTexture, 0, 1, 1, CharacterStatus.STATIC_WEST);
+        // Static SOUTH
+        loadCharacter(characterTexture, 0, 1, 2, CharacterStatus.STATIC_SOUTH);
+        // Static EAST
+        loadCharacter(characterTexture, 0, 1, 3, CharacterStatus.STATIC_EAST);
+
+        // LOAD ANIMATIONS
+        // Walking NORTH
+        loadCharacter(characterTexture, 1, 9, 0, CharacterStatus.MOVING_NORTH);
+        // Walking WEST
+        loadCharacter(characterTexture, 1, 9, 1, CharacterStatus.MOVING_WEST);
+        // Walking SOUTH
+        loadCharacter(characterTexture, 1, 9, 2, CharacterStatus.MOVING_SOUTH);
+        // Walking EAST
+        loadCharacter(characterTexture, 1, 9, 3, CharacterStatus.MOVING_EAST);
+
+    }
+
+    private void loadCharacter(Texture spriteSheet, int firstFrameIndex, int lastFrameIndex, int rowIndex, CharacterStatus state) {
+        int FRAME_COLS = 9;
+        int FRAME_ROWS = 4;
+
+        TextureRegion[][] mappedSprite = TextureRegion.split(spriteSheet,
+                spriteSheet.getWidth() / FRAME_COLS,
+                spriteSheet.getHeight() / FRAME_ROWS);
+
+        TextureRegion[] animationFrames = new TextureRegion[lastFrameIndex - firstFrameIndex];
+        int index = 0;
+
+        for (int currentFrameIndex = firstFrameIndex; currentFrameIndex < lastFrameIndex; currentFrameIndex++) {
+            animationFrames[index++] = mappedSprite[rowIndex][currentFrameIndex];
+        }
+
+        animations[state.ordinal()] = new Animation<>(0.025f, animationFrames);
+    }
+
+    @Override
+    public void render() {
+        stateTime += Gdx.graphics.getDeltaTime();
+        batch.setProjectionMatrix(cam.combined);
+
+        handleInput();
+        batch.begin();
+        batch.draw(getCurrentFrame(stateTime), position.x, position.y);
+        batch.end();
+    }
+
+    private void handleInput() {
+        this.moving = false;
+        GameRenderer engine = GameRenderer.getInstance();
+        if (Gdx.input.isKeyPressed(Input.Keys.LEFT)) {
+            if (!engine.isCollision(position.x - speed, position.y)) {
+                position.x -= speed;
+                setDirection(Direction.WEST);
+                setMoving(true);
+            }
+        }
+        if (Gdx.input.isKeyPressed(Input.Keys.RIGHT)) {
+            if (!engine.isCollision(position.x + speed, position.y)) {
+                position.x += speed;
+
+                setDirection(Direction.EAST);
+                setMoving(true);
+            }
+        }
+        if (Gdx.input.isKeyPressed(Input.Keys.DOWN)) {
+            if (!engine.isCollision(position.x, position.y - speed)) {
+                position.y -= speed;
+
+                setDirection(Direction.SOUTH);
+                setMoving(true);
+            }
+        }
+        if (Gdx.input.isKeyPressed(Input.Keys.UP)) {
+            if (!engine.isCollision(position.x, position.y + speed)) {
+                position.y += speed;
+
+                setDirection(Direction.NORTH);
+                setMoving(true);
+            }
+        }
+    }
+
+    TextureRegion getCurrentFrame(float stateTime) {
+        TextureRegion currentFrame = null;
+        if (moving) {
+            switch (direction) {
+                case NORTH:
+                    currentFrame = animations[4].getKeyFrame(stateTime, true);
+                    if (null == currentFrame) {
+                        System.out.println("NOTHING");
+                    }
+                    break;
+                case WEST:
+                    currentFrame = animations[5].getKeyFrame(stateTime, true);
+                    break;
+                case SOUTH:
+                    currentFrame = animations[6].getKeyFrame(stateTime, true);
+                    break;
+                case EAST:
+                    currentFrame = animations[7].getKeyFrame(stateTime, true);
+                    break;
+            }
+        } else {
+            switch (direction) {
+                case NORTH:
+                    currentFrame = animations[0].getKeyFrame(stateTime, true);
+                    break;
+                case WEST:
+                    currentFrame = animations[1].getKeyFrame(stateTime, true);
+                    break;
+                case SOUTH:
+                    currentFrame = animations[2].getKeyFrame(stateTime, true);
+                    break;
+                case EAST:
+                    currentFrame = animations[3].getKeyFrame(stateTime, true);
+                    break;
+            }
+        }
+
+        if (null == currentFrame) {
+            System.out.println("NOTHING");
+        }
+        return currentFrame;
     }
 
     /**
@@ -38,52 +218,32 @@ public class Character {
         }
     }
 
-
-    private static final int FRAME_COLS = 9, FRAME_ROWS = 4;
-
-    private Texture characterSheet;
-    private SpriteBatch spriteBatch;
-    private Animation<TextureRegion> walkAnimation; // Must declare frame type (TextureRegion)
-    float stateTime;
-
-    public Character() {
-        characterSheet = new Texture(Gdx.files.internal("sprites/character.png"));
-
-        // Use the split utility method to create a 2D array of TextureRegions. This is
-        // possible because this sprite sheet contains frames of equal size and they are
-        // all aligned.
-        TextureRegion[][] tmp = TextureRegion.split(characterSheet,
-                characterSheet.getWidth() / FRAME_COLS,
-                characterSheet.getHeight() / FRAME_ROWS);
-
-        // Place the regions into a 1D array in the correct order, starting from the top
-        // left, going across first. The Animation constructor requires a 1D array.
-        TextureRegion[] walkFrames = new TextureRegion[FRAME_COLS * FRAME_ROWS];
-        int index = 0;
-        for (int i = 0; i < FRAME_ROWS; i++) {
-            for (int j = 0; j < FRAME_COLS; j++) {
-                walkFrames[index++] = tmp[i][j];
-            }
-        }
-
-        walkAnimation = new Animation<TextureRegion>(0.025f, walkFrames);
-
-        // Instantiate a SpriteBatch for drawing and reset the elapsed animation
-        // time to 0
-        spriteBatch = new SpriteBatch();
-        stateTime = 0f;
+    Position getPosition() {
+        return position;
     }
 
-    public void render() {
-        Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT); // Clear screen
-//        stateTime += Gdx.graphics.getDeltaTime(); // Accumulate elapsed animation time
+    @Override
+    public void create() {
 
-        // Get current frame of animation for the current stateTime
-        TextureRegion currentFrame = walkAnimation.getKeyFrame(stateTime, false);
-        spriteBatch.begin();
-        spriteBatch.draw(currentFrame, 50, 50); // Draw current frame at (50, 50)
-        spriteBatch.end();
     }
 
+    @Override
+    public void resize(int i, int i1) {
 
+    }
+
+    @Override
+    public void pause() {
+
+    }
+
+    @Override
+    public void resume() {
+
+    }
+
+    @Override
+    public void dispose() {
+        batch.dispose();
+    }
 }

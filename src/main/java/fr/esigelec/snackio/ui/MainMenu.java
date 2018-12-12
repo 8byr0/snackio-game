@@ -1,9 +1,5 @@
 package fr.esigelec.snackio.ui;
 
-import com.badlogic.gdx.backends.lwjgl3.Lwjgl3Application;
-import com.badlogic.gdx.backends.lwjgl3.Lwjgl3ApplicationConfiguration;
-import fr.esigelec.snackio.game.Animator;
-import fr.esigelec.snackio.game.Drop;
 import fr.esigelec.snackio.game.SnackioGame;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
