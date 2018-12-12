@@ -1,5 +1,6 @@
 package fr.esigelec.snackio;
 
+import fr.esigelec.snackio.game.SnackioGame;
 import fr.esigelec.snackio.ui.MenuController;
 import javafx.application.Application;
 import javafx.stage.Stage;
@@ -8,7 +9,7 @@ import org.apache.logging.log4j.Logger;
 
 
 public class Snackio extends Application {
-    public static final Logger logger = LogManager.getLogger(Snackio.class);
+    private static final Logger logger = LogManager.getLogger(Snackio.class);
 
     public static void main(String[] args) {
         launch(args);
@@ -20,12 +21,14 @@ public class Snackio extends Application {
 
         logger.info("Initialisation started...");
         logger.info("Fetching menu controller");
-        MenuController controller = MenuController.getInstance(primaryStage);
+//        MenuController controller = MenuController.getInstance(primaryStage);
 
         logger.info("Opening main menu");
-        controller.openMenu(MenuController.Menus.MAIN_MENU);
+//        controller.openMenu(MenuController.Menus.MAIN_MENU);
 
         logger.info("...Initialisation finished");
+
+        SnackioGame.getInstance();
     }
 
 }

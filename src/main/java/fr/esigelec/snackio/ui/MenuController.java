@@ -47,11 +47,9 @@ public class MenuController {
                 pathToMenuFile = "/menus/ServerConfigMenu.fxml";
                 break;
             default:
-                Log.info("MENU DOES NOT EXIST");
-        }
+                Log.warn("Requested menu does not exist. Cannot proceed.");
+                throw new IllegalStateException("Requested menu does not exist. Cannot proceed.");
 
-        if(null == pathToMenuFile){
-            throw new IllegalStateException("Requested menu does not exist. Cannot proceed.");
         }
 
         Parent root = null;

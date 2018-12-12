@@ -99,7 +99,6 @@ public class NetworkManager {
                     InetAddress serverAddress = client.discoverHost(54777, 5000);
                     client.connect(5000, serverAddress, 54555, 54777);
 
-
                     client.sendTCP(testPos);
 
                 } catch (IOException e) {

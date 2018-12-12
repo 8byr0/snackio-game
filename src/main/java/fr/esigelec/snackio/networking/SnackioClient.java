@@ -29,16 +29,15 @@ import com.esotericsoftware.kryonet.Client;
 import com.esotericsoftware.kryonet.Connection;
 import com.esotericsoftware.kryonet.Listener;
 import com.esotericsoftware.kryonet.rmi.ObjectSpace;
-import com.esotericsoftware.minlog.Log;
 
 // This class is the client for a simple chat client/server example that uses RMI.
 // It is recommended to review the non-RMI chat example first.
 // While this example uses only RMI, RMI can be mixed with non-RMI KryoNet usage.
 // RMI has more overhead (usually 4 bytes) then just sending an object.
 public class SnackioClient {
-    ChatFrame chatFrame;
-    Client client;
-    IPlayer player;
+    private ChatFrame chatFrame;
+    private Client client;
+    private IPlayer player;
 
     public SnackioClient () {
         client = new Client();
@@ -50,11 +49,9 @@ public class SnackioClient {
 
         client.addListener(new Listener() {
             public void disconnected (Connection connection) {
-                EventQueue.invokeLater(new Runnable() {
-                    public void run () {
-                        // Closing the frame calls the close listener which will stop the client's update thread.
-                        chatFrame.dispose();
-                    }
+                EventQueue.invokeLater(() -> {
+                    // Closing the frame calls the close listener which will stop the client's update thread.
+                    chatFrame.dispose();
                 });
             }
         });
@@ -78,9 +75,7 @@ public class SnackioClient {
                 // This allows the client to call methods on the server.
                 player = ObjectSpace.getRemoteObject(client, Network.PLAYER, IPlayer.class);
 
-                new Thread(()->{
-                    player.registerName(name);
-                }).start();
+                new Thread(()-> player.registerName(name)).start();
 
             }}));
 
@@ -90,17 +85,9 @@ public class SnackioClient {
         // Register the chat frame so the server can call methods on it.
         new ObjectSpace(client).register(Network.CHAT_FRAME, chatFrame);
         // This listener is called when the send button is clicked.
-        chatFrame.setSendListener(new Runnable() {
-            public void run () {
-                player.sendMessage(chatFrame.getSendText());
-            }
-        });
+        chatFrame.setSendListener(() -> player.sendMessage(chatFrame.getSendText()));
         // This listener is called when the chat window is closed.
-        chatFrame.setCloseListener(new Runnable() {
-            public void run () {
-                client.stop();
-            }
-        });
+        chatFrame.setCloseListener(() -> client.stop());
         chatFrame.setVisible(true);
 
         // We'll do the connect on a new thread so the ChatFrame can show a progress bar.
@@ -127,7 +114,7 @@ public class SnackioClient {
         JButton sendButton;
         JList nameList;
 
-        public ChatFrame (String host) {
+        ChatFrame(String host) {
             super("Chat RMI Client");
             setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
             setSize(640, 200);
@@ -183,7 +170,7 @@ public class SnackioClient {
             });
         }
 
-        public void setSendListener (final Runnable listener) {
+        void setSendListener(final Runnable listener) {
             sendButton.addActionListener(new ActionListener() {
                 public void actionPerformed (ActionEvent evt) {
                     if (getSendText().length() == 0) return;
@@ -194,7 +181,7 @@ public class SnackioClient {
             });
         }
 
-        public void setCloseListener (final Runnable listener) {
+        void setCloseListener(final Runnable listener) {
             addWindowListener(new WindowAdapter() {
                 public void windowClosed (WindowEvent evt) {
                     listener.run();
@@ -206,7 +193,7 @@ public class SnackioClient {
             });
         }
 
-        public String getSendText () {
+        String getSendText() {
             return sendText.getText().trim();
         }
 
