@@ -4,10 +4,13 @@ import com.badlogic.gdx.ApplicationListener;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.Camera;
+import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
+import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.esotericsoftware.kryonet.Listener;
 import fr.esigelec.snackio.networking.Position;
 
@@ -16,8 +19,7 @@ import java.util.ArrayList;
 /**
  * Character instance is the GUI projection of a player on the map
  */
-public class Character implements ApplicationListener {
-
+public class Character extends Actor implements ApplicationListener {
 
     enum CharacterStatus {
         // STATIC
@@ -63,7 +65,6 @@ public class Character implements ApplicationListener {
 //        batch.setProjectionMatrix(cam.combined);
 
 //        batch.setProjectionMatrix(cam.combined);
-
     }
 
     public Character(CharacterState state) {
@@ -134,14 +135,14 @@ public class Character implements ApplicationListener {
         this.moving = false;
         GameRenderer engine = GameRenderer.getInstance();
         if (Gdx.input.isKeyPressed(Input.Keys.LEFT)) {
-            if (!engine.isCollision(position.x - speed, position.y)) {
+            if (!engine.isCollision(position.x - speed + 16, position.y)) {
                 position.x -= speed;
                 setDirection(Direction.WEST);
                 setMoving(true);
             }
         }
         if (Gdx.input.isKeyPressed(Input.Keys.RIGHT)) {
-            if (!engine.isCollision(position.x + speed, position.y)) {
+            if (!engine.isCollision(position.x + speed + 16, position.y)) {
                 position.x += speed;
 
                 setDirection(Direction.EAST);
@@ -149,7 +150,7 @@ public class Character implements ApplicationListener {
             }
         }
         if (Gdx.input.isKeyPressed(Input.Keys.DOWN)) {
-            if (!engine.isCollision(position.x, position.y - speed)) {
+            if (!engine.isCollision(position.x + 16, position.y - speed)) {
                 position.y -= speed;
 
                 setDirection(Direction.SOUTH);
@@ -157,7 +158,7 @@ public class Character implements ApplicationListener {
             }
         }
         if (Gdx.input.isKeyPressed(Input.Keys.UP)) {
-            if (!engine.isCollision(position.x, position.y + speed)) {
+            if (!engine.isCollision(position.x + 16, position.y + speed)) {
                 position.y += speed;
 
                 setDirection(Direction.NORTH);

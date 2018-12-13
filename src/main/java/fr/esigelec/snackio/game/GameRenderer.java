@@ -2,16 +2,21 @@ package fr.esigelec.snackio.game;
 
 import com.badlogic.gdx.*;
 import com.badlogic.gdx.assets.AssetManager;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
+import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.maps.MapLayer;
+import com.badlogic.gdx.maps.MapObject;
 import com.badlogic.gdx.maps.MapObjects;
 import com.badlogic.gdx.maps.MapProperties;
+import com.badlogic.gdx.maps.objects.PolygonMapObject;
 import com.badlogic.gdx.maps.objects.RectangleMapObject;
 import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.TmxMapLoader;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
 import com.badlogic.gdx.math.Intersector;
+import com.badlogic.gdx.math.Polygon;
 import com.badlogic.gdx.math.Rectangle;
 import org.lwjgl.openal.AL;
 
@@ -19,6 +24,7 @@ import org.lwjgl.openal.AL;
 public class GameRenderer extends ApplicationAdapter {
 
     private static GameRenderer instance = new GameRenderer();
+    private ShapeRenderer shapeRenderer;
 
     static GameRenderer getInstance() {
         return instance;
@@ -62,6 +68,8 @@ public class GameRenderer extends ApplicationAdapter {
 
         // Initialize map renderer
         renderer = new OrthogonalTiledMapRenderer(map);
+        shapeRenderer = new ShapeRenderer();
+
     }
 
     @Override
@@ -78,6 +86,17 @@ public class GameRenderer extends ApplicationAdapter {
 
         // Render map
         renderer.render();
+
+        float x = myDefaultCharacter.getPosition().x;
+        float y = myDefaultCharacter.getPosition().y;
+        shapeRenderer.setProjectionMatrix(cam.combined);
+
+        shapeRenderer.begin(ShapeRenderer.ShapeType.Filled); //I'm using the Filled ShapeType, but remember you have three of them
+        shapeRenderer.setColor(Color.LIGHT_GRAY);
+
+        shapeRenderer.rect(x+16,y,32,16); //assuming you have created those x, y, width and height variables
+        shapeRenderer.end();
+
 
         // Render character
         myDefaultCharacter.render();
@@ -110,10 +129,20 @@ public class GameRenderer extends ApplicationAdapter {
         MapLayer collisionObjectLayer = map.getLayers().get(objectLayerId);
         MapObjects objects = collisionObjectLayer.getObjects();
         boolean colliding = false;
+
+        for (PolygonMapObject obj : objects.getByType(PolygonMapObject.class)) {
+            Polygon poly = obj.getPolygon();
+
+            Rectangle playerProjection = new Rectangle(x, y, 32, 16);
+            if (isCollision(poly, playerProjection)) {
+                colliding = true;
+                break;
+            }
+        }
         for (RectangleMapObject rectangleObject : objects.getByType(RectangleMapObject.class)) {
             Rectangle rectangle = rectangleObject.getRectangle();
 
-            Rectangle playerProjection = new Rectangle(x, y, 64, 28);
+            Rectangle playerProjection = new Rectangle(x, y, 32, 16);
             if (Intersector.overlaps(rectangle, playerProjection)) {
                 colliding = true;
                 break;
@@ -121,6 +150,14 @@ public class GameRenderer extends ApplicationAdapter {
 
         }
         return colliding;
+    }
+    private boolean isCollision(Polygon p, Rectangle r) {
+        Polygon rPoly = new Polygon(new float[] { 0, 0, r.width, 0, r.width,
+                r.height, 0, r.height });
+        rPoly.setPosition(r.x, r.y);
+        if (Intersector.overlapConvexPolygons(rPoly, p))
+            return true;
+        return false;
     }
 
     /**
