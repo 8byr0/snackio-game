@@ -1,4 +1,4 @@
-package fr.esigelec.snackio.game;
+package fr.esigelec.snackio.game.character;
 
 enum Direction {
     NORTH,

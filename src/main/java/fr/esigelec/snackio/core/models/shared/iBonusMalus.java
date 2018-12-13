@@ -1,6 +1,6 @@
 package fr.esigelec.snackio.core.models.shared;
 
-import fr.esigelec.snackio.game.Character;
+import fr.esigelec.snackio.game.character.Character;
 
 /**
  * A iBonusMalus implementation modifies a given character behavior(speed, fly capacity...)

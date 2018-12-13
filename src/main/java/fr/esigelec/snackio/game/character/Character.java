@@ -1,4 +1,4 @@
-package fr.esigelec.snackio.game;
+package fr.esigelec.snackio.game.character;
 
 import com.badlogic.gdx.ApplicationListener;
 import com.badlogic.gdx.Gdx;
@@ -12,6 +12,8 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.esotericsoftware.kryonet.Listener;
+import fr.esigelec.snackio.game.character.Direction;
+import fr.esigelec.snackio.game.GameRenderer;
 import fr.esigelec.snackio.networking.Position;
 
 import java.util.ArrayList;
@@ -53,22 +55,20 @@ public class Character extends Actor implements ApplicationListener {
     private SpriteBatch batch;
     private Camera cam;
 
-    public Character(Camera cam) {
+    public Character() {
+
+        batch = new SpriteBatch();
+        this.cam = GameRenderer.getInstance().getCamera();
+
+    }
+
+    void configureRendering(String pathToSprite){
         // Fill character frames array
-        characterTexture = new Texture(Gdx.files.internal("sprites/inspector.png"));
+        characterTexture = new Texture(Gdx.files.internal(pathToSprite));
 
         character = new TextureRegion[9][4];
         animations = new Animation[8];
         processCharacter();
-        batch = new SpriteBatch();
-        this.cam = cam;
-//        batch.setProjectionMatrix(cam.combined);
-
-//        batch.setProjectionMatrix(cam.combined);
-    }
-
-    public Character(CharacterState state) {
-
     }
 
     public void setDirection(Direction direction) {
@@ -219,7 +219,7 @@ public class Character extends Actor implements ApplicationListener {
         }
     }
 
-    Position getPosition() {
+    public Position getPosition() {
         return position;
     }
 

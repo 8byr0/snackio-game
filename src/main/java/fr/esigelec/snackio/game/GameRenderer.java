@@ -1,49 +1,50 @@
 package fr.esigelec.snackio.game;
 
 import com.badlogic.gdx.*;
-import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.maps.MapLayer;
-import com.badlogic.gdx.maps.MapObject;
 import com.badlogic.gdx.maps.MapObjects;
-import com.badlogic.gdx.maps.MapProperties;
 import com.badlogic.gdx.maps.objects.PolygonMapObject;
 import com.badlogic.gdx.maps.objects.RectangleMapObject;
-import com.badlogic.gdx.maps.tiled.TiledMap;
-import com.badlogic.gdx.maps.tiled.TmxMapLoader;
-import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
 import com.badlogic.gdx.math.Intersector;
 import com.badlogic.gdx.math.Polygon;
 import com.badlogic.gdx.math.Rectangle;
-import org.lwjgl.openal.AL;
+import fr.esigelec.snackio.game.character.Character;
+import fr.esigelec.snackio.game.character.CharacterFactory;
+import fr.esigelec.snackio.game.map.Map;
 
-
+/**
+ * GameRenderer class is in charge of rendering all graphical elements to screen.
+ * Characters, bonuses, maluses... All these objects must be managed from here.
+ */
 public class GameRenderer extends ApplicationAdapter {
 
     private static GameRenderer instance = new GameRenderer();
-    private ShapeRenderer shapeRenderer;
 
-    static GameRenderer getInstance() {
+    /**
+     * Singleton implementation
+     * @return GameRenderer existing instance or new if not exists
+     */
+    public static GameRenderer getInstance() {
         return instance;
     }
 
-    private OrthographicCamera cam;
+    private float stateTime;
 
     // MAP
-    private TiledMap map;
-    private OrthogonalTiledMapRenderer renderer;
+    private Map snackioMap;
 
+    // CAMERA
+    private OrthographicCamera cam;
     private static final float CAMERA_WIDTH = 10f;
     private static final float CAMERA_HEIGHT = 7f;
-    private int mapWidthInPixels;
-    private int mapHeightInPixels;
 
     // CHARACTER PROJECTION
-    private float stateTime;
     private Character myDefaultCharacter;
+    private ShapeRenderer shapeRenderer;
 
 
     private GameRenderer() {
@@ -54,20 +55,18 @@ public class GameRenderer extends ApplicationAdapter {
     @Override
     public void create() {
         // Set state time
-        stateTime = 0f;
+        this.stateTime = 0f;
 
         // Load tileset map
-        loadMap();
-        configureMap();
+        snackioMap = new Map();
 
         // Configure camera and viewport
         configureCamera();
 
         // Load a sample character
-        myDefaultCharacter = new Character(cam);
+        myDefaultCharacter = CharacterFactory.getCharacter(CharacterFactory.CharacterType.INDIANA);
 
         // Initialize map renderer
-        renderer = new OrthogonalTiledMapRenderer(map);
         shapeRenderer = new ShapeRenderer();
 
     }
@@ -81,11 +80,9 @@ public class GameRenderer extends ApplicationAdapter {
         stateTime += Gdx.graphics.getDeltaTime();
 
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
-        // Link camera to tiled map
-        renderer.setView(cam);
 
-        // Render map
-        renderer.render();
+        // Render tiled map
+        snackioMap.render();
 
         float x = myDefaultCharacter.getPosition().x;
         float y = myDefaultCharacter.getPosition().y;
@@ -124,9 +121,9 @@ public class GameRenderer extends ApplicationAdapter {
      * @param y y position of the character
      * @return true if there's a collision
      */
-    boolean isCollision(float x, float y) {
+    public boolean isCollision(float x, float y) {
         int objectLayerId = 2;
-        MapLayer collisionObjectLayer = map.getLayers().get(objectLayerId);
+        MapLayer collisionObjectLayer = snackioMap.getMap().getLayers().get(objectLayerId);
         MapObjects objects = collisionObjectLayer.getObjects();
         boolean colliding = false;
 
@@ -155,9 +152,7 @@ public class GameRenderer extends ApplicationAdapter {
         Polygon rPoly = new Polygon(new float[] { 0, 0, r.width, 0, r.width,
                 r.height, 0, r.height });
         rPoly.setPosition(r.x, r.y);
-        if (Intersector.overlapConvexPolygons(rPoly, p))
-            return true;
-        return false;
+        return Intersector.overlapConvexPolygons(rPoly, p);
     }
 
     /**
@@ -166,39 +161,20 @@ public class GameRenderer extends ApplicationAdapter {
     private void configureCamera() {
         float w = Gdx.graphics.getWidth();
         float h = Gdx.graphics.getHeight();
-
-        cam = new OrthographicCamera(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
+        if(null == cam){
+            cam = new OrthographicCamera(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
+        }
         cam.setToOrtho(false, w, h);
         cam.zoom = 1f;
         cam.update();
 
     }
 
-    /**
-     * Load default map from assets
-     */
-    private void loadMap() {
-        AssetManager manager = new AssetManager();
-        manager.setLoader(TiledMap.class, new TmxMapLoader());
-        manager.load("maps/snackio.tmx", TiledMap.class);
-        manager.finishLoading();
-        map = manager.get("maps/snackio.tmx", TiledMap.class);
-    }
-
-    /**
-     * Retrieve map information from TMX default file
-     */
-    private void configureMap() {
-        // Read properties
-        MapProperties properties = map.getProperties();
-
-        // Map properties
-        int tileWidth = properties.get("tilewidth", Integer.class);
-        int tileHeight = properties.get("tileheight", Integer.class);
-        int mapWidthInTiles = properties.get("width", Integer.class);
-        int mapHeightInTiles = properties.get("height", Integer.class);
-        mapWidthInPixels = mapWidthInTiles * tileWidth;
-        mapHeightInPixels = mapHeightInTiles * tileHeight;
+    public OrthographicCamera getCamera(){
+        if(null==cam){
+            configureCamera();
+        }
+        return cam;
     }
 
     @Override
@@ -215,8 +191,8 @@ public class GameRenderer extends ApplicationAdapter {
     @Override
     public void dispose() {
         myDefaultCharacter.dispose();
-        map.dispose();
-        renderer.dispose();
+        snackioMap.dispose();
+
 
         System.exit(0);
     }
@@ -225,19 +201,4 @@ public class GameRenderer extends ApplicationAdapter {
     public void pause() {
     }
 
-    public int getMapHeightInPixels() {
-        return mapHeightInPixels;
-    }
-
-    public void setMapHeightInPixels(int mapHeightInPixels) {
-        this.mapHeightInPixels = mapHeightInPixels;
-    }
-
-    public int getMapWidthInPixels() {
-        return mapWidthInPixels;
-    }
-
-    public void setMapWidthInPixels(int mapWidthInPixels) {
-        this.mapWidthInPixels = mapWidthInPixels;
-    }
 }
