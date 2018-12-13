@@ -16,6 +16,7 @@ import fr.esigelec.snackio.game.character.Character;
 import fr.esigelec.snackio.game.character.CharacterFactory;
 import fr.esigelec.snackio.game.character.KeyboardController;
 import fr.esigelec.snackio.game.map.Map;
+import fr.esigelec.snackio.game.pois.PointOfInterest;
 
 import java.util.ArrayList;
 
@@ -50,9 +51,11 @@ public class GameRenderer extends ApplicationAdapter {
     private ShapeRenderer shapeRenderer;
 
     private ArrayList<Character> characters;
+    private ArrayList<PointOfInterest> pointsOfInterest;
 
     private GameRenderer() {
         characters = new ArrayList<>();
+        pointsOfInterest = new ArrayList<>();
     }
 
 
@@ -74,6 +77,9 @@ public class GameRenderer extends ApplicationAdapter {
 
         for(Character character : characters){
             character.create();
+        }
+        for(PointOfInterest poi : pointsOfInterest){
+            poi.create();
         }
 
         // Initialize map renderer
@@ -107,6 +113,10 @@ public class GameRenderer extends ApplicationAdapter {
         shapeRenderer.end();
 
 
+        for(PointOfInterest poi: pointsOfInterest){
+            poi.render();
+        }
+
         // Render character
         myDefaultCharacter.render();
 
@@ -136,7 +146,7 @@ public class GameRenderer extends ApplicationAdapter {
      * @return true if there's a collision
      */
 //    public boolean isCharacterColliding(float x, float y) {
-    public boolean isCharacterColliding(Rectangle playerProjection, Rectangle feetsProjection) {
+    public boolean isCharacterColliding(Character player, Rectangle playerProjection, Rectangle feetsProjection) {
         int objectLayerId = 2;
         MapLayer collisionObjectLayer = snackioMap.getMap().getLayers().get(objectLayerId);
         MapObjects objects = collisionObjectLayer.getObjects();
@@ -151,9 +161,17 @@ public class GameRenderer extends ApplicationAdapter {
             }
         }
 
+
         for(Character character : characters){
             if(Intersector.overlaps(character.getActualProjection(), playerProjection)){
                 colliding = true;
+                break;
+            }
+        }
+
+        for(PointOfInterest poi : pointsOfInterest){
+            if(Intersector.overlaps(poi.getActualProjection(), playerProjection)){
+                poi.execute(player);
                 break;
             }
         }
@@ -226,10 +244,11 @@ public class GameRenderer extends ApplicationAdapter {
     public void pause() {
     }
 
+    public void addPointOfInterest(PointOfInterest poi) {
+        pointsOfInterest.add(poi);
+    }
+
     public void addCharacter(Character character) {
-        System.out.println("ADDING CHARACTER");
-        System.out.println(characters.size());
         characters.add(character);
-        System.out.println(characters.size());
     }
 }

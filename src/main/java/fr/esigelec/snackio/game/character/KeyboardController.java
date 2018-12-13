@@ -18,7 +18,7 @@ public class KeyboardController implements iCharacterController {
         int speed = character.getSpeed();
 
         if (Gdx.input.isKeyPressed(Input.Keys.LEFT)) {
-            if (!engine.isCharacterColliding(character.getFullProjection(position.x - speed + 16, position.y),
+            if (!engine.isCharacterColliding(character, character.getFullProjection(position.x - speed + 16, position.y),
                     character.getFeetsProjection(position.x - speed + 16, position.y))) {
 
                 position.x -= speed;
@@ -27,7 +27,7 @@ public class KeyboardController implements iCharacterController {
             }
         }
         if (Gdx.input.isKeyPressed(Input.Keys.RIGHT)) {
-            if (!engine.isCharacterColliding(character.getFullProjection(position.x + speed + 16, position.y),
+            if (!engine.isCharacterColliding(character, character.getFullProjection(position.x + speed + 16, position.y),
                     character.getFeetsProjection(position.x + speed + 16, position.y))) {
                 position.x += speed;
 
@@ -36,7 +36,7 @@ public class KeyboardController implements iCharacterController {
             }
         }
         if (Gdx.input.isKeyPressed(Input.Keys.DOWN)) {
-            if (!engine.isCharacterColliding(character.getFullProjection(position.x + 16, position.y - speed),
+            if (!engine.isCharacterColliding(character, character.getFullProjection(position.x + 16, position.y - speed),
                     character.getFeetsProjection(position.x + 16, position.y - speed))) {
                 position.y -= speed;
 
@@ -45,7 +45,7 @@ public class KeyboardController implements iCharacterController {
             }
         }
         if (Gdx.input.isKeyPressed(Input.Keys.UP)) {
-            if (!engine.isCharacterColliding(character.getFullProjection(position.x + 16, position.y + speed),
+            if (!engine.isCharacterColliding(character, character.getFullProjection(position.x + 16, position.y + speed),
                     character.getFeetsProjection(position.x + 16, position.y + speed))) {
                 position.y += speed;
 

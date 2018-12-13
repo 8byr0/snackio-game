@@ -2,16 +2,15 @@ package fr.esigelec.snackio.game.character;
 
 import com.badlogic.gdx.ApplicationListener;
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.Camera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
-import com.badlogic.gdx.math.Polygon;
 import com.badlogic.gdx.math.Rectangle;
 import com.esotericsoftware.kryonet.Listener;
 import fr.esigelec.snackio.game.GameRenderer;
+import fr.esigelec.snackio.game.pois.PointOfInterest;
 import fr.esigelec.snackio.networking.Position;
 
 import java.util.ArrayList;
@@ -21,11 +20,10 @@ import java.util.ArrayList;
  */
 public class Character implements ApplicationListener {
 
-    private Rectangle fullProjection = new Rectangle();
-    private Rectangle feetsProjection = new Rectangle();
-
     private String pathToSprite;
     private iCharacterController motionController;
+
+    private ArrayList<PointOfInterest> activePointsOfInterest;
 
     public int getSpeed() {
         return speed;
@@ -44,9 +42,11 @@ public class Character implements ApplicationListener {
     }
 
     public Rectangle getFullProjection(float x, float y) {
-        System.out.println(getCurrentFrame(stateTime).getRegionWidth());
-        System.out.println(getCurrentFrame(stateTime).getRegionHeight());
         return new Rectangle(x, y, 32, 43);
+    }
+
+    public void setSpeed(int speed) {
+        this.speed = speed;
     }
 
 
@@ -83,7 +83,7 @@ public class Character implements ApplicationListener {
     private Camera cam;
 
     public Character() {
-
+        activePointsOfInterest = new ArrayList<>();
     }
 
     public void setPathToSprite(String pathToSprite){
@@ -248,6 +248,20 @@ public class Character implements ApplicationListener {
     @Override
     public void dispose() {
         batch.dispose();
+    }
+
+    public boolean isPOIActive(PointOfInterest poi){
+        return this.activePointsOfInterest.contains(poi);
+    }
+
+    public void addActivePOI(PointOfInterest poi){
+        this.activePointsOfInterest.add(poi);
+    }
+
+    public void removeActivePOI(PointOfInterest poi){
+        if (isPOIActive(poi)) {
+            this.activePointsOfInterest.remove(poi);
+        }
     }
 
 }
