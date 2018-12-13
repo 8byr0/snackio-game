@@ -1,6 +1,7 @@
 package fr.esigelec.snackio.game;
 
 import com.badlogic.gdx.*;
+import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
@@ -62,6 +63,8 @@ public class GameRenderer extends ApplicationAdapter {
 
     @Override
     public void create() {
+        Music music = Gdx.audio.newMusic(Gdx.files.internal("sound/dungeon.ogg"));
+        music.play();
         // Set state time
         this.stateTime = 0f;
 

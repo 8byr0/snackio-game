@@ -3,7 +3,6 @@ import com.badlogic.gdx.backends.lwjgl3.Lwjgl3Application;
 import com.badlogic.gdx.backends.lwjgl3.Lwjgl3ApplicationConfiguration;
 import fr.esigelec.snackio.core.models.Player;
 import fr.esigelec.snackio.game.character.Character;
-import fr.esigelec.snackio.game.character.CharacterFactory;
 import fr.esigelec.snackio.game.pois.Coin;
 import fr.esigelec.snackio.game.pois.PointOfInterest;
 import fr.esigelec.snackio.game.pois.bonuses.SpeedBonus;
