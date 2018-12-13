@@ -37,11 +37,11 @@ public class Character implements ApplicationListener {
         return new Rectangle(position.x + 16, position.y, 32, 43);
     }
 
-    public Rectangle getFeetsProjection(float x, float y) {
+    Rectangle getFeetsProjection(float x, float y) {
         return new Rectangle(x, y, 32, 16);
     }
 
-    public Rectangle getFullProjection(float x, float y) {
+    Rectangle getFullProjection(float x, float y) {
         return new Rectangle(x, y, 32, 43);
     }
 
@@ -199,19 +199,7 @@ public class Character implements ApplicationListener {
             }
         }
 
-        if (null == currentFrame) {
-            System.out.println("NOTHING");
-        }
         return currentFrame;
-    }
-
-    /**
-     * Class storing states of all capacities of a given character
-     */
-    private class CharacterState {
-        public CharacterState() {
-
-        }
     }
 
     public void setPosition(float x, float y) {

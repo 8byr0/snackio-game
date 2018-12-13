@@ -4,21 +4,25 @@ import com.badlogic.gdx.ApplicationListener;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Rectangle;
 import fr.esigelec.snackio.game.GameRenderer;
 import fr.esigelec.snackio.game.character.Character;
 import fr.esigelec.snackio.networking.Position;
 
-public abstract class PointOfInterest implements ApplicationListener, iPoi {
+public abstract class AnimatedPointOfInterest implements ApplicationListener, iPoi {
     private static final int WIDTH = 32;
     private static final int HEIGHT = 32;
 
     protected int durationInSeconds = 10;
     public abstract void execute(Character character);
     private String pathToIcon;
-    private Texture texture;
+    private TextureRegion[]  animationFrames;
+    private Animation coinAnimation;
     private SpriteBatch batch;
+    private float stateTime = 0f;
 
     private Position position = new Position(400,400);
     private OrthographicCamera cam;
@@ -29,7 +33,15 @@ public abstract class PointOfInterest implements ApplicationListener, iPoi {
 
         cam = GameRenderer.getInstance().getCamera();
         pathToIcon = "poi/speed_bonus.png";
-        texture = new Texture(Gdx.files.internal(pathToIcon));
+
+        animationFrames = new TextureRegion[8];
+        int index = 0;
+
+        for (int itr=1; itr <=8; ++itr ) {
+            animationFrames[itr-1] = new TextureRegion(new Texture(Gdx.files.internal("poi/coin/coin0"+Integer.toString(itr)+".png")));
+        }
+
+        coinAnimation = (Animation)new Animation(0.1f, animationFrames);
 
     }
 
@@ -40,11 +52,16 @@ public abstract class PointOfInterest implements ApplicationListener, iPoi {
 
     @Override
     public void render() {
+        stateTime += Gdx.graphics.getDeltaTime();
         batch.setProjectionMatrix(cam.combined);
 
         batch.begin();
-        batch.draw(texture, position.x, position.y, WIDTH, HEIGHT);
+        batch.draw(getCurrentFrame(stateTime), position.x, position.y, WIDTH, HEIGHT);
         batch.end();
+    }
+
+    private TextureRegion getCurrentFrame(float stateTime){
+        return (TextureRegion)coinAnimation.getKeyFrame(stateTime, true);
     }
 
     @Override

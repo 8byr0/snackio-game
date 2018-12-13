@@ -5,11 +5,9 @@ import com.esotericsoftware.kryonet.Client;
 import com.esotericsoftware.kryonet.Connection;
 import com.esotericsoftware.kryonet.Listener;
 import com.esotericsoftware.kryonet.Server;
-import com.esotericsoftware.kryonet.rmi.ObjectSpace;
 
 import java.io.IOException;
 import java.net.InetAddress;
-import java.util.ArrayList;
 
 public class NetworkManager {
     private Server server;
@@ -61,13 +59,12 @@ public class NetworkManager {
     }
 
     public void testBroadcast() {
-//        Position test = new Position("213", "423");
-//        server.sendToAllTCP(test);
+        Position test = new Position(213, 423);
+        server.sendToAllTCP(test);
 
     }
 
     public void clientTCPTest() {
-
         // Create client
         Client client = new Client();
 
@@ -92,14 +89,14 @@ public class NetworkManager {
 
         client.start();
         // Send test position
-//        Position testPos = new Position("123", "3456");
+        Position testPos = new Position(123, 3456);
         new Thread("Connect") {
             public void run() {
                 try {
                     InetAddress serverAddress = client.discoverHost(54777, 5000);
                     client.connect(5000, serverAddress, 54555, 54777);
 
-//                    client.sendTCP(testPos);
+                    client.sendTCP(testPos);
 
                 } catch (IOException e) {
                     e.printStackTrace();

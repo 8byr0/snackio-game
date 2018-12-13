@@ -2,7 +2,6 @@ package fr.esigelec.snackio.game.character;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
-import com.badlogic.gdx.math.Rectangle;
 import fr.esigelec.snackio.game.GameRenderer;
 import fr.esigelec.snackio.networking.Position;
 
@@ -18,6 +17,7 @@ public class KeyboardController implements iCharacterController {
         int speed = character.getSpeed();
 
         if (Gdx.input.isKeyPressed(Input.Keys.LEFT)) {
+
             if (!engine.isCharacterColliding(character, character.getFullProjection(position.x - speed + 16, position.y),
                     character.getFeetsProjection(position.x - speed + 16, position.y))) {
 

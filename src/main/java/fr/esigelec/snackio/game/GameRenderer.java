@@ -14,9 +14,9 @@ import com.badlogic.gdx.math.Polygon;
 import com.badlogic.gdx.math.Rectangle;
 import fr.esigelec.snackio.game.character.Character;
 import fr.esigelec.snackio.game.character.CharacterFactory;
-import fr.esigelec.snackio.game.character.KeyboardController;
 import fr.esigelec.snackio.game.map.Map;
 import fr.esigelec.snackio.game.pois.PointOfInterest;
+import fr.esigelec.snackio.game.pois.iPoi;
 
 import java.util.ArrayList;
 
@@ -30,6 +30,7 @@ public class GameRenderer extends ApplicationAdapter {
 
     /**
      * Singleton implementation
+     *
      * @return GameRenderer existing instance or new if not exists
      */
     public static GameRenderer getInstance() {
@@ -47,11 +48,11 @@ public class GameRenderer extends ApplicationAdapter {
     private static final float CAMERA_HEIGHT = 7f;
 
     // CHARACTERS PROJECTION
-    private Character myDefaultCharacter;
+    private Character activeCharacter;
     private ShapeRenderer shapeRenderer;
 
     private ArrayList<Character> characters;
-    private ArrayList<PointOfInterest> pointsOfInterest;
+    private ArrayList<iPoi> pointsOfInterest;
 
     private GameRenderer() {
         characters = new ArrayList<>();
@@ -71,14 +72,15 @@ public class GameRenderer extends ApplicationAdapter {
         configureCamera();
 
         // Load a sample character
-        myDefaultCharacter = CharacterFactory.getCharacter(CharacterFactory.CharacterType.INDIANA);
-        myDefaultCharacter.setMotionController(new KeyboardController());
-        myDefaultCharacter.create();
+//        activeCharacter = CharacterFactory.getCharacter(CharacterFactory.CharacterType.INDIANA);
+//        activeCharacter.setMotionController(new KeyboardController());
+//        activeCharacter.setPosition(1900,1900);
+//        activeCharacter.create();
 
-        for(Character character : characters){
+        for (Character character : characters) {
             character.create();
         }
-        for(PointOfInterest poi : pointsOfInterest){
+        for (iPoi poi : pointsOfInterest) {
             poi.create();
         }
 
@@ -86,13 +88,12 @@ public class GameRenderer extends ApplicationAdapter {
         shapeRenderer = new ShapeRenderer();
 
 
-
     }
 
     @Override
     public void render() {
         // Properly position camera on player
-        moveCamera(myDefaultCharacter.getPosition().x, myDefaultCharacter.getPosition().y);
+        moveCamera(activeCharacter.getPosition().x, activeCharacter.getPosition().y);
 
         // Increment stateTime
         stateTime += Gdx.graphics.getDeltaTime();
@@ -102,25 +103,25 @@ public class GameRenderer extends ApplicationAdapter {
         // Render tiled map
         snackioMap.render();
 
-        float x = myDefaultCharacter.getPosition().x;
-        float y = myDefaultCharacter.getPosition().y;
+        float x = activeCharacter.getPosition().x;
+        float y = activeCharacter.getPosition().y;
         shapeRenderer.setProjectionMatrix(cam.combined);
 
         shapeRenderer.begin(ShapeRenderer.ShapeType.Filled); //I'm using the Filled ShapeType, but remember you have three of them
         shapeRenderer.setColor(Color.LIGHT_GRAY);
 
-        shapeRenderer.rect(x+16,y,32,16); //assuming you have created those x, y, width and height variables
+        shapeRenderer.rect(x + 16, y, 32, 16); //assuming you have created those x, y, width and height variables
         shapeRenderer.end();
 
 
-        for(PointOfInterest poi: pointsOfInterest){
+        for (iPoi poi : pointsOfInterest) {
             poi.render();
         }
 
         // Render character
-        myDefaultCharacter.render();
+//        activeCharacter.render();
 
-        for(Character character: characters){
+        for (Character character : characters) {
             character.render();
         }
 
@@ -128,6 +129,7 @@ public class GameRenderer extends ApplicationAdapter {
 
     /**
      * Move camera to a given position
+     *
      * @param x x
      * @param y y
      */
@@ -143,13 +145,12 @@ public class GameRenderer extends ApplicationAdapter {
      * Detect if there's a collision between character coordinates and objects' layer
      * This method should only be used in a preventive way.
      * E.g: projection of estimated position without moving character.
+     *
      * @return true if there's a collision
      */
-//    public boolean isCharacterColliding(float x, float y) {
     public boolean isCharacterColliding(Character player, Rectangle playerProjection, Rectangle feetsProjection) {
-        int objectLayerId = 2;
-        MapLayer collisionObjectLayer = snackioMap.getMap().getLayers().get(objectLayerId);
-        MapObjects objects = collisionObjectLayer.getObjects();
+        MapObjects objects = snackioMap.getMap().getLayers().get("obstacles").getObjects();
+
         boolean colliding = false;
 
         for (PolygonMapObject obj : objects.getByType(PolygonMapObject.class)) {
@@ -162,15 +163,17 @@ public class GameRenderer extends ApplicationAdapter {
         }
 
 
-        for(Character character : characters){
-            if(Intersector.overlaps(character.getActualProjection(), playerProjection)){
-                colliding = true;
-                break;
+        for (Character character : characters) {
+            if (Intersector.overlaps(character.getActualProjection(), playerProjection)) {
+                if (character != player) {
+                    colliding = true;
+                    break;
+                }
             }
         }
 
-        for(PointOfInterest poi : pointsOfInterest){
-            if(Intersector.overlaps(poi.getActualProjection(), playerProjection)){
+        for (iPoi poi : pointsOfInterest) {
+            if (Intersector.overlaps(poi.getActualProjection(), playerProjection)) {
                 poi.execute(player);
                 break;
             }
@@ -189,8 +192,8 @@ public class GameRenderer extends ApplicationAdapter {
     }
 
     private boolean isCollision(Polygon p, Rectangle r) {
-        Polygon rPoly = new Polygon(new float[] { 0, 0, r.width, 0, r.width,
-                r.height, 0, r.height });
+        Polygon rPoly = new Polygon(new float[]{0, 0, r.width, 0, r.width,
+                r.height, 0, r.height});
         rPoly.setPosition(r.x, r.y);
         return Intersector.overlapConvexPolygons(rPoly, p);
     }
@@ -201,7 +204,7 @@ public class GameRenderer extends ApplicationAdapter {
     private void configureCamera() {
         float w = Gdx.graphics.getWidth();
         float h = Gdx.graphics.getHeight();
-        if(null == cam){
+        if (null == cam) {
             cam = new OrthographicCamera(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
         }
         cam.setToOrtho(false, w, h);
@@ -210,8 +213,8 @@ public class GameRenderer extends ApplicationAdapter {
 
     }
 
-    public OrthographicCamera getCamera(){
-        if(null==cam){
+    public OrthographicCamera getCamera() {
+        if (null == cam) {
             configureCamera();
         }
         return cam;
@@ -230,13 +233,13 @@ public class GameRenderer extends ApplicationAdapter {
 
     @Override
     public void dispose() {
-        for(Character character : characters){
+        for (Character character : characters) {
             character.dispose();
         }
-        myDefaultCharacter.dispose();
+        for (iPoi poi : pointsOfInterest) {
+            poi.dispose();
+        }
         snackioMap.dispose();
-
-
         System.exit(0);
     }
 
@@ -244,11 +247,18 @@ public class GameRenderer extends ApplicationAdapter {
     public void pause() {
     }
 
-    public void addPointOfInterest(PointOfInterest poi) {
+    public void addPointOfInterest(iPoi poi) {
         pointsOfInterest.add(poi);
     }
 
-    public void addCharacter(Character character) {
+    public void removePointOfInterest(iPoi poi) {
+        pointsOfInterest.remove(poi);
+    }
+
+    public void addCharacter(Character character, boolean active) {
+        if (active) {
+            activeCharacter = character;
+        }
         characters.add(character);
     }
 }

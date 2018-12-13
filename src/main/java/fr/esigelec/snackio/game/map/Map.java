@@ -3,6 +3,7 @@ package fr.esigelec.snackio.game.map;
 import com.badlogic.gdx.ApplicationListener;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.assets.AssetManager;
+import com.badlogic.gdx.assets.loaders.resolvers.InternalFileHandleResolver;
 import com.badlogic.gdx.graphics.Camera;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
@@ -37,7 +38,7 @@ public class Map implements ApplicationListener {
         cam = GameRenderer.getInstance().getCamera();
 
         // Initialize map renderer
-        renderer = new OrthogonalTiledMapRenderer(map);
+        renderer = new OrthogonalTiledMapRenderer(map, 1f);
 
     }
 
@@ -50,7 +51,7 @@ public class Map implements ApplicationListener {
      */
     private void loadMap() {
         AssetManager manager = new AssetManager();
-        manager.setLoader(TiledMap.class, new TmxMapLoader());
+        manager.setLoader(TiledMap.class, new TmxMapLoader(new InternalFileHandleResolver()));
         manager.load(mapPath, TiledMap.class);
         manager.finishLoading();
         map = manager.get(mapPath, TiledMap.class);
@@ -79,6 +80,7 @@ public class Map implements ApplicationListener {
 
     @Override
     public void render() {
+        Gdx.gl.glClearColor(0, 0, 0, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
         // Link camera to tiled map
