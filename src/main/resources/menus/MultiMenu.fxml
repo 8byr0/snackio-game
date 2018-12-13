@@ -1,51 +1,18 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.scene.control.Button?>
-<?import javafx.scene.control.Label?>
-<?import javafx.scene.control.ListView?>
-<?import javafx.scene.control.ProgressBar?>
-<?import javafx.scene.control.TextField?>
+<?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
-<?import javafx.scene.layout.BorderPane?>
-<?import javafx.scene.layout.HBox?>
-<?import javafx.scene.layout.VBox?>
 
-
-<AnchorPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/10.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="fr.esigelec.snackio.ui.MultiMenu">
-   <children>
-      <BorderPane prefHeight="200.0" prefWidth="200.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
-         <bottom>
-            <HBox prefWidth="200.0" spacing="5.0" BorderPane.alignment="CENTER">
-               <children>
-                  <TextField promptText="Server name" />
-                  <Button mnemonicParsing="false" text="Start server" />
-               </children>
-            </HBox>
-         </bottom>
-         <top>
-            <HBox prefWidth="200.0" spacing="9.0" BorderPane.alignment="CENTER">
-               <children>
-                  <Label text="Multiplayer menu" />
-               </children>
-            </HBox>
-         </top>
-         <right>
-            <VBox prefHeight="200.0" prefWidth="100.0" BorderPane.alignment="CENTER">
-               <children>
-                  <TextField promptText="Your pseudo" />
-                  <Button mnemonicParsing="false" text="JOIN SERVER" />
-               </children>
-            </VBox>
-         </right>
-         <center>
-            <VBox minHeight="-Infinity" prefHeight="200.0" prefWidth="100.0" BorderPane.alignment="CENTER">
-               <children>
-                  <Label text="Searching servers..." />
-                  <ProgressBar prefWidth="200.0" progress="0.0" />
-                  <ListView prefHeight="200.0" prefWidth="200.0" />
-               </children>
-            </VBox>
-         </center>
-      </BorderPane>
-   </children>
+<AnchorPane fx:id="mainAnchorPane" prefHeight="400.0" prefWidth="600.0" styleClass="background" stylesheets="@../../../src/main/resources/CSS/menus.css" xmlns="http://javafx.com/javafx/8.0.172-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="fr.esigelec.snackio.ui.MultiMenu">
+   <fx:include source="snippet.fxml" />
+   <Button layoutX="238.0" layoutY="200.0" mnemonicParsing="false" prefHeight="48.0" prefWidth="129.0" styleClass="Button" stylesheets="@../../../src/main/resources/CSS/menus.css" text="HOST">
+      <graphic>
+         <ImageView fitHeight="34.0" fitWidth="39.0" pickOnBounds="true" preserveRatio="true" />
+      </graphic></Button>
+   <Button layoutX="238.0" layoutY="269.0" mnemonicParsing="false" prefHeight="48.0" prefWidth="129.0" styleClass="Button" stylesheets="@../../../src/main/resources/CSS/menus.css" text="JOIN">
+      <graphic>
+         <ImageView fitHeight="34.0" fitWidth="39.0" pickOnBounds="true" preserveRatio="true" />
+      </graphic>
+   </Button>
 </AnchorPane>
