@@ -35,13 +35,14 @@ public class Snackio extends Application {
 
         logger.info("Initialisation started...");
         logger.info("Fetching menu controller");
-//        MenuController controller = MenuController.getInstance(primaryStage);
+        MenuController controller = MenuController.getInstance(primaryStage);
 
         logger.info("Opening main menu");
-//        controller.openMenu(MenuController.Menus.MAIN_MENU);
+        controller.openMenu(MenuController.Menus.MAIN_MENU);
 
         logger.info("...Initialisation finished");
 
+<<<<<<< HEAD
 
         // Create a Game
         SnackioGame game = SnackioGame.getInstance();
@@ -62,6 +63,9 @@ public class Snackio extends Application {
         }
         engine.startGame();
 
+=======
+        // SnackioGame.getInstance();
+>>>>>>> css try
     }
 
 }
