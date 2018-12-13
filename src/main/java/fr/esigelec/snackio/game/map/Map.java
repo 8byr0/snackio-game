@@ -13,21 +13,27 @@ import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
 import fr.esigelec.snackio.game.GameRenderer;
 
 public class Map implements ApplicationListener {
+    // Graphical objects
     private TiledMap map;
     private OrthogonalTiledMapRenderer renderer;
 
+    // Persisted properties
     private int mapWidthInPixels;
     private int mapHeightInPixels;
-
+    private String mapPath; // Default value
+    // CAMERA
     private OrthographicCamera cam;
 
     public Map(){
-        // Set state time
-
+        this("maps/snackio.tmx");
+    }
+    public Map(String mapPath){
+        this.mapPath = mapPath;
         // Load tileset map
         loadMap();
         configureMap();
 
+        // Retrieve Game camera
         cam = GameRenderer.getInstance().getCamera();
 
         // Initialize map renderer
@@ -45,9 +51,9 @@ public class Map implements ApplicationListener {
     private void loadMap() {
         AssetManager manager = new AssetManager();
         manager.setLoader(TiledMap.class, new TmxMapLoader());
-        manager.load("maps/snackio.tmx", TiledMap.class);
+        manager.load(mapPath, TiledMap.class);
         manager.finishLoading();
-        map = manager.get("maps/snackio.tmx", TiledMap.class);
+        map = manager.get(mapPath, TiledMap.class);
     }
 
     /**

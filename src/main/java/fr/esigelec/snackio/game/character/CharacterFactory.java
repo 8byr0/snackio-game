@@ -13,16 +13,16 @@ public class CharacterFactory {
 
         switch(type){
             case INDIANA:
-                character.configureRendering("sprites/character.png");
+                character.setPathToSprite("sprites/character.png");
                 break;
             case INSPECTOR:
-                character.configureRendering("sprites/inspector.png");
+                character.setPathToSprite("sprites/inspector.png");
                 break;
             case NUDE_MAN:
-                character.configureRendering("sprites/nude_man.png");
+                character.setPathToSprite("sprites/nude_man.png");
                 break;
             case BALD_MAN:
-                character.configureRendering("sprites/bald_man.png");
+                character.setPathToSprite("sprites/bald_man.png");
                 break;
         }
         return character;

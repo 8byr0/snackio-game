@@ -4,15 +4,13 @@ import com.badlogic.gdx.ApplicationListener;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.Camera;
-import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
-import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
-import com.badlogic.gdx.scenes.scene2d.Actor;
+import com.badlogic.gdx.math.Polygon;
+import com.badlogic.gdx.math.Rectangle;
 import com.esotericsoftware.kryonet.Listener;
-import fr.esigelec.snackio.game.character.Direction;
 import fr.esigelec.snackio.game.GameRenderer;
 import fr.esigelec.snackio.networking.Position;
 
@@ -21,7 +19,36 @@ import java.util.ArrayList;
 /**
  * Character instance is the GUI projection of a player on the map
  */
-public class Character extends Actor implements ApplicationListener {
+public class Character implements ApplicationListener {
+
+    private Rectangle fullProjection = new Rectangle();
+    private Rectangle feetsProjection = new Rectangle();
+
+    private String pathToSprite;
+    private iCharacterController motionController;
+
+    public int getSpeed() {
+        return speed;
+    }
+
+    public void setMotionController(iCharacterController motionController) {
+        this.motionController = motionController;
+    }
+
+    public Rectangle getActualProjection() {
+        return new Rectangle(position.x + 16, position.y, 32, 43);
+    }
+
+    public Rectangle getFeetsProjection(float x, float y) {
+        return new Rectangle(x, y, 32, 16);
+    }
+
+    public Rectangle getFullProjection(float x, float y) {
+        System.out.println(getCurrentFrame(stateTime).getRegionWidth());
+        System.out.println(getCurrentFrame(stateTime).getRegionHeight());
+        return new Rectangle(x, y, 32, 43);
+    }
+
 
     enum CharacterStatus {
         // STATIC
@@ -57,12 +84,13 @@ public class Character extends Actor implements ApplicationListener {
 
     public Character() {
 
-        batch = new SpriteBatch();
-        this.cam = GameRenderer.getInstance().getCamera();
-
     }
 
-    void configureRendering(String pathToSprite){
+    public void setPathToSprite(String pathToSprite){
+        this.pathToSprite = pathToSprite;
+    }
+
+    void configureRendering(){
         // Fill character frames array
         characterTexture = new Texture(Gdx.files.internal(pathToSprite));
 
@@ -132,38 +160,8 @@ public class Character extends Actor implements ApplicationListener {
     }
 
     private void handleInput() {
-        this.moving = false;
-        GameRenderer engine = GameRenderer.getInstance();
-        if (Gdx.input.isKeyPressed(Input.Keys.LEFT)) {
-            if (!engine.isCollision(position.x - speed + 16, position.y)) {
-                position.x -= speed;
-                setDirection(Direction.WEST);
-                setMoving(true);
-            }
-        }
-        if (Gdx.input.isKeyPressed(Input.Keys.RIGHT)) {
-            if (!engine.isCollision(position.x + speed + 16, position.y)) {
-                position.x += speed;
-
-                setDirection(Direction.EAST);
-                setMoving(true);
-            }
-        }
-        if (Gdx.input.isKeyPressed(Input.Keys.DOWN)) {
-            if (!engine.isCollision(position.x + 16, position.y - speed)) {
-                position.y -= speed;
-
-                setDirection(Direction.SOUTH);
-                setMoving(true);
-            }
-        }
-        if (Gdx.input.isKeyPressed(Input.Keys.UP)) {
-            if (!engine.isCollision(position.x + 16, position.y + speed)) {
-                position.y += speed;
-
-                setDirection(Direction.NORTH);
-                setMoving(true);
-            }
+        if(null != motionController){
+            motionController.execute(this);
         }
     }
 
@@ -173,9 +171,6 @@ public class Character extends Actor implements ApplicationListener {
             switch (direction) {
                 case NORTH:
                     currentFrame = animations[4].getKeyFrame(stateTime, true);
-                    if (null == currentFrame) {
-                        System.out.println("NOTHING");
-                    }
                     break;
                 case WEST:
                     currentFrame = animations[5].getKeyFrame(stateTime, true);
@@ -219,13 +214,20 @@ public class Character extends Actor implements ApplicationListener {
         }
     }
 
+    public void setPosition(float x, float y) {
+        this.position.x = x;
+        this.position.y = y;
+    }
+
     public Position getPosition() {
         return position;
     }
 
     @Override
     public void create() {
-
+        batch = new SpriteBatch();
+        this.cam = GameRenderer.getInstance().getCamera();
+        configureRendering();
     }
 
     @Override
@@ -247,4 +249,5 @@ public class Character extends Actor implements ApplicationListener {
     public void dispose() {
         batch.dispose();
     }
+
 }

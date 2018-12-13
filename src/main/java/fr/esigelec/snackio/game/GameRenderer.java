@@ -14,7 +14,10 @@ import com.badlogic.gdx.math.Polygon;
 import com.badlogic.gdx.math.Rectangle;
 import fr.esigelec.snackio.game.character.Character;
 import fr.esigelec.snackio.game.character.CharacterFactory;
+import fr.esigelec.snackio.game.character.KeyboardController;
 import fr.esigelec.snackio.game.map.Map;
+
+import java.util.ArrayList;
 
 /**
  * GameRenderer class is in charge of rendering all graphical elements to screen.
@@ -42,13 +45,14 @@ public class GameRenderer extends ApplicationAdapter {
     private static final float CAMERA_WIDTH = 10f;
     private static final float CAMERA_HEIGHT = 7f;
 
-    // CHARACTER PROJECTION
+    // CHARACTERS PROJECTION
     private Character myDefaultCharacter;
     private ShapeRenderer shapeRenderer;
 
+    private ArrayList<Character> characters;
 
     private GameRenderer() {
-
+        characters = new ArrayList<>();
     }
 
 
@@ -65,9 +69,17 @@ public class GameRenderer extends ApplicationAdapter {
 
         // Load a sample character
         myDefaultCharacter = CharacterFactory.getCharacter(CharacterFactory.CharacterType.INDIANA);
+        myDefaultCharacter.setMotionController(new KeyboardController());
+        myDefaultCharacter.create();
+
+        for(Character character : characters){
+            character.create();
+        }
 
         // Initialize map renderer
         shapeRenderer = new ShapeRenderer();
+
+
 
     }
 
@@ -98,6 +110,10 @@ public class GameRenderer extends ApplicationAdapter {
         // Render character
         myDefaultCharacter.render();
 
+        for(Character character: characters){
+            character.render();
+        }
+
     }
 
     /**
@@ -117,11 +133,10 @@ public class GameRenderer extends ApplicationAdapter {
      * Detect if there's a collision between character coordinates and objects' layer
      * This method should only be used in a preventive way.
      * E.g: projection of estimated position without moving character.
-     * @param x x position of the character
-     * @param y y position of the character
      * @return true if there's a collision
      */
-    public boolean isCollision(float x, float y) {
+//    public boolean isCharacterColliding(float x, float y) {
+    public boolean isCharacterColliding(Rectangle playerProjection, Rectangle feetsProjection) {
         int objectLayerId = 2;
         MapLayer collisionObjectLayer = snackioMap.getMap().getLayers().get(objectLayerId);
         MapObjects objects = collisionObjectLayer.getObjects();
@@ -130,17 +145,23 @@ public class GameRenderer extends ApplicationAdapter {
         for (PolygonMapObject obj : objects.getByType(PolygonMapObject.class)) {
             Polygon poly = obj.getPolygon();
 
-            Rectangle playerProjection = new Rectangle(x, y, 32, 16);
-            if (isCollision(poly, playerProjection)) {
+            if (isCollision(poly, feetsProjection)) {
                 colliding = true;
                 break;
             }
         }
+
+        for(Character character : characters){
+            if(Intersector.overlaps(character.getActualProjection(), playerProjection)){
+                colliding = true;
+                break;
+            }
+        }
+
         for (RectangleMapObject rectangleObject : objects.getByType(RectangleMapObject.class)) {
             Rectangle rectangle = rectangleObject.getRectangle();
 
-            Rectangle playerProjection = new Rectangle(x, y, 32, 16);
-            if (Intersector.overlaps(rectangle, playerProjection)) {
+            if (Intersector.overlaps(rectangle, feetsProjection)) {
                 colliding = true;
                 break;
             }
@@ -148,6 +169,7 @@ public class GameRenderer extends ApplicationAdapter {
         }
         return colliding;
     }
+
     private boolean isCollision(Polygon p, Rectangle r) {
         Polygon rPoly = new Polygon(new float[] { 0, 0, r.width, 0, r.width,
                 r.height, 0, r.height });
@@ -190,6 +212,9 @@ public class GameRenderer extends ApplicationAdapter {
 
     @Override
     public void dispose() {
+        for(Character character : characters){
+            character.dispose();
+        }
         myDefaultCharacter.dispose();
         snackioMap.dispose();
 
@@ -201,4 +226,10 @@ public class GameRenderer extends ApplicationAdapter {
     public void pause() {
     }
 
+    public void addCharacter(Character character) {
+        System.out.println("ADDING CHARACTER");
+        System.out.println(characters.size());
+        characters.add(character);
+        System.out.println(characters.size());
+    }
 }

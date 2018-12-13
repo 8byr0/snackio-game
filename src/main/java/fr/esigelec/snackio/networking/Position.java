@@ -1,13 +1,13 @@
 package fr.esigelec.snackio.networking;
 
 public class Position {
-    public int x;
-    public int y;
+    public float x;
+    public float y;
 
     public Position() {
     }
 
-    public Position(int x, int y){
+    public Position(float x, float y){
         this.x = x;
         this.y = y;
     }
