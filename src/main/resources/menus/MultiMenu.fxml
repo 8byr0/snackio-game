@@ -6,30 +6,15 @@
 <?import javafx.scene.layout.AnchorPane?>
 
 <AnchorPane fx:id="mainAnchorPane" prefHeight="400.0" prefWidth="600.0" styleClass="background" stylesheets="@../../../src/main/resources/CSS/menus.css" xmlns="http://javafx.com/javafx/8.0.172-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="fr.esigelec.snackio.ui.MultiMenu">
-   <fx:include source="snippet.fxml" />
-   <Button layoutX="238.0" layoutY="200.0" mnemonicParsing="false" prefHeight="48.0" prefWidth="129.0" styleClass="Button" stylesheets="@../../../src/main/resources/CSS/menus.css" text="HOST">
-      <graphic>
-         <ImageView fitHeight="34.0" fitWidth="39.0" pickOnBounds="true" preserveRatio="true" />
-      </graphic></Button>
-   <Button layoutX="238.0" layoutY="269.0" mnemonicParsing="false" prefHeight="48.0" prefWidth="129.0" styleClass="Button" stylesheets="@../../../src/main/resources/CSS/menus.css" text="JOIN">
-      <graphic>
-         <ImageView fitHeight="34.0" fitWidth="39.0" pickOnBounds="true" preserveRatio="true" />
-      </graphic>
-   </Button>
-   <Button layoutX="14.0" layoutY="85.0" mnemonicParsing="false">
-      <graphic>
-         <ImageView fitHeight="17.0" fitWidth="14.0" pickOnBounds="true" preserveRatio="true">
-            <image>
-               <Image url="@../../../src/main/resources/img/exit.png" />
-            </image></ImageView>
-      </graphic>
-   </Button>
-   <Button layoutX="53.0" layoutY="85.0" mnemonicParsing="false">
-      <graphic>
-         <ImageView fitHeight="17.0" fitWidth="14.0" pickOnBounds="true" preserveRatio="true">
-            <image>
-               <Image url="@../../../src/main/resources/img/back.png" />
-            </image></ImageView>
-      </graphic>
-   </Button>
+    <fx:include source="snippet.fxml" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0"/>
+    <Button layoutX="238.0" layoutY="200.0" mnemonicParsing="false" prefHeight="48.0" prefWidth="129.0" styleClass="Button" stylesheets="@../../../src/main/resources/CSS/menus.css" text="HOST" >
+        <graphic>
+            <ImageView fitHeight="34.0" fitWidth="39.0" pickOnBounds="true" preserveRatio="true" />
+        </graphic></Button>
+    <Button layoutX="238.0" layoutY="269.0" mnemonicParsing="false" prefHeight="48.0" prefWidth="129.0" styleClass="Button" stylesheets="@../../../src/main/resources/CSS/menus.css" text="JOIN">
+        <graphic>
+            <ImageView fitHeight="34.0" fitWidth="39.0" pickOnBounds="true" preserveRatio="true" />
+        </graphic>
+    </Button>
+
 </AnchorPane>
