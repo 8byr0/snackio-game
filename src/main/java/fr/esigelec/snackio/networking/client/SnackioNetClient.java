@@ -14,6 +14,9 @@ import fr.esigelec.snackio.core.models.Player;
 import fr.esigelec.snackio.networking.experi.IPlayer;
 import fr.esigelec.snackio.networking.NetworkConfig;
 
+/**
+ * Network interface that exchanges with server.
+ */
 public class SnackioNetClient {
 
     Client client;

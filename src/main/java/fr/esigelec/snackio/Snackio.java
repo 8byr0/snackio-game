@@ -43,7 +43,7 @@ public class Snackio extends Application {
         // Instantiate Network game engine to control gameplay
         IGameEngine engine = new NetworkGameEngine(game);
         // Instantiate a NetClient to exchange with client
-//        SnackioNetClient cli = new SnackioNetClient(engine, myPlayer);
+        SnackioNetClient cli = new SnackioNetClient(engine, myPlayer);
 
         // Start the game with my player
         game.start(myPlayer);
