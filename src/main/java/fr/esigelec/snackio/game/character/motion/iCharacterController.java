@@ -1,4 +1,6 @@
-package fr.esigelec.snackio.game.character;
+package fr.esigelec.snackio.game.character.motion;
+
+import fr.esigelec.snackio.game.character.Character;
 
 /**
  * Interface to implement in character motion controllers

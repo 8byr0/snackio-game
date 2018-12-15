@@ -1,73 +1,84 @@
 package fr.esigelec.snackio.game.pois;
 
-import com.badlogic.gdx.ApplicationListener;
-import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.graphics.OrthographicCamera;
-import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.ApplicationAdapter;
 import com.badlogic.gdx.math.Rectangle;
-import fr.esigelec.snackio.game.GameRenderer;
 import fr.esigelec.snackio.game.character.Character;
+import fr.esigelec.snackio.game.util.StaticTexture;
 import fr.esigelec.snackio.networking.Position;
 
-public abstract class PointOfInterest implements ApplicationListener, iPoi {
-    private static final int WIDTH = 32;
-    private static final int HEIGHT = 32;
-
+/**
+ * Abstract PointOfInterest class that must be inherited for any Bonus/Malus implemented
+ */
+public abstract class PointOfInterest extends ApplicationAdapter implements iPoi {
+    // PROPERTIES
     protected int durationInSeconds = 10;
+
+    // TEXTURE / RENDERING
+    protected StaticTexture image;
+
+    // MOTION
+    private Position position = new Position(400, 400);
+
+    /**
+     * Abstract method to implement when inheriting PointOfInterest
+     * The content of this method is the code executed when a Character triggers
+     * a PointOfInterest
+     *
+     * @param character Character that triggered the PointOfInterest
+     */
     public abstract void execute(Character character);
-    private String pathToIcon;
-    private Texture texture;
-    private SpriteBatch batch;
 
-    private Position position = new Position(400,400);
-    private OrthographicCamera cam;
-
+    /**
+     * Method called by libgdx when creating this PointOfInterest
+     */
     @Override
     public void create() {
-        batch = new SpriteBatch();
-
-        cam = GameRenderer.getInstance().getCamera();
-        pathToIcon = "poi/speed_bonus.png";
-        texture = new Texture(Gdx.files.internal(pathToIcon));
-
+        image = new StaticTexture("poi/speed_bonus.png", 32, 32);
+        image.create();
     }
 
-    @Override
-    public void resize(int i, int i1) {
-
-    }
-
+    /**
+     * Render graphical elements
+     */
     @Override
     public void render() {
-        batch.setProjectionMatrix(cam.combined);
-
-        batch.begin();
-        batch.draw(texture, position.x, position.y, WIDTH, HEIGHT);
-        batch.end();
+        image.render(position.x, position.y);
     }
 
-    @Override
-    public void pause() {
-
-    }
-
-    @Override
-    public void resume() {
-
-    }
-
+    /**
+     * Dispose all graphical components
+     */
     @Override
     public void dispose() {
-
+        image.dispose();
     }
 
+    /**
+     * Get the projection (Rectangle) of this PointOfInterest on the Map
+     *
+     * @return Rectangle
+     */
     public Rectangle getActualProjection() {
-        return new Rectangle(position.x, position.y, WIDTH, HEIGHT);
+        return new Rectangle(position.x, position.y, image.getWidth(), image.getHeight());
     }
 
-    public void setPosition(float x, float y){
+    /**
+     * Set the position of this PointOfInterest on the map
+     *
+     * @param x x position on the Map
+     * @param y y position on the Map
+     */
+    public void setPosition(float x, float y) {
         position.x = x;
         position.y = y;
+    }
+
+    /**
+     * Set the position of this PointOfInterest on the map
+     *
+     * @param position Position of the POI on the map
+     */
+    public void setPosition(Position position) {
+        this.position = position;
     }
 }

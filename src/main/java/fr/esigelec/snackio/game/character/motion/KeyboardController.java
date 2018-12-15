@@ -1,12 +1,21 @@
-package fr.esigelec.snackio.game.character;
+package fr.esigelec.snackio.game.character.motion;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import fr.esigelec.snackio.game.GameRenderer;
+import fr.esigelec.snackio.game.character.Character;
 import fr.esigelec.snackio.networking.Position;
 
+/**
+ * Control a character with keyboard
+ * This controller uses mapped keys from config to change character Direction, Moving and Position.
+ * TODO use mapped keys instead of hard-coded arbitrary LEFT, RIGHT, UP, DOWN
+ */
 public class KeyboardController implements iCharacterController {
-
+    /**
+     *  Change the position, direction and moving state of a Character
+     * @param character Character to control
+     */
     @Override
     public void execute(Character character) {
         character.setMoving(false);

@@ -1,79 +1,146 @@
 package fr.esigelec.snackio.game;
+
 import com.badlogic.gdx.backends.lwjgl3.Lwjgl3Application;
 import com.badlogic.gdx.backends.lwjgl3.Lwjgl3ApplicationConfiguration;
 import fr.esigelec.snackio.core.models.Player;
 import fr.esigelec.snackio.game.character.Character;
+import fr.esigelec.snackio.game.character.motion.MotionController;
 import fr.esigelec.snackio.game.pois.Coin;
 import fr.esigelec.snackio.game.pois.PointOfInterest;
 import fr.esigelec.snackio.game.pois.bonuses.SpeedBonus;
 import fr.esigelec.snackio.game.pois.iPoi;
 import fr.esigelec.snackio.game.pois.maluses.SpeedMalus;
+import java.util.HashMap;
 
 /**
  * High level Game class.
+ * This is in charge of interacting with GameRenderer instance to add high-level elements
+ * to the Game(Player, Map)...
  */
-public class SnackioGame  {
+public class SnackioGame {
+    // SINGLETON
     private static SnackioGame instance = null;
+
+    // GAME RENDERING
     private GameRenderer gameRenderer = GameRenderer.getInstance();
 
-    public static SnackioGame getInstance(){
-        if(null == instance){
+    // PLAYERS
+    private Player defaultPlayer;
+    private HashMap<Integer, Player> playersHashmap = new HashMap<>();
+
+    /**
+     * Singleton implementation
+     *
+     * @return existing instance or a new one if not exists
+     */
+    public static SnackioGame getInstance() {
+        if (null == instance) {
             instance = new SnackioGame();
         }
         return instance;
     }
 
-    private SnackioGame(){
-//        // Add some characters
-//        Character inspector = CharacterFactory.getCharacter(CharacterFactory.CharacterType.INSPECTOR);
-//        inspector.setPosition(250,300);
-//        addCharacter(inspector);
-//
-//        Character nude_man = CharacterFactory.getCharacter(CharacterFactory.CharacterType.NUDE_MAN);
-//        nude_man.setPosition(300,250);
-//        addCharacter(nude_man);
-//
-//        Character bald_man = CharacterFactory.getCharacter(CharacterFactory.CharacterType.BALD_MAN);
-//        bald_man.setPosition(200,200);
-//        addCharacter(bald_man);
-
+    /**
+     * Private Constructor that's called by singleton method
+     */
+    private SnackioGame() {
         // Add a few bonuses / maluses
+        // TODO remove this from here
         PointOfInterest speedBonus = new SpeedBonus();
-        speedBonus.setPosition(800,800);
+        speedBonus.setPosition(800, 800);
         addPointOfInterest(speedBonus);
 
         PointOfInterest speedMalus = new SpeedMalus();
-        speedMalus.setPosition(900,900);
+        speedMalus.setPosition(900, 900);
         addPointOfInterest(speedMalus);
 
         Coin testCoin = new Coin();
-        testCoin.setPosition(750,200);
+        testCoin.setPosition(750, 200);
         addPointOfInterest(testCoin);
     }
 
-    public void start(){
+    /**
+     * Start the game (open game window)
+     * To successfully execute this, you need to provide a Player and a Map
+     *
+     * @param defaultPlayer the default player
+     *                      TODO add map parameter
+     *                      // @param map the map
+     */
+    public void start(Player defaultPlayer) {
+        this.addPlayer(defaultPlayer, true);
+
         Lwjgl3ApplicationConfiguration config = new Lwjgl3ApplicationConfiguration();
         Lwjgl3Application app = new Lwjgl3Application(gameRenderer, config);
     }
 
-    public void coinFound(Coin coin, Character character){
+    /**
+     * Method to call when a Character fetches a coin
+     *
+     * @param coin      coin reference
+     * @param character Character who found the coin
+     *                  TODO make sure this is useful
+     */
+    public void coinFound(Coin coin, Character character) {
         System.out.println("YEAH, coin found!");
         gameRenderer.removePointOfInterest(coin);
     }
 
+    /**
+     * Add a point of interest to the game
+     *
+     * @param poi the point of interest to add to the Map
+     */
     public void addPointOfInterest(iPoi poi) {
         gameRenderer.addPointOfInterest(poi);
     }
 
+    /**
+     * Remove a point of interest from the game
+     *
+     * @param poi the point of interest to remove from the Map
+     */
     public void removePointOfInterest(iPoi poi) {
         gameRenderer.removePointOfInterest(poi);
     }
 
-    public void addCharacter(Character character, boolean active){
-        gameRenderer.addCharacter(character,active);
+    /**
+     * Add a Player to the Game
+     * If active, it will be kept as the main one
+     * @param player the Player to add
+     * @param active if true, the Character will be followed by the main Camera
+     */
+    public void addPlayer(Player player, boolean active) {
+        if (active) {
+            this.defaultPlayer = player;
+            defaultPlayer.setMotionController(MotionController.KEYBOARD);
+        } else {
+            player.setMotionController(MotionController.NETWORK);
+        }
+        gameRenderer.addCharacter(player.getCharacter(), active);
+
+        this.playersHashmap.put(player.getID(), player);
     }
 
-    public void addPlayer(Player me, boolean active) {
-        this.addCharacter(me.getCharacter(), active);
+    /**
+     * Get the active player of this Game
+     * @return the Player added with active=true
+     */
+    public Player getPlayer() {
+        if (null == defaultPlayer) {
+            System.out.println("DEFAULT PLAYER IS NULL");
+        }
+        return defaultPlayer;
     }
+
+    /**
+     * Get a Player of this Game identified by its ID
+     * @param id ID of the Player
+     * @return the Player instance
+     */
+    public Player getPlayer(int id) {
+        // TODO make sure player exists
+        return this.playersHashmap.get(id);
+    }
+
 }

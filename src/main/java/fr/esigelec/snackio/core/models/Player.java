@@ -2,17 +2,30 @@ package fr.esigelec.snackio.core.models;
 
 import fr.esigelec.snackio.game.character.*;
 import fr.esigelec.snackio.game.character.Character;
+import fr.esigelec.snackio.game.character.listeners.MoveListener;
+import fr.esigelec.snackio.game.character.motion.Direction;
+import fr.esigelec.snackio.game.character.motion.KeyboardController;
+import fr.esigelec.snackio.game.character.motion.MotionController;
+import fr.esigelec.snackio.game.character.motion.NetworkController;
+import fr.esigelec.snackio.networking.Position;
 
-public class Player {
-    private String name;
+public class Player implements AbstractPlayer {
+    private int id;
     private Character character;
 
-    public Player(String name, CharacterFactory.CharacterType character, MotionController motionController){
-        this.name = name;
+    public Player(){
+
+    }
+
+    public Player(String name, CharacterFactory.CharacterType character){
         this.character = CharacterFactory.getCharacter(character);
-        if(motionController == MotionController.KEYBOARD){
+
+    }
+
+    public void setMotionController(MotionController controller){
+        if(controller == MotionController.KEYBOARD){
             this.character.setMotionController(new KeyboardController());
-        }else if(motionController == MotionController.NETWORK){
+        }else if(controller == MotionController.NETWORK){
             this.character.setMotionController(new NetworkController());
         }
     }
@@ -21,11 +34,43 @@ public class Player {
         return character;
     }
 
-    public String getName() {
-        return name;
+    public void addMoveListener(final Runnable listener) {
+        character.addMoveListener(new MoveListener() {
+            @Override
+            public void movePerformed (Position pos) {
+                listener.run();
+            }
+        });
     }
 
-    public void setName(String name) {
-        this.name = name;
+    @Override
+    public Position getPosition() {
+        return this.character.getPosition();
+    }
+
+    @Override
+    public void setPosition(Position position) {
+        this.character.setPosition(position);
+    }
+
+    @Override
+    public Direction getDirection() {
+        return this.character.getDirection();
+    }
+
+    public int getID() {
+        return id;
+    }
+
+    public void setID(int id) {
+        this.id = id;
+    }
+
+    public void setDirection(Direction direction) {
+        this.character.setDirection(direction);
+    }
+
+    public void setMoving(boolean moving) {
+        this.character.setMoving(moving);
     }
 }

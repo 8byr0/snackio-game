@@ -2,55 +2,25 @@ package fr.esigelec.snackio.game.character;
 
 import com.badlogic.gdx.ApplicationListener;
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.graphics.Camera;
-import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Rectangle;
-import com.esotericsoftware.kryonet.Listener;
 import fr.esigelec.snackio.game.GameRenderer;
+import fr.esigelec.snackio.game.character.listeners.MoveListener;
+import fr.esigelec.snackio.game.character.motion.Direction;
+import fr.esigelec.snackio.game.character.motion.iCharacterController;
+import fr.esigelec.snackio.game.character.texture.AnimatedCharacterSkin;
 import fr.esigelec.snackio.game.pois.PointOfInterest;
 import fr.esigelec.snackio.networking.Position;
 
 import java.util.ArrayList;
 
 /**
- * Character instance is the GUI projection of a player on the map
+ * Character instance is the GUI projection of a player on the map.
  */
 public class Character implements ApplicationListener {
-
-    private String pathToSprite;
-    private iCharacterController motionController;
-
-    private ArrayList<PointOfInterest> activePointsOfInterest;
-
-    public int getSpeed() {
-        return speed;
-    }
-
-    public void setMotionController(iCharacterController motionController) {
-        this.motionController = motionController;
-    }
-
-    public Rectangle getActualProjection() {
-        return new Rectangle(position.x + 16, position.y, 32, 43);
-    }
-
-    Rectangle getFeetsProjection(float x, float y) {
-        return new Rectangle(x, y, 32, 16);
-    }
-
-    Rectangle getFullProjection(float x, float y) {
-        return new Rectangle(x, y, 32, 43);
-    }
-
-    public void setSpeed(int speed) {
-        this.speed = speed;
-    }
-
-
-    enum CharacterStatus {
+    public enum CharacterStatus {
         // STATIC
         STATIC_NORTH,
         STATIC_WEST,
@@ -62,160 +32,177 @@ public class Character implements ApplicationListener {
         MOVING_SOUTH,
         MOVING_EAST
     }
+    public enum StepSound {
+        LEFT,
+        RIGHT
+    }
 
-    private Position position = new Position(150, 150);
-
-    private int speed = 5;
-    private int lives = 3;
-    private boolean active = true;
-    private boolean invincible = false;
-    private Direction direction = Direction.NORTH;
-    private boolean moving;
-    private Animation<TextureRegion>[] animations;
+    // State attributes
     private float stateTime = 0f;
+    private boolean created = false;
+    private ArrayList<PointOfInterest> activePointsOfInterest;
 
-    private ArrayList<Listener.ThreadedListener> onMoveListeners = new ArrayList<>();
-    private ArrayList<Listener.ThreadedListener> onLiveLostListeners = new ArrayList<>();
+    // Motion control
+    private int speed = 5;
+    private boolean moving = false;
+    private Position position = new Position(150, 150);
+    private iCharacterController motionController;
+    private Direction direction = Direction.NORTH;
 
-    private Texture characterTexture;
-    private TextureRegion[][] character;
-    private SpriteBatch batch;
+    // Sound attributes
+    private StepSound lastlyPlayed = StepSound.LEFT;
+    private Music leftStepSound;
+    private Music rightStepSound;
+
+    // Listeners
+    private ArrayList<MoveListener> moveListeners = new ArrayList<>();
+
+    // 2D rendering
     private Camera cam;
+    private SpriteBatch batch;
 
-    public Character() {
+    private AnimatedCharacterSkin skin;
+
+    /**
+     * No-args constructor for KyroNet
+     */
+    public Character(){
+
+    }
+
+    /**
+     * Default Character constructor
+     * It is package-private because it should only be called by the CharacterFactory
+     */
+    Character(AnimatedCharacterSkin skin)
+    {
         activePointsOfInterest = new ArrayList<>();
+        this.skin = skin;
     }
 
-    public void setPathToSprite(String pathToSprite){
-        this.pathToSprite = pathToSprite;
+    /**
+     * Tells if the character has already been created in the game engine
+     * @return true or false
+     */
+    public boolean created(){
+        return created;
     }
 
-    void configureRendering(){
-        // Fill character frames array
-        characterTexture = new Texture(Gdx.files.internal(pathToSprite));
-
-        character = new TextureRegion[9][4];
-        animations = new Animation[8];
-        processCharacter();
-    }
-
+    /**
+     * Set the direction of the character
+     * @param direction One of Direction.class (NORTH, SOUTH, EAST, WEST)
+     */
     public void setDirection(Direction direction) {
         this.direction = direction;
     }
 
+    /**
+     * Get the actual direction of the character
+     * @return {Direction} one of NORTH, SOUTH, EAST, WEST
+     */
+    public Direction getDirection() {
+        return this.direction;
+    }
+
+    /**
+     * Set the moving state of the character
+     * This method also triggers all listeners that asked to be notified.
+     * When a character is in moving state, his projection will be keyframe animation
+     * @param moving boolean
+     */
     public void setMoving(boolean moving) {
         this.moving = moving;
-    }
-
-    private void processCharacter() {
-        // LOAD STATIC TEXTURES
-        // Static NORTH
-        loadCharacter(characterTexture, 0, 1, 0, CharacterStatus.STATIC_NORTH);
-        // Static WEST
-        loadCharacter(characterTexture, 0, 1, 1, CharacterStatus.STATIC_WEST);
-        // Static SOUTH
-        loadCharacter(characterTexture, 0, 1, 2, CharacterStatus.STATIC_SOUTH);
-        // Static EAST
-        loadCharacter(characterTexture, 0, 1, 3, CharacterStatus.STATIC_EAST);
-
-        // LOAD ANIMATIONS
-        // Walking NORTH
-        loadCharacter(characterTexture, 1, 9, 0, CharacterStatus.MOVING_NORTH);
-        // Walking WEST
-        loadCharacter(characterTexture, 1, 9, 1, CharacterStatus.MOVING_WEST);
-        // Walking SOUTH
-        loadCharacter(characterTexture, 1, 9, 2, CharacterStatus.MOVING_SOUTH);
-        // Walking EAST
-        loadCharacter(characterTexture, 1, 9, 3, CharacterStatus.MOVING_EAST);
-
-    }
-
-    private void loadCharacter(Texture spriteSheet, int firstFrameIndex, int lastFrameIndex, int rowIndex, CharacterStatus state) {
-        int FRAME_COLS = 9;
-        int FRAME_ROWS = 4;
-
-        TextureRegion[][] mappedSprite = TextureRegion.split(spriteSheet,
-                spriteSheet.getWidth() / FRAME_COLS,
-                spriteSheet.getHeight() / FRAME_ROWS);
-
-        TextureRegion[] animationFrames = new TextureRegion[lastFrameIndex - firstFrameIndex];
-        int index = 0;
-
-        for (int currentFrameIndex = firstFrameIndex; currentFrameIndex < lastFrameIndex; currentFrameIndex++) {
-            animationFrames[index++] = mappedSprite[rowIndex][currentFrameIndex];
+        if (moving) {
+            triggerMoveListeners();
+            if (!leftStepSound.isPlaying() && !rightStepSound.isPlaying()) {
+                if (lastlyPlayed == StepSound.LEFT) {
+                    rightStepSound.play();
+                    lastlyPlayed = StepSound.RIGHT;
+                }else{
+                    leftStepSound.play();
+                    lastlyPlayed = StepSound.LEFT;
+                }
+            }
         }
-
-        animations[state.ordinal()] = new Animation<>(0.025f, animationFrames);
     }
 
+    /**
+     * Trigger move listeners methods
+     */
+    private void triggerMoveListeners() {
+        for(MoveListener listener: moveListeners)
+        {
+            listener.movePerformed(position);
+        }
+    }
+
+    /**
+     * Implementation of ApplicationListener's method.
+     * The render() method is called continuously by libgdx to perform
+     * rendering.
+     */
     @Override
     public void render() {
         stateTime += Gdx.graphics.getDeltaTime();
         batch.setProjectionMatrix(cam.combined);
 
-        handleInput();
+        handleMotionController();
         batch.begin();
-        batch.draw(getCurrentFrame(stateTime), position.x, position.y);
+        batch.draw(skin.getCurrentFrame(direction, moving), position.x, position.y);
         batch.end();
+        skin.render();
     }
 
-    private void handleInput() {
-        if(null != motionController){
+    /**
+     * Call motion controller's execute method to handle input.
+     */
+    private void handleMotionController() {
+        if (null != motionController) {
             motionController.execute(this);
         }
     }
 
-    TextureRegion getCurrentFrame(float stateTime) {
-        TextureRegion currentFrame = null;
-        if (moving) {
-            switch (direction) {
-                case NORTH:
-                    currentFrame = animations[4].getKeyFrame(stateTime, true);
-                    break;
-                case WEST:
-                    currentFrame = animations[5].getKeyFrame(stateTime, true);
-                    break;
-                case SOUTH:
-                    currentFrame = animations[6].getKeyFrame(stateTime, true);
-                    break;
-                case EAST:
-                    currentFrame = animations[7].getKeyFrame(stateTime, true);
-                    break;
-            }
-        } else {
-            switch (direction) {
-                case NORTH:
-                    currentFrame = animations[0].getKeyFrame(stateTime, true);
-                    break;
-                case WEST:
-                    currentFrame = animations[1].getKeyFrame(stateTime, true);
-                    break;
-                case SOUTH:
-                    currentFrame = animations[2].getKeyFrame(stateTime, true);
-                    break;
-                case EAST:
-                    currentFrame = animations[3].getKeyFrame(stateTime, true);
-                    break;
-            }
-        }
 
-        return currentFrame;
-    }
-
+    /**
+     * Set the position of the character on the map
+     * @param x x position
+     * @param y y position
+     */
     public void setPosition(float x, float y) {
         this.position.x = x;
         this.position.y = y;
     }
 
+    /**
+     * Set the position of the character on the map
+     * @param position Position of the character
+     */
+    public void setPosition(Position position) {
+        this.position = position;
+    }
+
+    /**
+     * Get the position of a character on the map
+     * @return Position (x,y)
+     */
     public Position getPosition() {
         return position;
     }
 
+    /**
+     * Implementation of ApplicationListener's interface.
+     * This method is called once when libgdx engine is ready and running.
+     */
     @Override
     public void create() {
+        leftStepSound = Gdx.audio.newMusic(Gdx.files.internal("sound/step_left.ogg"));
+        rightStepSound = Gdx.audio.newMusic(Gdx.files.internal("sound/step_right.ogg"));
         batch = new SpriteBatch();
         this.cam = GameRenderer.getInstance().getCamera();
-        configureRendering();
+
+        skin.create();
+//        configureRendering();
+        created = true;
     }
 
     @Override
@@ -233,23 +220,107 @@ public class Character implements ApplicationListener {
 
     }
 
+    /**
+     * Dispose all elements created in create() method
+     */
     @Override
     public void dispose() {
         batch.dispose();
     }
 
-    public boolean isPOIActive(PointOfInterest poi){
+    /**
+     * Returns wether a given POI is active on this character or not.
+     * @param poi reference to PointOfInterest
+     * @return true if active, false otherwise
+     */
+    public boolean isPOIActive(PointOfInterest poi) {
         return this.activePointsOfInterest.contains(poi);
     }
 
-    public void addActivePOI(PointOfInterest poi){
+    /**
+     * Add a poi to this character
+     * @param poi the PointOfInterest to add
+     */
+    public void addActivePOI(PointOfInterest poi) {
         this.activePointsOfInterest.add(poi);
     }
 
-    public void removeActivePOI(PointOfInterest poi){
+    /**
+     * Remove an active poi from this character
+     * (Usually called in poi's post-execution callback)
+     * @param poi the PointOfInterest to remove
+     */
+    public void removeActivePOI(PointOfInterest poi) {
         if (isPOIActive(poi)) {
             this.activePointsOfInterest.remove(poi);
         }
+    }
+
+    /**
+     * Get the speed of this character
+     * @return {int} the speed
+     */
+    public int getSpeed() {
+        return speed;
+    }
+
+    /**
+     * Set the motion controller of this character that will be called during rendering
+     * @param motionController a concrete implementation of iCharacterController interface
+     */
+    public void setMotionController(iCharacterController motionController) {
+        this.motionController = motionController;
+    }
+
+    /**
+     * Get the geometrical projection of this character
+     * @return Rectangle
+     */
+    public Rectangle getActualProjection() {
+        return new Rectangle(position.x + 16, position.y, 32, 43);
+    }
+
+    /**
+     * Get the geometrical projection of this character's feets
+     * Feets projection is used to detect collisions with environment
+     * @return Rectangle 32*16
+     */
+    public Rectangle getFeetsProjection(float x, float y) {
+        return new Rectangle(x, y, 32, 16);
+    }
+
+    /**
+     * Get the geometrical projection of this character
+     * TODO move this in a dedicated geometrical class
+     * @return Rectangle
+     */
+    public Rectangle getFullProjection(float x, float y) {
+        return new Rectangle(x, y, 32, 43);
+    }
+
+    /**
+     * Set the speed of this character
+     * @param speed int value to attribute
+     */
+    public void setSpeed(int speed) {
+        this.speed = speed;
+    }
+
+    /**
+     * Add a move listener to this character
+     * MoveListener will be triggered each time the character moves
+     * @param moveListener Reference to MoveListener implementation
+     */
+    public void addMoveListener(MoveListener moveListener) {
+        moveListeners.add(moveListener);
+    }
+
+    /**
+     * Returns if the character is moving or not
+     * @return true if moving, false otherwise
+     */
+    public boolean isMoving() {
+        return moving;
     }
 
 }

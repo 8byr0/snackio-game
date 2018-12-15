@@ -1,30 +1,49 @@
 package fr.esigelec.snackio.game.character;
 
+import fr.esigelec.snackio.game.character.texture.AnimatedCharacterSkin;
+
+/**
+ * Factory to create a Character
+ */
 public class CharacterFactory {
+    /**
+     * Available characters
+     * (Update when you add a new SpriteSheet to assets)
+     */
     public enum CharacterType{
         INSPECTOR,
         BALD_MAN,
         NUDE_MAN,
-        INDIANA
+        INDIANA,
+        GOLDEN_KNIGHT
     }
 
+    /**
+     * Generate a character
+     * @param type The character texture to use
+     * @return Character newly created
+     */
     public static Character getCharacter(CharacterType type){
-        Character character = new Character();
+        AnimatedCharacterSkin skin = null;
 
         switch(type){
             case INDIANA:
-                character.setPathToSprite("sprites/character.png");
+                skin = new AnimatedCharacterSkin("sprites/character.png",9,4);
                 break;
             case INSPECTOR:
-                character.setPathToSprite("sprites/inspector.png");
+                skin = new AnimatedCharacterSkin("sprites/inspector.png",9,4);
                 break;
             case NUDE_MAN:
-                character.setPathToSprite("sprites/nude_man.png");
+                skin = new AnimatedCharacterSkin("sprites/nude_man.png",9,4);
                 break;
             case BALD_MAN:
-                character.setPathToSprite("sprites/bald_man.png");
+                skin = new AnimatedCharacterSkin("sprites/bald_man.png",9,4);
+                break;
+            case GOLDEN_KNIGHT:
+                skin = new AnimatedCharacterSkin("sprites/golden_knight.png",9,4);
                 break;
         }
-        return character;
+
+        return new Character(skin);
     }
 }

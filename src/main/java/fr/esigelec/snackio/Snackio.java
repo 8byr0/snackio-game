@@ -1,17 +1,15 @@
 package fr.esigelec.snackio;
 
+import fr.esigelec.snackio.core.NetworkGameEngine;
+import fr.esigelec.snackio.core.models.IGameEngine;
 import fr.esigelec.snackio.core.models.Player;
 import fr.esigelec.snackio.game.SnackioGame;
 import fr.esigelec.snackio.game.character.CharacterFactory;
-import fr.esigelec.snackio.game.character.MotionController;
-import fr.esigelec.snackio.networking.SnackioServer;
-import fr.esigelec.snackio.ui.MenuController;
+import fr.esigelec.snackio.networking.client.SnackioNetClient;
 import javafx.application.Application;
 import javafx.stage.Stage;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-
-import java.io.IOException;
 
 
 public class Snackio extends Application {
@@ -34,10 +32,21 @@ public class Snackio extends Application {
 
         logger.info("...Initialisation finished");
 
+
+        // Create a Game
         SnackioGame game = SnackioGame.getInstance();
-        Player me = new Player("Hugues", CharacterFactory.CharacterType.BALD_MAN, MotionController.KEYBOARD);
-        game.addPlayer(me, true);
-        game.start();
+
+        // Create the local player
+        Player myPlayer = new Player("Hugues", CharacterFactory.CharacterType.GOLDEN_KNIGHT);
+
+        /////////////// NETWORK CONTROL
+        // Instantiate Network game engine to control gameplay
+        IGameEngine engine = new NetworkGameEngine(game);
+        // Instantiate a NetClient to exchange with client
+//        SnackioNetClient cli = new SnackioNetClient(engine, myPlayer);
+
+        // Start the game with my player
+        game.start(myPlayer);
     }
 
 }

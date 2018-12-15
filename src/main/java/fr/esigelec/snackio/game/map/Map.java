@@ -4,7 +4,6 @@ import com.badlogic.gdx.ApplicationListener;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.assets.loaders.resolvers.InternalFileHandleResolver;
-import com.badlogic.gdx.graphics.Camera;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.maps.MapProperties;
@@ -13,23 +12,31 @@ import com.badlogic.gdx.maps.tiled.TmxMapLoader;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
 import fr.esigelec.snackio.game.GameRenderer;
 
+/**
+ * Map object than can be used by GameRenderer
+ */
 public class Map implements ApplicationListener {
     // Graphical objects
     private TiledMap map;
     private OrthogonalTiledMapRenderer renderer;
 
-    // Persisted properties
+    // Map info
     private int mapWidthInPixels;
     private int mapHeightInPixels;
     private String mapPath; // Default value
+
     // CAMERA
     private OrthographicCamera cam;
 
-    public Map(){
-        this("maps/snackio.tmx");
-    }
-    public Map(String mapPath){
+
+    /**
+     * Constructor to create a map from a given map path
+     * This is package-private because Map must only be created from Factory
+     * @param mapPath absolute map path
+     */
+    Map(String mapPath){
         this.mapPath = mapPath;
+
         // Load tileset map
         loadMap();
         configureMap();
@@ -39,15 +46,18 @@ public class Map implements ApplicationListener {
 
         // Initialize map renderer
         renderer = new OrthogonalTiledMapRenderer(map, 1f);
-
     }
 
+    /**
+     * Implementation of ApplicationListener's create() method
+     * Called once when libgdx is ready
+     */
     @Override
     public void create() {
     }
 
     /**
-     * Load default map from assets
+     * Load map from assets
      */
     private void loadMap() {
         AssetManager manager = new AssetManager();
@@ -78,6 +88,9 @@ public class Map implements ApplicationListener {
 
     }
 
+    /**
+     * Method triggered continuously when rendering game
+     */
     @Override
     public void render() {
         Gdx.gl.glClearColor(0, 0, 0, 1);
@@ -100,20 +113,35 @@ public class Map implements ApplicationListener {
 
     }
 
+    /**
+     * Dispose all elements created in create() method
+     */
     @Override
     public void dispose() {
         map.dispose();
         renderer.dispose();
     }
 
+    /**
+     * Get the map instance
+     * @return Tiled Map instance
+     */
     public TiledMap getMap() {
         return map;
     }
 
+    /**
+     * Get the width of the Map in pixels
+     * @return width
+     */
     public int getMapWidthInPixels() {
         return mapWidthInPixels;
     }
 
+    /**
+     * Get the height of the Map in pixels
+     * @return height
+     */
     public int getMapHeightInPixels() {
         return mapHeightInPixels;
     }

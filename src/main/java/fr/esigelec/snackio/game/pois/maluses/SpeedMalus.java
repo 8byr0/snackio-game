@@ -1,5 +1,7 @@
 package fr.esigelec.snackio.game.pois.maluses;
 
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.audio.Music;
 import fr.esigelec.snackio.game.character.Character;
 import fr.esigelec.snackio.game.pois.PointOfInterest;
 import fr.esigelec.snackio.game.pois.bonuses.SpeedBonus;
@@ -14,6 +16,9 @@ public class SpeedMalus extends PointOfInterest {
     @Override
     public void execute(Character character) {
         if(!character.isPOIActive(this)) {
+            Music music = Gdx.audio.newMusic(Gdx.files.internal("sound/speed_malus.wav"));
+
+            music.play();
             int initialSpeed = character.getSpeed();
 
             SpeedMalus self = this;

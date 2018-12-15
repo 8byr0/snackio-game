@@ -6,7 +6,6 @@ import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
-import com.badlogic.gdx.maps.MapLayer;
 import com.badlogic.gdx.maps.MapObjects;
 import com.badlogic.gdx.maps.objects.PolygonMapObject;
 import com.badlogic.gdx.maps.objects.RectangleMapObject;
@@ -14,9 +13,8 @@ import com.badlogic.gdx.math.Intersector;
 import com.badlogic.gdx.math.Polygon;
 import com.badlogic.gdx.math.Rectangle;
 import fr.esigelec.snackio.game.character.Character;
-import fr.esigelec.snackio.game.character.CharacterFactory;
 import fr.esigelec.snackio.game.map.Map;
-import fr.esigelec.snackio.game.pois.PointOfInterest;
+import fr.esigelec.snackio.game.map.MapFactory;
 import fr.esigelec.snackio.game.pois.iPoi;
 
 import java.util.ArrayList;
@@ -24,21 +22,17 @@ import java.util.ArrayList;
 /**
  * GameRenderer class is in charge of rendering all graphical elements to screen.
  * Characters, bonuses, maluses... All these objects must be managed from here.
+ * Game renderer is package-private
+ * TODO add a method to get an empty position randomly and a method to know if a position is empty
  */
 public class GameRenderer extends ApplicationAdapter {
 
     private static GameRenderer instance = new GameRenderer();
 
-    /**
-     * Singleton implementation
-     *
-     * @return GameRenderer existing instance or new if not exists
-     */
-    public static GameRenderer getInstance() {
-        return instance;
-    }
-
+    // Rendering
+    private boolean created = false;
     private float stateTime;
+    private ShapeRenderer shapeRenderer;
 
     // MAP
     private Map snackioMap;
@@ -50,49 +44,66 @@ public class GameRenderer extends ApplicationAdapter {
 
     // CHARACTERS PROJECTION
     private Character activeCharacter;
-    private ShapeRenderer shapeRenderer;
-
     private ArrayList<Character> characters;
+
+    // Points of interest
     private ArrayList<iPoi> pointsOfInterest;
 
+    /**
+     * Singleton implementation
+     *
+     * @return GameRenderer existing instance or new if not exists
+     */
+    public static GameRenderer getInstance() {
+        return instance;
+    }
+
+    /**
+     * Default constructor
+     * This is private to be only created in singleton context
+     */
     private GameRenderer() {
         characters = new ArrayList<>();
         pointsOfInterest = new ArrayList<>();
     }
 
-
+    /**
+     * Method called once libgdx is ready and running
+     * Create all UI elements (Map, Characters, POI...
+     */
     @Override
     public void create() {
         Music music = Gdx.audio.newMusic(Gdx.files.internal("sound/dungeon.ogg"));
+        music.setVolume(0.15f);
         music.play();
+
         // Set state time
         this.stateTime = 0f;
 
         // Load tileset map
-        snackioMap = new Map();
+        snackioMap = MapFactory.getMap(MapFactory.MapType.DESERT_CASTLE);
 
         // Configure camera and viewport
         configureCamera();
 
-        // Load a sample character
-//        activeCharacter = CharacterFactory.getCharacter(CharacterFactory.CharacterType.INDIANA);
-//        activeCharacter.setMotionController(new KeyboardController());
-//        activeCharacter.setPosition(1900,1900);
-//        activeCharacter.create();
-
+        // Create all characters
         for (Character character : characters) {
             character.create();
         }
+
+        // Create all POI
         for (iPoi poi : pointsOfInterest) {
             poi.create();
         }
 
         // Initialize map renderer
         shapeRenderer = new ShapeRenderer();
-
-
+        created = true;
     }
 
+    /**
+     * Method called continuously by libgdx to render graphical elements
+     */
     @Override
     public void render() {
         // Properly position camera on player
@@ -121,11 +132,11 @@ public class GameRenderer extends ApplicationAdapter {
             poi.render();
         }
 
-        // Render character
-//        activeCharacter.render();
-
+        // Render all created characters
         for (Character character : characters) {
-            character.render();
+            if (character.created()) {
+                character.render();
+            }
         }
 
     }
@@ -194,9 +205,16 @@ public class GameRenderer extends ApplicationAdapter {
         return colliding;
     }
 
+    /**
+     * Tells wether there's a collision between a polygon and a rectangle
+     *
+     * @param p polygon
+     * @param r rectangle
+     * @return true if collision, false otherwise
+     * TODO move this in a dedicated class
+     */
     private boolean isCollision(Polygon p, Rectangle r) {
-        Polygon rPoly = new Polygon(new float[]{0, 0, r.width, 0, r.width,
-                r.height, 0, r.height});
+        Polygon rPoly = new Polygon(new float[]{0, 0, r.width, 0, r.width, r.height, 0, r.height});
         rPoly.setPosition(r.x, r.y);
         return Intersector.overlapConvexPolygons(rPoly, p);
     }
@@ -216,6 +234,11 @@ public class GameRenderer extends ApplicationAdapter {
 
     }
 
+    /**
+     * Get the Game's camera
+     *
+     * @return Camera instance
+     */
     public OrthographicCamera getCamera() {
         if (null == cam) {
             configureCamera();
@@ -234,6 +257,9 @@ public class GameRenderer extends ApplicationAdapter {
     public void resume() {
     }
 
+    /**
+     * Dispose all graphical elements created
+     */
     @Override
     public void dispose() {
         for (Character character : characters) {
@@ -250,17 +276,36 @@ public class GameRenderer extends ApplicationAdapter {
     public void pause() {
     }
 
-    public void addPointOfInterest(iPoi poi) {
+    /**
+     * Add a Point of interest to the map
+     *
+     * @param poi the Point of interest to add
+     */
+    void addPointOfInterest(iPoi poi) {
         pointsOfInterest.add(poi);
     }
 
-    public void removePointOfInterest(iPoi poi) {
+    /**
+     * Remove a Point of interest from the map
+     *
+     * @param poi the Point of interest to remove
+     */
+    void removePointOfInterest(iPoi poi) {
         pointsOfInterest.remove(poi);
     }
 
-    public void addCharacter(Character character, boolean active) {
+    /**
+     * Add a Character to the map
+     *
+     * @param character the Character to add
+     * @param active    if this is true, the character will be the main one, followed by the camera
+     */
+    void addCharacter(Character character, boolean active) {
         if (active) {
             activeCharacter = character;
+        }
+        if (!character.created() && this.created) {
+            new Thread(() -> Gdx.app.postRunnable(character::create)).start();
         }
         characters.add(character);
     }

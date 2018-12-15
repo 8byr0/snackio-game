@@ -1,4 +1,4 @@
-package fr.esigelec.snackio.game.character;
+package fr.esigelec.snackio.game.character.motion;
 
 /**
  * Possible directions of a character on the map
