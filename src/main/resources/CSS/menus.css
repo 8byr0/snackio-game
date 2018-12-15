@@ -1,4 +1,7 @@
 .background {
+    -fx-background-color: white;
+}
+.sbackground {
     -fx-background-color: black;
     -fx-background-image: url("../img/snackio.jpg");
     -fx-background-repeat: no-repeat;
@@ -8,4 +11,13 @@
 .Button
 {
     -fx-background-color: dodgerblue;
+    -fx-background-position: center;
+}
+
+.snippetbackground {
+    -fx-background-color: black;
+}
+
+.s {
+    -fx-background-color: black;
 }
