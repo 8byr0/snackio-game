@@ -16,7 +16,7 @@ import fr.esigelec.snackio.core.exceptions.UnhandledControllerException;
 import fr.esigelec.snackio.core.models.Player;
 import fr.esigelec.snackio.game.character.motion.Direction;
 import fr.esigelec.snackio.networking.Position;
-import fr.esigelec.snackio.networking.experi.INetPlayer;
+import fr.esigelec.snackio.core.models.INetPlayer;
 import fr.esigelec.snackio.networking.NetworkConfig;
 
 import javax.swing.*;

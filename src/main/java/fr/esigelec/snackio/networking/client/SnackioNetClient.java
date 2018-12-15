@@ -13,7 +13,7 @@ import fr.esigelec.snackio.Snackio;
 import fr.esigelec.snackio.core.IGameEngine;
 import fr.esigelec.snackio.core.exceptions.NoCharacterSetException;
 import fr.esigelec.snackio.core.models.Player;
-import fr.esigelec.snackio.networking.experi.INetPlayer;
+import fr.esigelec.snackio.core.models.INetPlayer;
 import fr.esigelec.snackio.networking.NetworkConfig;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;

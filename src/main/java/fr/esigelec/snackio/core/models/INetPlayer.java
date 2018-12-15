@@ -1,4 +1,4 @@
-package fr.esigelec.snackio.networking.experi;
+package fr.esigelec.snackio.core.models;
 
 import fr.esigelec.snackio.core.models.Player;
 import fr.esigelec.snackio.game.character.motion.Direction;
