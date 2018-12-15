@@ -24,6 +24,7 @@ public class NetworkGameEngine implements IGameEngine {
     public NetworkGameEngine(SnackioGame game, Player player) {
         this.game = game;
         this.player = player;
+        this.game.addPlayer(player, true);
     }
 
     /**

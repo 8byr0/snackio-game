@@ -1,5 +1,7 @@
 package fr.esigelec.snackio.game.character;
 
+import fr.esigelec.snackio.core.exceptions.UnhandledCharacterTypeException;
+import fr.esigelec.snackio.core.exceptions.UnhandledControllerException;
 import fr.esigelec.snackio.game.character.texture.AnimatedCharacterSkin;
 
 /**
@@ -23,7 +25,7 @@ public class CharacterFactory {
      * @param type The character texture to use
      * @return Character newly created
      */
-    public static Character getCharacter(CharacterType type){
+    public static Character getCharacter(CharacterType type) throws UnhandledCharacterTypeException {
         AnimatedCharacterSkin skin = null;
 
         switch(type){
@@ -42,6 +44,8 @@ public class CharacterFactory {
             case GOLDEN_KNIGHT:
                 skin = new AnimatedCharacterSkin("sprites/golden_knight.png",9,4);
                 break;
+            default:
+                throw new UnhandledCharacterTypeException(type);
         }
 
         return new Character(skin);

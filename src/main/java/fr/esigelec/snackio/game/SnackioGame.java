@@ -2,6 +2,7 @@ package fr.esigelec.snackio.game;
 
 import com.badlogic.gdx.backends.lwjgl3.Lwjgl3Application;
 import com.badlogic.gdx.backends.lwjgl3.Lwjgl3ApplicationConfiguration;
+import fr.esigelec.snackio.core.exceptions.GameCannotStartException;
 import fr.esigelec.snackio.core.models.Player;
 import fr.esigelec.snackio.game.character.Character;
 import fr.esigelec.snackio.game.character.motion.MotionController;
@@ -63,13 +64,11 @@ public class SnackioGame {
      * Start the game (open game window)
      * To successfully execute this, you need to provide a Player and a Map
      *
-     * @param defaultPlayer the default player
-     *                      TODO add map parameter
-     *                      // @param map the map
      */
-    public void start(Player defaultPlayer) {
-        this.addPlayer(defaultPlayer, true);
-
+    public void start() throws GameCannotStartException {
+        if(null == defaultPlayer || null == gameRenderer){
+            throw new GameCannotStartException("Game could not start, Have you instantiated an engine?");
+        }
         Lwjgl3ApplicationConfiguration config = new Lwjgl3ApplicationConfiguration();
         Lwjgl3Application app = new Lwjgl3Application(gameRenderer, config);
     }

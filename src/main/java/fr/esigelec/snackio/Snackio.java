@@ -2,6 +2,7 @@ package fr.esigelec.snackio;
 
 import fr.esigelec.snackio.core.NetworkGameEngine;
 import fr.esigelec.snackio.core.IGameEngine;
+import fr.esigelec.snackio.core.exceptions.GameCannotStartException;
 import fr.esigelec.snackio.core.models.Player;
 import fr.esigelec.snackio.game.SnackioGame;
 import fr.esigelec.snackio.game.character.CharacterFactory;
@@ -20,7 +21,7 @@ public class Snackio extends Application {
     }
 
     @Override
-    public void start(Stage primaryStage) {
+    public void start(Stage primaryStage) throws GameCannotStartException {
         logger.info("Snackio Game started");
 
         logger.info("Initialisation started...");
@@ -46,7 +47,7 @@ public class Snackio extends Application {
         SnackioNetClient cli = new SnackioNetClient(engine);
 
         // Start the game with my player
-        game.start(myPlayer);
+        game.start();
     }
 
 }

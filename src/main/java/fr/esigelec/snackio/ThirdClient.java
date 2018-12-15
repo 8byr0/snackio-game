@@ -2,13 +2,14 @@ package fr.esigelec.snackio;
 
 import fr.esigelec.snackio.core.NetworkGameEngine;
 import fr.esigelec.snackio.core.IGameEngine;
+import fr.esigelec.snackio.core.exceptions.GameCannotStartException;
 import fr.esigelec.snackio.core.models.Player;
 import fr.esigelec.snackio.game.SnackioGame;
 import fr.esigelec.snackio.game.character.CharacterFactory;
 import fr.esigelec.snackio.networking.client.SnackioNetClient;
 
 public class ThirdClient {
-    public static void main(String[] args){
+    public static void main(String[] args) throws GameCannotStartException {
         SnackioGame game = SnackioGame.getInstance();
 
         // Create the local player
@@ -22,6 +23,6 @@ public class ThirdClient {
         SnackioNetClient cli = new SnackioNetClient(engine);
 
         // Start the game with my player
-        game.start(myPlayer);
+        game.start();
     }
 }
