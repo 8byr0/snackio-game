@@ -1,5 +1,6 @@
 package fr.esigelec.snackio.game.character;
 
+import com.badlogic.gdx.ApplicationAdapter;
 import com.badlogic.gdx.ApplicationListener;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.audio.Music;
@@ -19,7 +20,7 @@ import java.util.ArrayList;
 /**
  * Character instance is the GUI projection of a player on the map.
  */
-public class Character implements ApplicationListener {
+public class Character extends ApplicationAdapter {
     public enum CharacterStatus {
         // STATIC
         STATIC_NORTH,
@@ -201,23 +202,7 @@ public class Character implements ApplicationListener {
         this.cam = GameRenderer.getInstance().getCamera();
 
         skin.create();
-//        configureRendering();
         created = true;
-    }
-
-    @Override
-    public void resize(int i, int i1) {
-
-    }
-
-    @Override
-    public void pause() {
-
-    }
-
-    @Override
-    public void resume() {
-
     }
 
     /**
