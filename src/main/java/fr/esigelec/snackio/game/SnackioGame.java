@@ -3,6 +3,8 @@ package fr.esigelec.snackio.game;
 import com.badlogic.gdx.backends.lwjgl3.Lwjgl3Application;
 import com.badlogic.gdx.backends.lwjgl3.Lwjgl3ApplicationConfiguration;
 import fr.esigelec.snackio.core.exceptions.GameCannotStartException;
+import fr.esigelec.snackio.core.exceptions.NoCharacterSetException;
+import fr.esigelec.snackio.core.exceptions.UnhandledControllerException;
 import fr.esigelec.snackio.core.models.Player;
 import fr.esigelec.snackio.game.character.Character;
 import fr.esigelec.snackio.game.character.motion.MotionController;
@@ -109,13 +111,14 @@ public class SnackioGame {
      * @param player the Player to add
      * @param active if true, the Character will be followed by the main Camera
      */
-    public void addPlayer(Player player, boolean active) {
+    public void addPlayer(Player player, boolean active) throws UnhandledControllerException, NoCharacterSetException {
         if (active) {
             this.defaultPlayer = player;
             defaultPlayer.setMotionController(MotionController.KEYBOARD);
         } else {
             player.setMotionController(MotionController.NETWORK);
         }
+
         gameRenderer.addCharacter(player.getCharacter(), active);
 
         this.playersHashmap.put(player.getID(), player);

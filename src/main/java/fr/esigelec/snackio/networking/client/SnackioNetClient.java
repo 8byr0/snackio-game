@@ -9,15 +9,20 @@ import java.awt.EventQueue;
 import java.net.InetAddress;
 
 import com.esotericsoftware.kryonet.rmi.ObjectSpace;
+import fr.esigelec.snackio.Snackio;
 import fr.esigelec.snackio.core.IGameEngine;
+import fr.esigelec.snackio.core.exceptions.NoCharacterSetException;
 import fr.esigelec.snackio.core.models.Player;
 import fr.esigelec.snackio.networking.experi.IPlayer;
 import fr.esigelec.snackio.networking.NetworkConfig;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 /**
  * Network interface that exchanges with server.
  */
 public class SnackioNetClient {
+    private static final Logger logger = LogManager.getLogger(Snackio.class);
 
     Client client;
     IPlayer serverPlayer;
@@ -79,12 +84,20 @@ public class SnackioNetClient {
                     serverPlayer.registerPlayer(localPlayer);
 
                     localPlayer.addMoveListener(()->{
-                        serverPlayer.updatePlayerMotion(localPlayer.getID(), localPlayer.getPosition(), localPlayer.getDirection());
+                        try {
+                            serverPlayer.updatePlayerMotion(localPlayer.getID(), localPlayer.getPosition(), localPlayer.getDirection());
+                        } catch (NoCharacterSetException e) {
+                            logger.error("Attempting to perform operations on a Player whose Character is not set");
+                            e.printStackTrace();
+                        }
                     });
 
                 } catch (IOException ex) {
                     ex.printStackTrace();
                     System.exit(1);
+                } catch (NoCharacterSetException e) {
+                    logger.error("Attempting to perform operations on a Player whose Character is not set");
+                    e.printStackTrace();
                 }
             }
         }.start();

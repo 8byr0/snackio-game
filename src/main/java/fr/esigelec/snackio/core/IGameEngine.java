@@ -1,5 +1,7 @@
 package fr.esigelec.snackio.core;
 
+import fr.esigelec.snackio.core.exceptions.NoCharacterSetException;
+import fr.esigelec.snackio.core.exceptions.UnhandledControllerException;
 import fr.esigelec.snackio.core.models.Player;
 import fr.esigelec.snackio.game.character.motion.Direction;
 import fr.esigelec.snackio.game.character.listeners.PlayerAddedListener;
@@ -12,9 +14,9 @@ public interface IGameEngine {
 
     Player getPlayer();
 
-    void addPlayer(Player player);
+    void addPlayer(Player player) throws NoCharacterSetException, UnhandledControllerException;
 
-    void updatePlayerPosition(int id, Position position, Direction direction);
+    void updatePlayerPosition(int id, Position position, Direction direction) throws NoCharacterSetException;
 
     void addPlayerAddedListener(PlayerAddedListener listener);
 }

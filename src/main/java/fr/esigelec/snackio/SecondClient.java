@@ -3,13 +3,16 @@ package fr.esigelec.snackio;
 import fr.esigelec.snackio.core.NetworkGameEngine;
 import fr.esigelec.snackio.core.IGameEngine;
 import fr.esigelec.snackio.core.exceptions.GameCannotStartException;
+import fr.esigelec.snackio.core.exceptions.NoCharacterSetException;
+import fr.esigelec.snackio.core.exceptions.UnhandledCharacterTypeException;
+import fr.esigelec.snackio.core.exceptions.UnhandledControllerException;
 import fr.esigelec.snackio.core.models.Player;
 import fr.esigelec.snackio.game.SnackioGame;
 import fr.esigelec.snackio.game.character.CharacterFactory;
 import fr.esigelec.snackio.networking.client.SnackioNetClient;
 
 public class SecondClient {
-    public static void main(String[] args) throws GameCannotStartException {
+    public static void main(String[] args) throws GameCannotStartException, UnhandledCharacterTypeException, NoCharacterSetException, UnhandledControllerException {
         SnackioGame game = SnackioGame.getInstance();
 
         // Create the local player

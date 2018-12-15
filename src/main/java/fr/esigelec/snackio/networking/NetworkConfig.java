@@ -27,9 +27,15 @@ import fr.esigelec.snackio.game.pois.bonuses.SpeedBonus;
 import fr.esigelec.snackio.game.pois.maluses.SpeedMalus;
 import fr.esigelec.snackio.networking.experi.IChatFrame;
 import fr.esigelec.snackio.networking.experi.IPlayer;
-
+import fr.esigelec.snackio.networking.client.SnackioNetClient;
+import fr.esigelec.snackio.networking.server.SnackioNetServer;
 import java.util.ArrayList;
+import fr.esigelec.snackio.core.models.Player;
 
+/**
+ * This class handles all network-related configurations.
+ * It's in use by {@link SnackioNetClient} and {@link SnackioNetServer}
+ */
 public class NetworkConfig {
     static public final int port = 54777;
 
@@ -37,7 +43,11 @@ public class NetworkConfig {
     static public final short RMI_PLAYER_ID = 1;
     static public final short RMI_GAME_ENGINE_ID = 2;
 
-    // This registers objects that are going to be sent over the network.
+    /**
+     * Register all classes required by both client and server to communicate together.
+     *
+     * @param endPoint one of SnackioNetClient or SnackioNetServer
+     */
     static public void register (EndPoint endPoint) {
         Kryo kryo = endPoint.getKryo();
         // This must be called in order to use ObjectSpaces.
@@ -48,7 +58,6 @@ public class NetworkConfig {
         kryo.register(IGameEngine.class);
         kryo.register(IChatFrame.class);
         kryo.register(Position.class);
-        kryo.register(fr.esigelec.snackio.core.models.Player.class);
         kryo.register(Character.class);
         kryo.register(Direction.class);
         kryo.register(PointOfInterest.class);
@@ -57,11 +66,11 @@ public class NetworkConfig {
         kryo.register(SpeedMalus.class);
         kryo.register(AnimatedCharacterSkin.class);
         kryo.register(Character.CharacterStatus.class);
-
-        // GDX
         kryo.register(Character.StepSound.class);
         kryo.register(KeyboardController.class);
         kryo.register(NetworkController.class);
+
+        // GDX
         kryo.register(Files.class);
         kryo.register(Files.FileType.class);
         kryo.register(Pixmap.class);
