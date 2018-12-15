@@ -26,11 +26,10 @@ import fr.esigelec.snackio.game.pois.PointOfInterest;
 import fr.esigelec.snackio.game.pois.bonuses.SpeedBonus;
 import fr.esigelec.snackio.game.pois.maluses.SpeedMalus;
 import fr.esigelec.snackio.networking.experi.IChatFrame;
-import fr.esigelec.snackio.networking.experi.IPlayer;
+import fr.esigelec.snackio.networking.experi.INetPlayer;
 import fr.esigelec.snackio.networking.client.SnackioNetClient;
 import fr.esigelec.snackio.networking.server.SnackioNetServer;
 import java.util.ArrayList;
-import fr.esigelec.snackio.core.models.Player;
 
 /**
  * This class handles all network-related configurations.
@@ -53,7 +52,7 @@ public class NetworkConfig {
         // This must be called in order to use ObjectSpaces.
         ObjectSpace.registerClasses(kryo);
         // The interfaces that will be used as remote objects must be registered.
-        kryo.register(IPlayer.class);
+        kryo.register(INetPlayer.class);
         kryo.register(Player.class);
         kryo.register(IGameEngine.class);
         kryo.register(IChatFrame.class);

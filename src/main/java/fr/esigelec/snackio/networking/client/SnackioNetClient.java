@@ -13,7 +13,7 @@ import fr.esigelec.snackio.Snackio;
 import fr.esigelec.snackio.core.IGameEngine;
 import fr.esigelec.snackio.core.exceptions.NoCharacterSetException;
 import fr.esigelec.snackio.core.models.Player;
-import fr.esigelec.snackio.networking.experi.IPlayer;
+import fr.esigelec.snackio.networking.experi.INetPlayer;
 import fr.esigelec.snackio.networking.NetworkConfig;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -24,10 +24,10 @@ import org.apache.logging.log4j.Logger;
 public class SnackioNetClient {
     private static final Logger logger = LogManager.getLogger(Snackio.class);
 
-    Client client;
-    IPlayer serverPlayer;
+    private Client client;
+    private INetPlayer serverPlayer;
 
-    IGameEngine gameEngine;
+    private IGameEngine gameEngine;
 
     public SnackioNetClient (IGameEngine engine) {
         gameEngine = engine;
@@ -41,7 +41,7 @@ public class SnackioNetClient {
 
         // Get the Player created on the other end of the connection.
         // This allows the client to call methods on the server.
-        serverPlayer = ObjectSpace.getRemoteObject(client, NetworkConfig.RMI_PLAYER_ID, IPlayer.class);
+        serverPlayer = ObjectSpace.getRemoteObject(client, NetworkConfig.RMI_PLAYER_ID, INetPlayer.class);
 
         client.addListener(new Listener() {
             public void disconnected (Connection connection) {
