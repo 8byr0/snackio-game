@@ -10,7 +10,7 @@ import com.esotericsoftware.kryonet.Listener;
 import com.esotericsoftware.kryonet.Server;
 import com.esotericsoftware.kryonet.rmi.ObjectSpace;
 import com.esotericsoftware.minlog.Log;
-import fr.esigelec.snackio.core.models.IGameEngine;
+import fr.esigelec.snackio.core.IGameEngine;
 import fr.esigelec.snackio.core.models.Player;
 import fr.esigelec.snackio.game.character.CharacterFactory;
 import fr.esigelec.snackio.game.character.motion.Direction;

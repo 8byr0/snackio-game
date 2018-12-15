@@ -1,5 +1,6 @@
-package fr.esigelec.snackio.core.models;
+package fr.esigelec.snackio.core;
 
+import fr.esigelec.snackio.core.models.Player;
 import fr.esigelec.snackio.game.character.motion.Direction;
 import fr.esigelec.snackio.game.character.listeners.PlayerAddedListener;
 import fr.esigelec.snackio.game.pois.iPoi;

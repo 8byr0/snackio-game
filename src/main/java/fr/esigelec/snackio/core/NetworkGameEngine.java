@@ -1,6 +1,5 @@
 package fr.esigelec.snackio.core;
 
-import fr.esigelec.snackio.core.models.IGameEngine;
 import fr.esigelec.snackio.core.models.Player;
 import fr.esigelec.snackio.game.SnackioGame;
 import fr.esigelec.snackio.game.character.motion.Direction;
@@ -16,13 +15,15 @@ import java.util.ArrayList;
 public class NetworkGameEngine implements IGameEngine {
     private SnackioGame game;
     private ArrayList<PlayerAddedListener> playerAddedListeners = new ArrayList<>();
+    private Player player;
 
     /**
      * Default constructor
      * @param game snackioGame that will be managed by this engine
      */
-    public NetworkGameEngine(SnackioGame game) {
+    public NetworkGameEngine(SnackioGame game, Player player) {
         this.game = game;
+        this.player = player;
     }
 
     /**
@@ -50,7 +51,7 @@ public class NetworkGameEngine implements IGameEngine {
      */
     @Override
     public Player getPlayer() {
-        return game.getPlayer();
+        return player;
     }
 
     /**

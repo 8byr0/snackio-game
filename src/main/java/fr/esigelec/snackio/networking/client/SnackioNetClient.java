@@ -9,7 +9,7 @@ import java.awt.EventQueue;
 import java.net.InetAddress;
 
 import com.esotericsoftware.kryonet.rmi.ObjectSpace;
-import fr.esigelec.snackio.core.models.IGameEngine;
+import fr.esigelec.snackio.core.IGameEngine;
 import fr.esigelec.snackio.core.models.Player;
 import fr.esigelec.snackio.networking.experi.IPlayer;
 import fr.esigelec.snackio.networking.NetworkConfig;
@@ -24,9 +24,9 @@ public class SnackioNetClient {
 
     IGameEngine gameEngine;
 
-    public SnackioNetClient (IGameEngine engine, Player localPlayer) {
-
+    public SnackioNetClient (IGameEngine engine) {
         gameEngine = engine;
+        Player localPlayer = gameEngine.getPlayer();
         client = new Client();
         client.start();
         InetAddress address = client.discoverHost(54777, 5000);

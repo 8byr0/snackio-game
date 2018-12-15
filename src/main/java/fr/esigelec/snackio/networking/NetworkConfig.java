@@ -14,7 +14,7 @@ import com.badlogic.gdx.math.Matrix4;
 import com.esotericsoftware.kryo.Kryo;
 import com.esotericsoftware.kryonet.EndPoint;
 import com.esotericsoftware.kryonet.rmi.ObjectSpace;
-import fr.esigelec.snackio.core.models.IGameEngine;
+import fr.esigelec.snackio.core.IGameEngine;
 import fr.esigelec.snackio.core.models.Player;
 import fr.esigelec.snackio.game.character.Character;
 import fr.esigelec.snackio.game.character.motion.Direction;

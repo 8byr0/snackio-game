@@ -9,14 +9,33 @@ import fr.esigelec.snackio.game.character.motion.MotionController;
 import fr.esigelec.snackio.game.character.motion.NetworkController;
 import fr.esigelec.snackio.networking.Position;
 
-public class Player implements AbstractPlayer {
+/**
+ * A Player has to be created for each physical person joining the Game.
+ * It is linked to a Character, which is its graphical projection on the map
+ * of the Game.
+ * {@code
+ * // Create a Player named 'Hugues' whose Character is GOLDEN_KNIGHT
+ * Player myPlayer = new Player("Hugues", CharacterFactory.CharacterType.GOLDEN_KNIGHT);
+ *
+ * //
+ * }
+ */
+public class Player {
     private int id;
     private Character character;
 
+    /**
+     * Class constructor
+     */
     public Player(){
 
     }
 
+    /**
+     * Class constructor specifying name and Character
+     * @param name name of the player
+     * @param character character of the player
+     */
     public Player(String name, CharacterFactory.CharacterType character){
         this.character = CharacterFactory.getCharacter(character);
 
@@ -43,17 +62,14 @@ public class Player implements AbstractPlayer {
         });
     }
 
-    @Override
     public Position getPosition() {
         return this.character.getPosition();
     }
 
-    @Override
     public void setPosition(Position position) {
         this.character.setPosition(position);
     }
 
-    @Override
     public Direction getDirection() {
         return this.character.getDirection();
     }
