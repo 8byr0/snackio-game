@@ -1,16 +1,5 @@
 package fr.esigelec.snackio.networking;
-import com.badlogic.gdx.Files;
-import com.badlogic.gdx.backends.lwjgl3.Lwjgl3FileHandle;
-import com.badlogic.gdx.graphics.Color;
-import com.badlogic.gdx.graphics.Mesh;
-import com.badlogic.gdx.graphics.Pixmap;
-import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.Animation;
-import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.graphics.g2d.TextureRegion;
-import com.badlogic.gdx.graphics.glutils.FileTextureData;
-import com.badlogic.gdx.graphics.glutils.IndexArray;
-import com.badlogic.gdx.math.Matrix4;
+
 import com.esotericsoftware.kryo.Kryo;
 import com.esotericsoftware.kryonet.EndPoint;
 import com.esotericsoftware.kryonet.rmi.ObjectSpace;
@@ -25,7 +14,6 @@ import fr.esigelec.snackio.game.pois.Coin;
 import fr.esigelec.snackio.game.pois.PointOfInterest;
 import fr.esigelec.snackio.game.pois.bonuses.SpeedBonus;
 import fr.esigelec.snackio.game.pois.maluses.SpeedMalus;
-import fr.esigelec.snackio.networking.experi.IChatFrame;
 import fr.esigelec.snackio.networking.experi.INetPlayer;
 import fr.esigelec.snackio.networking.client.SnackioNetClient;
 import fr.esigelec.snackio.networking.server.SnackioNetServer;
@@ -55,7 +43,6 @@ public class NetworkConfig {
         kryo.register(INetPlayer.class);
         kryo.register(Player.class);
         kryo.register(IGameEngine.class);
-        kryo.register(IChatFrame.class);
         kryo.register(Position.class);
         kryo.register(Character.class);
         kryo.register(Direction.class);
@@ -68,33 +55,6 @@ public class NetworkConfig {
         kryo.register(Character.StepSound.class);
         kryo.register(KeyboardController.class);
         kryo.register(NetworkController.class);
-
-        // GDX
-        kryo.register(Files.class);
-        kryo.register(Files.FileType.class);
-        kryo.register(Pixmap.class);
-        kryo.register(Pixmap.Filter.class);
-        kryo.register(Pixmap.Format.class);
-        kryo.register(Texture.TextureFilter.class);
-        kryo.register(Texture.TextureWrap.class);
-        kryo.register(SpriteBatch.class);
-        kryo.register(Color.class);
-        kryo.register(Matrix4.class);
-        kryo.register(Animation[].class);
-        kryo.register(Animation.class);
-        kryo.register(Animation.PlayMode.class);
-        kryo.register(TextureRegion[].class);
-        kryo.register(TextureRegion.class);
-        kryo.register(Texture.class);
-        kryo.register(Texture[].class);
-        kryo.register(FileTextureData.class);
-        kryo.register(Lwjgl3FileHandle.class);
-        kryo.register(Mesh.class);
-        kryo.register(IndexArray.class);
-        kryo.register(com.badlogic.gdx.graphics.OrthographicCamera.class);
-        kryo.register(com.badlogic.gdx.graphics.Camera.class);
-        kryo.register(com.badlogic.gdx.graphics.GL20.class);
-
 
         // The classes of all method parameters and return values
         // for remote objects must also be registered.
