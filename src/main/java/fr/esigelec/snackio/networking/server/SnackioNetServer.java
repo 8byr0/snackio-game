@@ -4,6 +4,7 @@ import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
 
 import com.esotericsoftware.kryonet.Connection;
 import com.esotericsoftware.kryonet.Listener;
@@ -46,8 +47,7 @@ import javax.swing.*;
  */
 public class SnackioNetServer {
     private Server server;
-    // TODO move this to a proper HashMap
-    private ArrayList<NetPlayer> players = new ArrayList<>();
+    private HashMap<Integer, NetPlayer> playersHashmap = new HashMap<>();
 
     /**
      * Default Class constructor
@@ -61,7 +61,9 @@ public class SnackioNetServer {
                 // Each connection represents a player and has fields
                 // to store state and methods to perform actions.
                 NetPlayer newlyCreatedPlayer = new NetPlayer();
-                players.add(newlyCreatedPlayer);
+
+                playersHashmap.put(playersHashmap.size(), newlyCreatedPlayer);
+
                 return newlyCreatedPlayer;
 
             }
@@ -73,7 +75,8 @@ public class SnackioNetServer {
         server.addListener(new Listener() {
             public void disconnected(Connection connection) {
                 NetPlayer player = (NetPlayer) connection;
-                players.remove(player);
+//                players.remove(player);
+                playersHashmap.remove(player.getID());
                 // TODO remove player from other participants
             }
         });
@@ -137,7 +140,7 @@ public class SnackioNetServer {
             this.localPlayer = receivedPlayer;
 
             Thread t = new Thread(() -> {
-                for (NetPlayer netPlayer : players) {
+                playersHashmap.forEach(((integer, netPlayer) -> {
                     if (netPlayer != this) {
                         try {
                             netPlayer.gameEngine.addPlayer(receivedPlayer);
@@ -146,7 +149,7 @@ public class SnackioNetServer {
                             e.printStackTrace();
                         }
                     }
-                }
+                }));
             });
             t.start();
         }
@@ -162,7 +165,7 @@ public class SnackioNetServer {
         public void updatePlayerMotion(int id, Position position, Direction direction) {
             System.out.println("Player position updated");
             Thread t = new Thread(() -> {
-                for (NetPlayer player : players) {
+                playersHashmap.forEach(((integer, player) -> {
                     if (player != this) {
                         try {
                             player.gameEngine.updatePlayerPosition(id, position, direction);
@@ -170,7 +173,7 @@ public class SnackioNetServer {
                             e.printStackTrace();
                         }
                     }
-                }
+                }));
             });
             t.start();
         }
@@ -178,7 +181,7 @@ public class SnackioNetServer {
         @Override
         public void updatePlayerRoom(int id, String room) {
             Thread t = new Thread(() -> {
-                for (NetPlayer player : players) {
+                playersHashmap.forEach(((integer, player) -> {
                     if (player != this) {
                         try {
                             player.gameEngine.updatePlayerRoom(id, room);
@@ -186,7 +189,7 @@ public class SnackioNetServer {
                             e.printStackTrace();
                         }
                     }
-                }
+                }));
             });
             t.start();
         }

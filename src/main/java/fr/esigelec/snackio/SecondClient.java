@@ -11,7 +11,11 @@ import fr.esigelec.snackio.game.SnackioGame;
 import fr.esigelec.snackio.game.character.CharacterFactory;
 import fr.esigelec.snackio.networking.client.SnackioNetClient;
 
+import java.net.InetAddress;
+import java.util.List;
+
 public class SecondClient {
+    @SuppressWarnings("Duplicates")
     public static void main(String[] args) throws GameCannotStartException, UnhandledCharacterTypeException, NoCharacterSetException, UnhandledControllerException {
         SnackioGame game = SnackioGame.getInstance();
 
@@ -22,11 +26,15 @@ public class SecondClient {
         /////////////// NETWORK CONTROL
         // Instantiate Network game engine to control gameplay
         IGameEngine engine = new NetworkGameEngine(game, myPlayer);
-        // Instantiate a NetClient to control engine
+        // Instantiate a NetClient to exchange with client
         SnackioNetClient cli = new SnackioNetClient(engine);
+        List<InetAddress> servers = cli.getAvailableServers();
+        System.out.println(servers);
 
-        engine.startGame();
-        // Start the game with my player
-//        game.start();
+        if(servers.size() > 0) {
+            cli.connectServer(servers.get(0));
+        }
+//        engine.startGame();
+        game.start();
     }
 }
