@@ -42,7 +42,6 @@ public class Snackio extends Application {
 
         logger.info("...Initialisation finished");
 
-<<<<<<< HEAD
 
         // Create a Game
         SnackioGame game = SnackioGame.getInstance();
@@ -63,9 +62,6 @@ public class Snackio extends Application {
         }
         engine.startGame();
 
-=======
-        // SnackioGame.getInstance();
->>>>>>> css try
     }
 
 }

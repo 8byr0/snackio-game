@@ -63,11 +63,6 @@ public class MenuController {
         assert root != null;
         Scene scn = new Scene(root, 700, 500);
 
-        // Uncomment this line when debug ended
-        // primaryStage.setFullScreen(true);
-//        primaryStage.setMaximized(true);
-//        primaryStage.setMinWidth(700);
-//        primaryStage.setMinHeight(500);
         scn.getStylesheets().add(getClass().getResource("/CSS/menus.css").toExternalForm());
         primaryStage.setScene(scn);
         primaryStage.show();
