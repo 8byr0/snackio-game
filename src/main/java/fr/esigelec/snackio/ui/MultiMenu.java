@@ -1,4 +1,5 @@
 package fr.esigelec.snackio.ui;
+import fr.esigelec.snackio.game.SnackioGame;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -24,8 +25,15 @@ public class MultiMenu implements Initializable {
         openHostMenuButton.setOnAction(this::openHostMenu);
     }
 
+<<<<<<< HEAD
     public void openJoinMenu(ActionEvent actionEvent) {
         MenuController.getInstance(stage).openMenu(MenuController.Menus.MAIN_MENU);
+=======
+    public void openMulMenu(ActionEvent actionEvent) {
+        //stage = (Stage) multiAnchorPane.getScene().getWindow();
+        SnackioGame game = SnackioGame.getInstance();
+        //MenuController.getInstance(stage).openMenu(MenuController.Menus.MAIN_MENU);
+>>>>>>> ServerConfigMenu
     }
 
     public void openHostMenu (ActionEvent actionEvent) {

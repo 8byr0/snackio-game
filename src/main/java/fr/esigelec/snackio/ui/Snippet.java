@@ -34,7 +34,12 @@ public class Snippet implements Initializable {
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
+<<<<<<< HEAD
         backButton.setDisable(true);
+=======
+        //homeButton.setDisable(true);
+        backButton.setOnAction(this::backPrevious);
+>>>>>>> ServerConfigMenu
         homeButton.setOnAction(this::backtoHome);
         settingsButton.setOnAction(this::openSettingsView);
 

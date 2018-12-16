@@ -1,21 +1,51 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<?import javafx.scene.control.*?>
-<?import javafx.scene.layout.*?>
 
-<AnchorPane xmlns="http://javafx.com/javafx"
-            xmlns:fx="http://javafx.com/fxml"
-            fx:controller="fr.esigelec.snackio.ui.ServerConfigMenu"
-            prefHeight="400.0" prefWidth="600.0">
+<?import javafx.scene.control.ChoiceBox?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.SplitPane?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.RowConstraints?>
+
+<AnchorPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/10.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="fr.esigelec.snackio.ui.ServerConfigMenu">
     <SplitPane dividerPositions="0.35" orientation="VERTICAL" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
         <items>
-            <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="100.0" prefWidth="160.0" >
+            <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="100.0" prefWidth="160.0">
                 <children>
-                    <fx:include source="snippet.fxml" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0"/>
+                    <fx:include source="snippet.fxml" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
                 </children>
             </AnchorPane>
             <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="100.0" prefWidth="160.0">
-
-            </AnchorPane>
+            <children>
+               <GridPane layoutX="13.0" layoutY="14.0" prefHeight="229.0" prefWidth="452.0">
+                 <columnConstraints>
+                   <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                   <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                 </columnConstraints>
+                 <rowConstraints>
+                   <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                   <RowConstraints maxHeight="40.666656494140625" minHeight="10.0" prefHeight="24.666656494140625" vgrow="SOMETIMES" />
+                   <RowConstraints maxHeight="67.33334350585938" minHeight="10.0" prefHeight="67.33334350585938" vgrow="SOMETIMES" />
+                     <RowConstraints maxHeight="64.6666259765625" minHeight="10.0" prefHeight="64.6666259765625" vgrow="SOMETIMES" />
+                     <RowConstraints maxHeight="37.3333740234375" minHeight="10.0" prefHeight="19.3333740234375" vgrow="SOMETIMES" />
+                 </rowConstraints>
+                  <children>
+                     <TextField GridPane.columnIndex="1" />
+                     <TextField GridPane.columnIndex="1" GridPane.rowIndex="2" />
+                     <Label prefHeight="25.0" prefWidth="118.0" text="Room Name" />
+                     <Label prefHeight="25.0" prefWidth="118.0" text="Map" GridPane.rowIndex="1" />
+                     <Label prefHeight="25.0" prefWidth="118.0" text="Room Name" />
+                     <Label prefHeight="25.0" prefWidth="118.0" text="Team 1" GridPane.rowIndex="2" />
+                     <Label prefHeight="25.0" prefWidth="118.0" text="Team 2" GridPane.rowIndex="3" />
+                     <Label prefHeight="25.0" prefWidth="118.0" text="Mode" GridPane.rowIndex="4" />
+                     <ChoiceBox prefWidth="150.0" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+                     <ChoiceBox prefWidth="150.0" GridPane.columnIndex="1" GridPane.rowIndex="4" />
+                     <TextField GridPane.columnIndex="1" GridPane.rowIndex="3" />
+                  </children>
+               </GridPane>
+            </children></AnchorPane>
         </items>
     </SplitPane>
 
