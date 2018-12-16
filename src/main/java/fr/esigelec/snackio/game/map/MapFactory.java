@@ -20,7 +20,11 @@ public class MapFactory {
     public static Map getMap(MapType type){
         switch(type){
             case DESERT_CASTLE:
-                return new Map("maps/snackio.tmx");
+                Map desertCastleMap = new Map("maps/snackio.tmx");
+                // Add map rooms
+                MapRoom cave = new MapRoom("maps/snackio_cave.tmx", "CAVE", desertCastleMap);
+                desertCastleMap.addRoom(cave);
+                return desertCastleMap;
         }
         return null;
     }

@@ -6,6 +6,7 @@ import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
+import com.badlogic.gdx.maps.MapObject;
 import com.badlogic.gdx.maps.MapObjects;
 import com.badlogic.gdx.maps.objects.PolygonMapObject;
 import com.badlogic.gdx.maps.objects.RectangleMapObject;
@@ -14,8 +15,9 @@ import com.badlogic.gdx.math.Polygon;
 import com.badlogic.gdx.math.Rectangle;
 import fr.esigelec.snackio.game.character.Character;
 import fr.esigelec.snackio.game.map.Map;
-import fr.esigelec.snackio.game.map.MapFactory;
+import fr.esigelec.snackio.game.map.MapRoom;
 import fr.esigelec.snackio.game.pois.iPoi;
+import fr.esigelec.snackio.networking.Position;
 
 import java.util.ArrayList;
 
@@ -163,20 +165,60 @@ public class GameRenderer extends ApplicationAdapter {
      * @return true if there's a collision
      */
     public boolean isCharacterColliding(Character player, Rectangle playerProjection, Rectangle feetsProjection) {
-        MapObjects objects = snackioMap.getMap().getLayers().get("obstacles").getObjects();
-
         boolean colliding = false;
 
-        for (PolygonMapObject obj : objects.getByType(PolygonMapObject.class)) {
-            Polygon poly = obj.getPolygon();
+        // is Character triggering a door ?
+        MapObject triggeredDoor = this.isCharacterTriggeringADoor(feetsProjection);
+        if (null != triggeredDoor) {
+            String doorName = triggeredDoor.getName();
+            String roomName = triggeredDoor.getProperties().get("room_name").toString();
+            String destinationDoorName = triggeredDoor.getProperties().get("destination_name").toString();
+            String destinationDirection = triggeredDoor.getProperties().get("destination_direction").toString();
 
-            if (isCollision(poly, feetsProjection)) {
-                colliding = true;
-                break;
+            System.out.println("DOOR TRIGGERED ! " + doorName);
+
+            snackioMap.setActiveRoom(roomName);
+
+            Map room = snackioMap.getRoom(roomName);
+            Position newPlayerPosition = room.getDoorPosition(destinationDoorName);
+            if(destinationDirection.equals("NORTH")){
+                newPlayerPosition.y += 20;
+            }else if(destinationDirection.equals("SOUTH")){
+                newPlayerPosition.y -= 20;
+            }else if(destinationDirection.equals("EAST")){
+                newPlayerPosition.x += 20;
+            }else if(destinationDirection.equals("WEST")){
+                newPlayerPosition.x -= 20;
             }
+            player.setPosition(newPlayerPosition);
         }
 
+        // is Character colliding obstacles ?
+        MapObjects obstacles = snackioMap.getMap().getLayers().get("obstacles").getObjects();
 
+        if (null != isCharacterCollidingMapObject(obstacles, feetsProjection)) {
+            colliding = true;
+        }
+
+        // is Character colliding other Characters ?
+        if (this.isCharacterCollidingCharacter(player, playerProjection)) {
+            colliding = true;
+        }
+
+        // is Character triggering POI ?
+        isCharacterTriggeringPOI(player, playerProjection);
+
+        return colliding;
+    }
+
+    /**
+     * Returns if a Character is colliding another Character on the loaded map
+     * @param player the player
+     * @param playerProjection the player's Character projection
+     * @return true if collision
+     */
+    private boolean isCharacterCollidingCharacter(Character player, Rectangle playerProjection ) {
+        boolean colliding = false;
         for (Character character : characters) {
             if (Intersector.overlaps(character.getActualProjection(), playerProjection)) {
                 if (character != player) {
@@ -185,24 +227,72 @@ public class GameRenderer extends ApplicationAdapter {
                 }
             }
         }
+        return colliding;
+    }
 
+
+    /**
+     * Execute POI callback method if selected Character is overlapping a POI
+     * @param player the character
+     * @param playerProjection the Character's projection
+     */
+    private void isCharacterTriggeringPOI(Character player, Rectangle playerProjection) {
         for (iPoi poi : pointsOfInterest) {
             if (Intersector.overlaps(poi.getActualProjection(), playerProjection)) {
                 poi.execute(player);
                 break;
             }
         }
+    }
 
+    /**
+     * Returns if a Character is triggering a door on the loaded map
+     * @param feetsProjection the Character's feets' projection
+     * @return true if trigger detected
+     */
+    private MapObject isCharacterTriggeringADoor(Rectangle feetsProjection) {
+        MapObjects triggers = snackioMap.getMap().getLayers().get("triggers").getObjects();
+
+        MapObject triggered = this.isCharacterCollidingMapObject(triggers, feetsProjection);
+        if(null != triggered){
+            if(triggered.getProperties().get("type").toString().toUpperCase().equals("DOOR")){
+                return triggered;
+            }
+        }
+        return null;
+    }
+
+    /**
+     * Returns if a Character is colliding any map object in a given MapObjects instance
+     * This method checks for Rectangle and Polygons
+     * @param objects map objects
+     * @param feetsProjection the Character's feets' projection
+     * @return MapObject if collision or null
+     */
+    private MapObject isCharacterCollidingMapObject(MapObjects objects, Rectangle feetsProjection) {
+        MapObject found = null;
+
+        // Check Polygons
+        for (PolygonMapObject obj : objects.getByType(PolygonMapObject.class)) {
+            Polygon poly = obj.getPolygon();
+
+            if (isCollision(poly, feetsProjection)) {
+                found = obj;
+                break;
+            }
+        }
+
+        // Check rectangles
         for (RectangleMapObject rectangleObject : objects.getByType(RectangleMapObject.class)) {
             Rectangle rectangle = rectangleObject.getRectangle();
 
             if (Intersector.overlaps(rectangle, feetsProjection)) {
-                colliding = true;
+                found = rectangleObject;
                 break;
             }
 
         }
-        return colliding;
+        return found;
     }
 
     /**
@@ -248,9 +338,10 @@ public class GameRenderer extends ApplicationAdapter {
 
     /**
      * Set the Tiled Map that will be used in this game
+     *
      * @param map a map instance
      */
-    public void setSnackioMap(Map map){
+    public void setSnackioMap(Map map) {
         this.snackioMap = map;
     }
 

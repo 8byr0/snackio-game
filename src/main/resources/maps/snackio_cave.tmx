@@ -109,10 +109,16 @@
 90,90,90,90,90,90,90,90,90,90,90,90,90,90,90,90,90,90,90,90,90,91,0,0,0,89,90,90,90,90,90,90,90,90,90,90,90,90,90,90,90,90,90,90,90,90,90,90,90,90
 </data>
  </layer>
- <objectgroup id="3" name="trigger">
-  <object id="1" name="cave_door" type="teleport" x="678.667" y="1577.33" width="150" height="22.6667"/>
+ <objectgroup id="3" name="triggers">
+  <object id="1" name="CAVE_ENTRANCE_INT" type="DOOR" x="678.667" y="1577.33" width="150" height="22.6667">
+   <properties>
+    <property name="destination_direction" value="SOUTH"/>
+    <property name="destination_name" value="CAVE_ENTRANCE_EXT"/>
+    <property name="room_name" value="BACK_TO_MAIN"/>
+   </properties>
+  </object>
  </objectgroup>
- <objectgroup id="4" name="walls">
+ <objectgroup id="4" name="obstacles">
   <object id="5" x="-44.0002" y="1578" width="722.667" height="41.3333"/>
   <object id="6" x="833.333" y="1576.67" width="784" height="46.6667"/>
   <object id="7" x="-54.5455" y="-36.3636" width="63.1515" height="1778.79"/>

@@ -1,5 +1,6 @@
 package fr.esigelec.snackio.game.map;
 
+import com.badlogic.gdx.ApplicationAdapter;
 import com.badlogic.gdx.ApplicationListener;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.assets.AssetManager;
@@ -7,18 +8,24 @@ import com.badlogic.gdx.assets.loaders.resolvers.InternalFileHandleResolver;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.maps.MapProperties;
+import com.badlogic.gdx.maps.objects.PolygonMapObject;
+import com.badlogic.gdx.maps.objects.RectangleMapObject;
 import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.TmxMapLoader;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
 import fr.esigelec.snackio.game.GameRenderer;
+import fr.esigelec.snackio.networking.Position;
+
+import java.util.HashMap;
 
 /**
  * Map object than can be used by GameRenderer
  */
-public class Map implements ApplicationListener {
+public class Map extends ApplicationAdapter {
     // Graphical objects
     private TiledMap map;
     private OrthogonalTiledMapRenderer renderer;
+    private boolean created = false;
 
     // Map info
     private int mapWidthInPixels;
@@ -28,14 +35,19 @@ public class Map implements ApplicationListener {
     // CAMERA
     private OrthographicCamera cam;
 
+    // ROOMS
+    private HashMap<String, MapRoom> rooms;
+    private MapRoom activeRoom = null;
 
     /**
      * Constructor to create a map from a given map path
      * This is package-private because Map must only be created from Factory
+     *
      * @param mapPath absolute map path
      */
-    Map(String mapPath){
+    Map(String mapPath) {
         this.mapPath = mapPath;
+        rooms = new HashMap<>();
     }
 
     /**
@@ -53,6 +65,8 @@ public class Map implements ApplicationListener {
 
         // Initialize map renderer
         renderer = new OrthogonalTiledMapRenderer(map, 1f);
+
+        created = true;
     }
 
     /**
@@ -82,34 +96,23 @@ public class Map implements ApplicationListener {
         mapHeightInPixels = mapHeightInTiles * tileHeight;
     }
 
-    @Override
-    public void resize(int i, int i1) {
-
-    }
-
     /**
      * Method triggered continuously when rendering game
      */
     @Override
     public void render() {
-        Gdx.gl.glClearColor(0, 0, 0, 1);
-        Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
+        if (null != activeRoom) {
+            activeRoom.render();
+        } else {
+            Gdx.gl.glClearColor(0, 0, 0, 1);
+            Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
-        // Link camera to tiled map
-        renderer.setView(cam);
+            // Link camera to tiled map
+            renderer.setView(cam);
 
-        // Render map
-        renderer.render();
-    }
-
-    @Override
-    public void pause() {
-
-    }
-
-    @Override
-    public void resume() {
-
+            // Render map
+            renderer.render();
+        }
     }
 
     /**
@@ -119,18 +122,26 @@ public class Map implements ApplicationListener {
     public void dispose() {
         map.dispose();
         renderer.dispose();
+        rooms.forEach((id, room) -> {
+            room.dispose();
+        });
     }
 
     /**
      * Get the map instance
+     *
      * @return Tiled Map instance
      */
     public TiledMap getMap() {
+        if (null != activeRoom) {
+            return activeRoom.getMap();
+        }
         return map;
     }
 
     /**
      * Get the width of the Map in pixels
+     *
      * @return width
      */
     public int getMapWidthInPixels() {
@@ -139,9 +150,80 @@ public class Map implements ApplicationListener {
 
     /**
      * Get the height of the Map in pixels
+     *
      * @return height
      */
     public int getMapHeightInPixels() {
         return mapHeightInPixels;
+    }
+
+    /**
+     * Add a room to this map
+     *
+     * @param room the room
+     */
+    void addRoom(MapRoom room) {
+        rooms.put(room.getName().toUpperCase(), room);
+    }
+
+    /**
+     * Set the active room of the map
+     * Call this method when user triggers a door on the map
+     * @param doorName name of the triggered door
+     */
+    public void setActiveRoom(String doorName) {
+        if (doorName.toUpperCase().equals("BACK_TO_MAIN")) {
+            this.activeRoom = null;
+        } else {
+            this.activeRoom = this.rooms.get(doorName.toUpperCase());
+            if (!this.activeRoom.isCreated()) {
+                this.activeRoom.create();
+            }
+        }
+    }
+
+    /**
+     * Returns if the create() method has already been called
+     * @return true or false
+     */
+    protected boolean isCreated() {
+        return created;
+    }
+
+    public MapRoom getActiveRoom() {
+        return this.activeRoom;
+    }
+
+    public Map getRoom(String roomName) {
+        MapRoom found = this.rooms.get(roomName);
+        if(null == found){
+            return this;
+        }
+        return found;
+    }
+
+    public Position getDoorPosition(String doorName) {
+        Position pos = new Position();
+        boolean found = false;
+        for (PolygonMapObject object : getMap().getLayers().get("triggers").getObjects().getByType(PolygonMapObject.class)) {
+            // Loop through polygons
+            if (object.getName().toUpperCase().equals(doorName)) {
+                pos.x = object.getPolygon().getX();
+                pos.y = object.getPolygon().getY();
+                found = true;
+                break;
+            }
+        }
+        if (!found) {
+            for (RectangleMapObject object : getMap().getLayers().get("triggers").getObjects().getByType(RectangleMapObject.class)) {
+                // Loop through rectangles
+                if (object.getName().toUpperCase().equals(doorName)) {
+                    pos.x = object.getRectangle().getX();
+                    pos.y = object.getRectangle().getY();
+                    break;
+                }
+            }
+        }
+        return pos;
     }
 }

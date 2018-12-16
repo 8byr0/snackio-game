@@ -1628,7 +1628,12 @@
   <object id="75" x="601.333" y="2600.67" width="275.667" height="63"/>
  </objectgroup>
  <objectgroup id="25" name="triggers">
-  <object id="76" x="554.182" y="2665.82">
+  <object id="76" name="CAVE_ENTRANCE_EXT" type="door" x="554.182" y="2665.82">
+   <properties>
+    <property name="destination_direction" value="NORTH"/>
+    <property name="destination_name" value="CAVE_ENTRANCE_INT"/>
+    <property name="room_name" value="CAVE"/>
+   </properties>
    <polygon points="0,0 -0.909091,-10.7273 0.909091,-37.4545 2,-49.0909 18,-53.4545 35.8182,-53.6364 43.4545,-48.1818 45.0909,-37.2727 45.4545,-0.363636"/>
   </object>
  </objectgroup>
