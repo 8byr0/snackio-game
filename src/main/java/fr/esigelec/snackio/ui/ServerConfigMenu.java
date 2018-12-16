@@ -9,21 +9,15 @@ import java.net.URL;
 import java.util.ResourceBundle;
 
 public class ServerConfigMenu implements Initializable {
-    @FXML
-    private TextField roomName;
+    @FXML private TextField roomName;
 
-    @FXML
-    private ChoiceBox map;
+    @FXML private ChoiceBox map;
 
-    @FXML
-    private ChoiceBox Mode;
-
+    @FXML private ChoiceBox Mode;
     public ServerConfigMenu() {
-        roomName.getText();
+        
     }
-
-    @Override
-    public void initialize(URL location, ResourceBundle resources) {
+    @Override public void initialize(URL location, ResourceBundle resources) {
 
     }
 }

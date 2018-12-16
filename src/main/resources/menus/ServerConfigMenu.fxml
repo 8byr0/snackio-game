@@ -32,7 +32,7 @@
                      <RowConstraints maxHeight="37.3333740234375" minHeight="10.0" prefHeight="19.3333740234375" vgrow="SOMETIMES" />
                  </rowConstraints>
                   <children>
-                     <TextField GridPane.columnIndex="1" />
+                     <TextField fx:id="roomName" GridPane.columnIndex="1" />
                      <TextField GridPane.columnIndex="1" GridPane.rowIndex="2" />
                      <Label prefHeight="25.0" prefWidth="118.0" text="Room Name" />
                      <Label prefHeight="25.0" prefWidth="118.0" text="Map" GridPane.rowIndex="1" />
@@ -40,8 +40,8 @@
                      <Label prefHeight="25.0" prefWidth="118.0" text="Team 1" GridPane.rowIndex="2" />
                      <Label prefHeight="25.0" prefWidth="118.0" text="Team 2" GridPane.rowIndex="3" />
                      <Label prefHeight="25.0" prefWidth="118.0" text="Mode" GridPane.rowIndex="4" />
-                     <ChoiceBox prefWidth="150.0" GridPane.columnIndex="1" GridPane.rowIndex="1" />
-                     <ChoiceBox prefWidth="150.0" GridPane.columnIndex="1" GridPane.rowIndex="4" />
+                     <ChoiceBox fx:id="Mode" prefWidth="150.0" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+                     <ChoiceBox fx:id="map" prefWidth="150.0" GridPane.columnIndex="1" GridPane.rowIndex="4" />
                      <TextField GridPane.columnIndex="1" GridPane.rowIndex="3" />
                   </children>
                </GridPane>
