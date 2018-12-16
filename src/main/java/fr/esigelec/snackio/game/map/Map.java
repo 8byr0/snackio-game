@@ -36,7 +36,14 @@ public class Map implements ApplicationListener {
      */
     Map(String mapPath){
         this.mapPath = mapPath;
+    }
 
+    /**
+     * Implementation of ApplicationListener's create() method
+     * Called once when libgdx is ready
+     */
+    @Override
+    public void create() {
         // Load tileset map
         loadMap();
         configureMap();
@@ -46,14 +53,6 @@ public class Map implements ApplicationListener {
 
         // Initialize map renderer
         renderer = new OrthogonalTiledMapRenderer(map, 1f);
-    }
-
-    /**
-     * Implementation of ApplicationListener's create() method
-     * Called once when libgdx is ready
-     */
-    @Override
-    public void create() {
     }
 
     /**

@@ -81,7 +81,7 @@ public class GameRenderer extends ApplicationAdapter {
         this.stateTime = 0f;
 
         // Load tileset map
-        snackioMap = MapFactory.getMap(MapFactory.MapType.DESERT_CASTLE);
+        snackioMap.create();
 
         // Configure camera and viewport
         configureCamera();
@@ -246,15 +246,19 @@ public class GameRenderer extends ApplicationAdapter {
         return cam;
     }
 
+    /**
+     * Set the Tiled Map that will be used in this game
+     * @param map a map instance
+     */
+    public void setSnackioMap(Map map){
+        this.snackioMap = map;
+    }
+
     @Override
     public void resize(int width, int height) {
         cam.viewportWidth = Gdx.graphics.getWidth();
         cam.viewportHeight = Gdx.graphics.getHeight();// * height / width;
         cam.update();
-    }
-
-    @Override
-    public void resume() {
     }
 
     /**
@@ -268,12 +272,9 @@ public class GameRenderer extends ApplicationAdapter {
         for (iPoi poi : pointsOfInterest) {
             poi.dispose();
         }
+
         snackioMap.dispose();
         System.exit(0);
-    }
-
-    @Override
-    public void pause() {
     }
 
     /**

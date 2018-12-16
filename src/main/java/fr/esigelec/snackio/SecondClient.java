@@ -22,10 +22,11 @@ public class SecondClient {
         /////////////// NETWORK CONTROL
         // Instantiate Network game engine to control gameplay
         IGameEngine engine = new NetworkGameEngine(game, myPlayer);
-        // Instantiate a NetClient to exchange with client
+        // Instantiate a NetClient to control engine
         SnackioNetClient cli = new SnackioNetClient(engine);
 
+        engine.startGame();
         // Start the game with my player
-        game.start();
+//        game.start();
     }
 }

@@ -8,6 +8,8 @@ import fr.esigelec.snackio.core.exceptions.UnhandledControllerException;
 import fr.esigelec.snackio.core.models.Player;
 import fr.esigelec.snackio.game.character.Character;
 import fr.esigelec.snackio.game.character.motion.MotionController;
+import fr.esigelec.snackio.game.map.Map;
+import fr.esigelec.snackio.game.map.MapFactory;
 import fr.esigelec.snackio.game.pois.Coin;
 import fr.esigelec.snackio.game.pois.PointOfInterest;
 import fr.esigelec.snackio.game.pois.bonuses.SpeedBonus;
@@ -30,6 +32,7 @@ public class SnackioGame {
     // PLAYERS
     private Player defaultPlayer;
     private HashMap<Integer, Player> playersHashmap = new HashMap<>();
+
 
     /**
      * Singleton implementation
@@ -145,4 +148,12 @@ public class SnackioGame {
         return this.playersHashmap.get(id);
     }
 
+    /**
+     * Set the tiled map
+     * @param map the map to set
+     */
+    public void setMap(MapFactory.MapType map){
+        Map theMap = MapFactory.getMap(map);
+        this.gameRenderer.setSnackioMap(theMap);
+    }
 }

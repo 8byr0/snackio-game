@@ -1,5 +1,6 @@
 package fr.esigelec.snackio.core;
 
+import fr.esigelec.snackio.core.exceptions.GameCannotStartException;
 import fr.esigelec.snackio.core.exceptions.NoCharacterSetException;
 import fr.esigelec.snackio.core.exceptions.UnhandledControllerException;
 import fr.esigelec.snackio.core.models.Player;
@@ -19,4 +20,6 @@ public interface IGameEngine {
     void updatePlayerPosition(int id, Position position, Direction direction) throws NoCharacterSetException;
 
     void addPlayerAddedListener(PlayerAddedListener listener);
+
+    void startGame() throws GameCannotStartException;
 }

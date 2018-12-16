@@ -1,11 +1,13 @@
 package fr.esigelec.snackio.core;
 
+import fr.esigelec.snackio.core.exceptions.GameCannotStartException;
 import fr.esigelec.snackio.core.exceptions.NoCharacterSetException;
 import fr.esigelec.snackio.core.exceptions.UnhandledControllerException;
 import fr.esigelec.snackio.core.models.Player;
 import fr.esigelec.snackio.game.SnackioGame;
 import fr.esigelec.snackio.game.character.motion.Direction;
 import fr.esigelec.snackio.game.character.listeners.PlayerAddedListener;
+import fr.esigelec.snackio.game.map.MapFactory;
 import fr.esigelec.snackio.game.pois.iPoi;
 import fr.esigelec.snackio.networking.Position;
 
@@ -28,6 +30,7 @@ public class NetworkGameEngine implements IGameEngine {
         this.game = game;
         this.player = player;
         this.game.addPlayer(player, true);
+        this.game.setMap(MapFactory.MapType.DESERT_CASTLE);
     }
 
     /**
@@ -69,6 +72,15 @@ public class NetworkGameEngine implements IGameEngine {
     @Override
     public void addPlayerAddedListener(PlayerAddedListener listener) {
         this.playerAddedListeners.add(listener);
+    }
+
+    /**
+     * Call this method when the Engine is properly configured
+     */
+    @Override
+    public void startGame() throws GameCannotStartException {
+        // Start the game with my player
+        game.start();
     }
 
     /**

@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.2" tiledversion="1.2.1" orientation="orthogonal" renderorder="right-down" width="100" height="100" tilewidth="32" tileheight="32" infinite="0" nextlayerid="25" nextobjectid="73">
+<map version="1.2" tiledversion="1.2.1" orientation="orthogonal" renderorder="right-down" width="100" height="100" tilewidth="32" tileheight="32" infinite="0" nextlayerid="26" nextobjectid="77">
  <tileset firstgid="1" source="base_out_atlas.tsx"/>
  <tileset firstgid="1025" source="terrain_atlas.tsx"/>
  <group id="13" name="environment">
@@ -1593,7 +1593,6 @@
   <object id="49" x="301.333" y="2637">
    <polygon points="0,0 22,22 56,59 67.6667,47.6667 68.6667,43.6667 62.6667,30.6667 70.3333,29 96.6667,30.6667 154.667,31.6667 156,-36 128.333,-37.6667 108.333,-34.3333 89,-36.6667 77,-34.3333 65.6667,-24 58.3333,-10.6667 59.6667,-4.33333 57.6667,-1.33333 43.3333,-4 34,-5.66667 25.3333,-1.66667 8.66667,-5 1.66667,-4.66667"/>
   </object>
-  <object id="50" x="451" y="2601" width="427" height="62"/>
   <object id="51" x="870" y="2590.67" width="6.33333" height="11.6667"/>
   <object id="52" x="863.333" y="2566.67" width="3" height="22.3333"/>
   <object id="53" x="863.667" y="2588.33" width="191.667" height="3.33333"/>
@@ -1623,6 +1622,14 @@
   </object>
   <object id="72" x="290.625" y="2865.63">
    <polygon points="0,0 -2.375,8.75 -2,24.375 3.875,31.75 15.125,32.25 14.875,38 22,44 31.75,44 38.75,38.5 41.375,32.625 40.875,17.875 44.75,11.125 43.75,-7.5 39.875,-15.375 28.125,-16.375 21.75,-14.375 18.625,-8.625 17.75,-4 8.375,-4.875 3.125,-3.625"/>
+  </object>
+  <object id="73" x="457.333" y="2600.67" width="93.6667" height="68"/>
+  <object id="74" x="544.333" y="2599.33" width="58.6667" height="9.33333"/>
+  <object id="75" x="601.333" y="2600.67" width="275.667" height="63"/>
+ </objectgroup>
+ <objectgroup id="25" name="triggers">
+  <object id="76" x="554.182" y="2665.82">
+   <polygon points="0,0 -0.909091,-10.7273 0.909091,-37.4545 2,-49.0909 18,-53.4545 35.8182,-53.6364 43.4545,-48.1818 45.0909,-37.2727 45.4545,-0.363636"/>
   </object>
  </objectgroup>
 </map>
