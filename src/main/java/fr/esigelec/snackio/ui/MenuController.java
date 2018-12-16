@@ -29,6 +29,7 @@ public class MenuController {
 
     private MenuController(Stage primaryStage) {
         this.primaryStage = primaryStage;
+        this.primaryStage.setTitle("snackio");
     }
 
     public void openMenu(Menus menu) {
@@ -45,6 +46,7 @@ public class MenuController {
                 break;
             case SERVER_CONFIG_MENU:
                 pathToMenuFile = "/menus/ServerConfigMenu.fxml";
+
                 break;
             default:
                 Log.warn("Requested menu does not exist. Cannot proceed.");

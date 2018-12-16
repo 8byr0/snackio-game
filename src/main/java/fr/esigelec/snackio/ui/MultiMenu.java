@@ -5,34 +5,30 @@ import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
-
 import java.net.URL;
 import java.util.ResourceBundle;
 
 public class MultiMenu implements Initializable {
 
     @FXML
-    private AnchorPane multiAnchorPane;
+    private Button openJoinMenuButton;
 
     @FXML
-    private Button joinRoom;
-
-    @FXML
-    private Button hostRoom;
+    private Button openHostMenuButton;
 
     private Stage stage;
+
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        joinRoom.setOnAction(this::openMulMenu);
-        hostRoom.setOnAction(this::openServerConfig);
+        openJoinMenuButton.setOnAction(this::openJoinMenu);
+        openHostMenuButton.setOnAction(this::openHostMenu);
     }
 
-    public void openMulMenu(ActionEvent actionEvent) {
-        //stage = (Stage) multiAnchorPane.getScene().getWindow();
+    public void openJoinMenu(ActionEvent actionEvent) {
         MenuController.getInstance(stage).openMenu(MenuController.Menus.MAIN_MENU);
     }
 
-    public void openServerConfig (ActionEvent actionEvent) {
+    public void openHostMenu (ActionEvent actionEvent) {
         MenuController.getInstance(stage).openMenu(MenuController.Menus.SERVER_CONFIG_MENU);
     }
 }

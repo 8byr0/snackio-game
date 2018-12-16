@@ -16,14 +16,14 @@
          </AnchorPane>
          <AnchorPane  fx:id="multi_part1" minHeight="0.0" minWidth="0.0" prefHeight="100.0" prefWidth="160.0">
             <children >
-               <Button fx:id="joinRoom" layoutY="34.0" mnemonicParsing="false" prefHeight="53.0" prefWidth="154.0" styleClass="Button" stylesheets="@../CSS/menus.css" text="JOIN" textFill="WHITE" AnchorPane.leftAnchor="220.0" AnchorPane.rightAnchor="220.0">
+               <Button fx:id="openJoinMenuButton" layoutY="34.0" mnemonicParsing="false" prefHeight="53.0" prefWidth="154.0" styleClass="Button" stylesheets="@../CSS/menus.css" text="JOIN" textFill="WHITE" AnchorPane.leftAnchor="244.4" AnchorPane.rightAnchor="244.4">
                   <graphic>
                      <ImageView fitHeight="48.0" fitWidth="79.0" pickOnBounds="true" preserveRatio="true" />
                   </graphic>
                   <font>
                      <Font size="15.0" />
                   </font></Button>
-               <Button fx:id="hostRoom" layoutY="99.0" mnemonicParsing="false" prefHeight="53.0" prefWidth="154.0" styleClass="Button" stylesheets="@../CSS/menus.css" text="HOST" textFill="WHITE" AnchorPane.leftAnchor="220.0" AnchorPane.rightAnchor="220.0">
+               <Button fx:id="openHostMenuButton" layoutY="99.0" mnemonicParsing="false" prefHeight="53.0" prefWidth="154.0" styleClass="Button" stylesheets="@../CSS/menus.css" text="HOST" textFill="WHITE" AnchorPane.leftAnchor="244.4" AnchorPane.rightAnchor="244.4">
                   <graphic>
                      <ImageView fitHeight="48.0" fitWidth="79.0" pickOnBounds="true" preserveRatio="true" />
                   </graphic>

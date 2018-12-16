@@ -16,6 +16,9 @@ import java.util.ResourceBundle;
 public class MainMenu  implements Initializable {
 
     @FXML
+    private AnchorPane mainAnchorpane;
+
+    @FXML
     private Button openSoloMenuButton;
 
     @FXML
