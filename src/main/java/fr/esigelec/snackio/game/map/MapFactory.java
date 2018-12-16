@@ -24,6 +24,8 @@ public class MapFactory {
                 // Add map rooms
                 MapRoom cave = new MapRoom("maps/snackio_cave.tmx", "CAVE", desertCastleMap);
                 desertCastleMap.addRoom(cave);
+                MapRoom castle = new MapRoom("maps/snackio_castle.tmx", "CASTLE", desertCastleMap);
+                desertCastleMap.addRoom(castle);
                 return desertCastleMap;
         }
         return null;

@@ -1,0 +1,20 @@
+Manifest-Version: 1.0
+Class-Path: javafx-controls-11.jar lwjgl-3.2.0-natives-windows.jar jor
+ bis-0.0.17.jar lwjgl-jemalloc-3.2.0-natives-windows.jar lwjgl-glfw-3.
+ 2.0.jar minlog-1.3.0.jar lwjgl-openal-3.2.0-natives-windows.jar minlo
+ g-1.2.jar gdx-1.9.9.jar lwjgl-opengl-3.2.0-natives-macos.jar lwjgl-gl
+ fw-3.2.0-natives-linux.jar kryonet-2.22.0-RC1.jar gdx-platform-1.9.9-
+ natives-desktop.jar log4j-core-2.11.1.jar jsonbeans-0.7.jar jlayer-1.
+ 0.1-gdx.jar lwjgl-opengl-3.2.0-natives-linux.jar javafx-controls-11-w
+ in.jar lwjgl-3.2.0.jar javafx-graphics-11-win.jar gdx-box2d-1.9.9.jar
+  lwjgl-opengl-3.2.0-natives-windows.jar kryo-2.24.0.jar javafx-base-1
+ 1-win.jar lwjgl-openal-3.2.0.jar javafx-base-11.jar lwjgl-glfw-3.2.0-
+ natives-macos.jar log4j-api-2.11.1.jar lwjgl-jemalloc-3.2.0-natives-l
+ inux.jar gdx-controllers-desktop-1.9.9.jar javafx-graphics-11.jar obj
+ enesis-2.1.jar lwjgl-3.2.0-natives-macos.jar gdx-controllers-1.9.9.ja
+ r gdx-backend-lwjgl3-1.9.9.jar lwjgl-openal-3.2.0-natives-linux.jar l
+ wjgl-opengl-3.2.0.jar lwjgl-glfw-3.2.0-natives-windows.jar lwjgl-open
+ al-3.2.0-natives-macos.jar lwjgl-jemalloc-3.2.0-natives-macos.jar lwj
+ gl-jemalloc-3.2.0.jar lwjgl-3.2.0-natives-linux.jar
+Main-Class: fr.esigelec.snackio.SecondClient
+

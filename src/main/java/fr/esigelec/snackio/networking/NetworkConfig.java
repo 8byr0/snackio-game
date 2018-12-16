@@ -24,7 +24,9 @@ import java.util.ArrayList;
  * It's in use by {@link SnackioNetClient} and {@link SnackioNetServer}
  */
 public class NetworkConfig {
-    static public final int port = 54777;
+    static public final int udpPort = 54777;
+    static public final int tcpPort = 54555;
+    static public final int timeout = 5000;
 
     // These IDs are used to register objects in ObjectSpaces.
     static public final short RMI_PLAYER_ID = 1;

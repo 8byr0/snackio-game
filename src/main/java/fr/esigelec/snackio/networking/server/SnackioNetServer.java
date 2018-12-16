@@ -52,7 +52,7 @@ public class SnackioNetServer {
     /**
      * Default Class constructor
      *
-     * @throws IOException When the server cannot bind given port
+     * @throws IOException When the server cannot bind given udpPort
      */
     private SnackioNetServer() throws IOException {
 
@@ -77,7 +77,7 @@ public class SnackioNetServer {
                 // TODO remove player from other participants
             }
         });
-        server.bind(NetworkConfig.port);
+        server.bind(NetworkConfig.tcpPort, NetworkConfig.udpPort);
         server.start();
 
         // Open a window to provide an easy way to stop the server.

@@ -15,6 +15,9 @@ import javafx.stage.Stage;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import java.net.InetAddress;
+import java.util.List;
+
 
 public class Snackio extends Application {
     private static final Logger logger = LogManager.getLogger(Snackio.class);
@@ -48,7 +51,11 @@ public class Snackio extends Application {
         IGameEngine engine = new NetworkGameEngine(game, myPlayer);
         // Instantiate a NetClient to exchange with client
         SnackioNetClient cli = new SnackioNetClient(engine);
-//
+        List<InetAddress> servers = cli.getAvailableServers();
+        System.out.println(servers);
+        if(servers.size() > 0) {
+            cli.connectServer(servers.get(0));
+        }
 //        engine.startGame();
         game.start();
     }

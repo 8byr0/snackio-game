@@ -8,6 +8,7 @@ import com.esotericsoftware.kryonet.Listener;
 
 import java.awt.EventQueue;
 import java.net.InetAddress;
+import java.util.List;
 
 import com.esotericsoftware.kryonet.rmi.ObjectSpace;
 import fr.esigelec.snackio.Snackio;
@@ -35,8 +36,7 @@ public class SnackioNetClient {
         Player localPlayer = gameEngine.getPlayer();
         client = new Client();
         client.start();
-        InetAddress address = client.discoverHost(54777, 5000);
-        System.out.println(address);
+
         // Register the classes that will be sent over the network.
         NetworkConfig.register(client);
 
@@ -49,38 +49,29 @@ public class SnackioNetClient {
                 EventQueue.invokeLater(new Runnable() {
                     public void run() {
                         // Closing the frame calls the close listener which will stop the client's update thread.
-
+                        System.out.println("Client disconnected");
                     }
                 });
             }
         });
 
-
-        final String host = "localhost";
-
-        final String name = "Hugues";
-
-        // The chat frame contains all the Swing stuff.
-        // Register the chat frame so the server can call methods on it.
+        // Register game engine so that it can be called from server
         new ObjectSpace(client).register(NetworkConfig.RMI_GAME_ENGINE_ID, gameEngine);
 
+    }
 
-        // We'll do the connect on a new thread so the ChatFrame can show a progress bar.
-        // Connecting to localhost is usually so fast you won't see the progress bar.
+    public void connectServer(InetAddress serverAddress) {
+        Player localPlayer = gameEngine.getPlayer();
+
         new Thread("Connect") {
             public void run() {
                 try {
-                    client.connect(5000, host, NetworkConfig.port);
-                    // Server communication after connection can go here, or in Listener#connected().
 
+                    client.connect(NetworkConfig.timeout, serverAddress, NetworkConfig.tcpPort, NetworkConfig.udpPort);
+
+                    // Server communication after connection can go here, or in Listener#connected().
                     localPlayer.setID(client.getID());
 
-
-                    gameEngine.addPlayerAddedListener((x) -> {
-                        new Thread(() -> {
-//                            serverPlayer.updatePlayerMotion(localPlayer.getID(), localPlayer.getPosition(), localPlayer.getDirection());
-                        }).start();
-                    });
                     serverPlayer.registerPlayer(localPlayer);
 
                     localPlayer.addMoveListener(() -> {
@@ -110,6 +101,13 @@ public class SnackioNetClient {
                 }
             }
         }.start();
+
+    }
+
+    public List<InetAddress> getAvailableServers() {
+        List<InetAddress> availableServers;
+        availableServers = client.discoverHosts(NetworkConfig.udpPort, NetworkConfig.timeout);
+        return availableServers;
     }
 
 
