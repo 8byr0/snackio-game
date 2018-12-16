@@ -36,7 +36,7 @@ import javax.swing.*;
  * <p>
  * # Game
  * - During the Game, the client sends his Player's Character Position each time it's updated.
- *
+ * <p>
  * /!\/!\/!\
  * YOU WILL SEE MANY TIME IN THIS CLASS SOME METHODS EXECUTED WITHIN THREADS.
  * THIS IS NORMAL ANS MUST BE DONE THIS WAY.
@@ -99,13 +99,13 @@ public class SnackioNetServer {
      * This inner class is instantiated for each connection.
      * The methods contained can be called from client's side.
      * To instantiate on the client, you need to use INetPlayer interface {@link INetPlayer}
-     *
+     * <p>
      * {@code
      * // Create the Client instance
      * Client client = new Client();
-     *
+     * <p>
      * // ...
-     *
+     * <p>
      * INetPlayer serverPlayer = ObjectSpace.getRemoteObject(client, NetworkConfig.RMI_PLAYER_ID, INetPlayer.class);
      * }
      */
@@ -154,8 +154,8 @@ public class SnackioNetServer {
         /**
          * Method to notify the server that the Player associated to this NetPlayer insatance has been updated
          *
-         * @param id ID of the updated Player
-         * @param position new Position on the Game's map
+         * @param id        ID of the updated Player
+         * @param position  new Position on the Game's map
          * @param direction new Direction on the Game's map
          */
         @Override
@@ -166,6 +166,22 @@ public class SnackioNetServer {
                     if (player != this) {
                         try {
                             player.gameEngine.updatePlayerPosition(id, position, direction);
+                        } catch (NoCharacterSetException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                }
+            });
+            t.start();
+        }
+
+        @Override
+        public void updatePlayerRoom(int id, String room) {
+            Thread t = new Thread(() -> {
+                for (NetPlayer player : players) {
+                    if (player != this) {
+                        try {
+                            player.gameEngine.updatePlayerRoom(id, room);
                         } catch (NoCharacterSetException e) {
                             e.printStackTrace();
                         }

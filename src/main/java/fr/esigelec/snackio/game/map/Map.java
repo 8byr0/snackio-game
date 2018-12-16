@@ -22,6 +22,7 @@ import java.util.HashMap;
  * Map object than can be used by GameRenderer
  */
 public class Map extends ApplicationAdapter {
+
     // Graphical objects
     private TiledMap map;
     private OrthogonalTiledMapRenderer renderer;
@@ -31,6 +32,7 @@ public class Map extends ApplicationAdapter {
     private int mapWidthInPixels;
     private int mapHeightInPixels;
     private String mapPath; // Default value
+    protected String name;
 
     // CAMERA
     private OrthographicCamera cam;
@@ -45,9 +47,10 @@ public class Map extends ApplicationAdapter {
      *
      * @param mapPath absolute map path
      */
-    Map(String mapPath) {
+    Map(String mapPath, String mapName) {
         this.mapPath = mapPath;
         rooms = new HashMap<>();
+        this.name = mapName;
     }
 
     /**
@@ -120,8 +123,12 @@ public class Map extends ApplicationAdapter {
      */
     @Override
     public void dispose() {
-        map.dispose();
-        renderer.dispose();
+        if(null != map){
+            map.dispose();
+        }
+        if(null != renderer){
+            renderer.dispose();
+        }
         rooms.forEach((id, room) -> {
             room.dispose();
         });
@@ -169,6 +176,7 @@ public class Map extends ApplicationAdapter {
     /**
      * Set the active room of the map
      * Call this method when user triggers a door on the map
+     *
      * @param doorName name of the triggered door
      */
     public void setActiveRoom(String doorName) {
@@ -184,19 +192,20 @@ public class Map extends ApplicationAdapter {
 
     /**
      * Returns if the create() method has already been called
+     *
      * @return true or false
      */
     protected boolean isCreated() {
         return created;
     }
 
-    public MapRoom getActiveRoom() {
-        return this.activeRoom;
+    public Map getActiveRoom() {
+        return (this.activeRoom != null) ? this.activeRoom : this;
     }
 
     public Map getRoom(String roomName) {
         MapRoom found = this.rooms.get(roomName);
-        if(null == found){
+        if (null == found) {
             return this;
         }
         return found;
@@ -226,4 +235,13 @@ public class Map extends ApplicationAdapter {
         }
         return pos;
     }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
 }

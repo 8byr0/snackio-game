@@ -1,7 +1,6 @@
 package fr.esigelec.snackio.game.character;
 
 import com.badlogic.gdx.ApplicationAdapter;
-import com.badlogic.gdx.ApplicationListener;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.graphics.Camera;
@@ -9,6 +8,7 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Rectangle;
 import fr.esigelec.snackio.game.GameRenderer;
 import fr.esigelec.snackio.game.character.listeners.MoveListener;
+import fr.esigelec.snackio.game.character.listeners.RoomChangeListener;
 import fr.esigelec.snackio.game.character.motion.Direction;
 import fr.esigelec.snackio.game.character.motion.iCharacterController;
 import fr.esigelec.snackio.game.character.texture.AnimatedCharacterSkin;
@@ -21,6 +21,7 @@ import java.util.ArrayList;
  * Character instance is the GUI projection of a player on the map.
  */
 public class Character extends ApplicationAdapter {
+
     public enum CharacterStatus {
         // STATIC
         STATIC_NORTH,
@@ -33,6 +34,7 @@ public class Character extends ApplicationAdapter {
         MOVING_SOUTH,
         MOVING_EAST
     }
+
     public enum StepSound {
         LEFT,
         RIGHT
@@ -42,6 +44,7 @@ public class Character extends ApplicationAdapter {
     private float stateTime = 0f;
     private boolean created = false;
     private ArrayList<PointOfInterest> activePointsOfInterest;
+    private String room;
 
     // Motion control
     private int speed = 5;
@@ -57,6 +60,7 @@ public class Character extends ApplicationAdapter {
 
     // Listeners
     private ArrayList<MoveListener> moveListeners = new ArrayList<>();
+    private ArrayList<RoomChangeListener> roomChangeListeners = new ArrayList<>();
 
     // 2D rendering
     private Camera cam;
@@ -67,7 +71,7 @@ public class Character extends ApplicationAdapter {
     /**
      * No-args constructor for KyroNet
      */
-    public Character(){
+    public Character() {
 
     }
 
@@ -75,22 +79,23 @@ public class Character extends ApplicationAdapter {
      * Default Character constructor
      * It is package-private because it should only be called by the CharacterFactory
      */
-    Character(AnimatedCharacterSkin skin)
-    {
+    Character(AnimatedCharacterSkin skin) {
         activePointsOfInterest = new ArrayList<>();
         this.skin = skin;
     }
 
     /**
      * Tells if the character has already been created in the game engine
+     *
      * @return true or false
      */
-    public boolean created(){
+    public boolean created() {
         return created;
     }
 
     /**
      * Set the direction of the character
+     *
      * @param direction One of Direction.class (NORTH, SOUTH, EAST, WEST)
      */
     public void setDirection(Direction direction) {
@@ -99,6 +104,7 @@ public class Character extends ApplicationAdapter {
 
     /**
      * Get the actual direction of the character
+     *
      * @return {Direction} one of NORTH, SOUTH, EAST, WEST
      */
     public Direction getDirection() {
@@ -109,6 +115,7 @@ public class Character extends ApplicationAdapter {
      * Set the moving state of the character
      * This method also triggers all listeners that asked to be notified.
      * When a character is in moving state, his projection will be keyframe animation
+     *
      * @param moving boolean
      */
     public void setMoving(boolean moving) {
@@ -119,7 +126,7 @@ public class Character extends ApplicationAdapter {
                 if (lastlyPlayed == StepSound.LEFT) {
                     rightStepSound.play();
                     lastlyPlayed = StepSound.RIGHT;
-                }else{
+                } else {
                     leftStepSound.play();
                     lastlyPlayed = StepSound.LEFT;
                 }
@@ -131,9 +138,17 @@ public class Character extends ApplicationAdapter {
      * Trigger move listeners methods
      */
     private void triggerMoveListeners() {
-        for(MoveListener listener: moveListeners)
-        {
+        for (MoveListener listener : moveListeners) {
             listener.movePerformed(position);
+        }
+    }
+
+    /**
+     * Trigger room change listeners methods
+     */
+    private void triggerRoomChangeListeners() {
+        for (RoomChangeListener listener : roomChangeListeners) {
+            listener.movePerformed(this.getRoom());
         }
     }
 
@@ -166,6 +181,7 @@ public class Character extends ApplicationAdapter {
 
     /**
      * Set the position of the character on the map
+     *
      * @param x x position
      * @param y y position
      */
@@ -176,6 +192,7 @@ public class Character extends ApplicationAdapter {
 
     /**
      * Set the position of the character on the map
+     *
      * @param position Position of the character
      */
     public void setPosition(Position position) {
@@ -184,6 +201,7 @@ public class Character extends ApplicationAdapter {
 
     /**
      * Get the position of a character on the map
+     *
      * @return Position (x,y)
      */
     public Position getPosition() {
@@ -215,6 +233,7 @@ public class Character extends ApplicationAdapter {
 
     /**
      * Returns wether a given POI is active on this character or not.
+     *
      * @param poi reference to PointOfInterest
      * @return true if active, false otherwise
      */
@@ -224,6 +243,7 @@ public class Character extends ApplicationAdapter {
 
     /**
      * Add a poi to this character
+     *
      * @param poi the PointOfInterest to add
      */
     public void addActivePOI(PointOfInterest poi) {
@@ -233,6 +253,7 @@ public class Character extends ApplicationAdapter {
     /**
      * Remove an active poi from this character
      * (Usually called in poi's post-execution callback)
+     *
      * @param poi the PointOfInterest to remove
      */
     public void removeActivePOI(PointOfInterest poi) {
@@ -243,6 +264,7 @@ public class Character extends ApplicationAdapter {
 
     /**
      * Get the speed of this character
+     *
      * @return {int} the speed
      */
     public int getSpeed() {
@@ -251,6 +273,7 @@ public class Character extends ApplicationAdapter {
 
     /**
      * Set the motion controller of this character that will be called during rendering
+     *
      * @param motionController a concrete implementation of iCharacterController interface
      */
     public void setMotionController(iCharacterController motionController) {
@@ -259,6 +282,7 @@ public class Character extends ApplicationAdapter {
 
     /**
      * Get the geometrical projection of this character
+     *
      * @return Rectangle
      */
     public Rectangle getActualProjection() {
@@ -268,6 +292,7 @@ public class Character extends ApplicationAdapter {
     /**
      * Get the geometrical projection of this character's feets
      * Feets projection is used to detect collisions with environment
+     *
      * @return Rectangle 32*16
      */
     public Rectangle getFeetsProjection(float x, float y) {
@@ -277,6 +302,7 @@ public class Character extends ApplicationAdapter {
     /**
      * Get the geometrical projection of this character
      * TODO move this in a dedicated geometrical class
+     *
      * @return Rectangle
      */
     public Rectangle getFullProjection(float x, float y) {
@@ -285,6 +311,7 @@ public class Character extends ApplicationAdapter {
 
     /**
      * Set the speed of this character
+     *
      * @param speed int value to attribute
      */
     public void setSpeed(int speed) {
@@ -294,6 +321,7 @@ public class Character extends ApplicationAdapter {
     /**
      * Add a move listener to this character
      * MoveListener will be triggered each time the character moves
+     *
      * @param moveListener Reference to MoveListener implementation
      */
     public void addMoveListener(MoveListener moveListener) {
@@ -301,11 +329,30 @@ public class Character extends ApplicationAdapter {
     }
 
     /**
+     * Add a RoomChangeListener listener to this character
+     * RoomChangeListener will be triggered each time the character changes room
+     *
+     * @param listener Reference to RoomChangeListener implementation
+     */
+    public void addRoomChangeListener(RoomChangeListener listener) {
+        roomChangeListeners.add(listener);
+    }
+
+    /**
      * Returns if the character is moving or not
+     *
      * @return true if moving, false otherwise
      */
     public boolean isMoving() {
         return moving;
     }
 
+    public void setRoom(String roomName) {
+        this.room = roomName;
+        this.triggerRoomChangeListeners();
+    }
+
+    public String getRoom() {
+        return this.room;
+    }
 }

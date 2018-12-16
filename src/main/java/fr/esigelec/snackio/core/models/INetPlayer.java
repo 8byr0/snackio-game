@@ -17,7 +17,7 @@ public interface INetPlayer {
     void registerPlayer (Player localPlayer);
 
     /**
-     * Method to notify the server that the Player associated to this NetPlayer insatance has been updated
+     * Method to notify the server that the Player associated to this NetPlayer instance has been updated
      *
      * @param id ID of the updated Player
      * @param position new Position on the Game's map
@@ -25,4 +25,11 @@ public interface INetPlayer {
      */
     void updatePlayerMotion(int id, Position position, Direction direction);
 
+    /**
+     * Method to notify the server that the Player associated to this NetPlayer instance has been updated
+     *
+     * @param id ID of the updated Player
+     * @param room new room name on the Game's map
+     */
+    void updatePlayerRoom(int id, String room);
 }

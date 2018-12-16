@@ -20,7 +20,7 @@ public class MapFactory {
     public static Map getMap(MapType type){
         switch(type){
             case DESERT_CASTLE:
-                Map desertCastleMap = new Map("maps/snackio.tmx");
+                Map desertCastleMap = new Map("maps/snackio.tmx", "DESERT_CASTLE");
                 // Add map rooms
                 MapRoom cave = new MapRoom("maps/snackio_cave.tmx", "CAVE", desertCastleMap);
                 desertCastleMap.addRoom(cave);

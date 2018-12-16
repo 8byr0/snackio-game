@@ -137,7 +137,9 @@ public class GameRenderer extends ApplicationAdapter {
         // Render all created characters
         for (Character character : characters) {
             if (character.created()) {
-                character.render();
+                if (character.getRoom().equals(this.snackioMap.getActiveRoom().getName())) {
+                    character.render();
+                }
             }
         }
 
@@ -164,7 +166,7 @@ public class GameRenderer extends ApplicationAdapter {
      *
      * @return true if there's a collision
      */
-    public boolean isCharacterColliding(Character player, Rectangle playerProjection, Rectangle feetsProjection) {
+    public boolean isCharacterColliding(Character character, Rectangle playerProjection, Rectangle feetsProjection) {
         boolean colliding = false;
 
         // is Character triggering a door ?
@@ -175,22 +177,24 @@ public class GameRenderer extends ApplicationAdapter {
             String destinationDoorName = triggeredDoor.getProperties().get("destination_name").toString();
             String destinationDirection = triggeredDoor.getProperties().get("destination_direction").toString();
 
-            System.out.println("DOOR TRIGGERED ! " + doorName);
+            System.out.println("DOOR TRIGGERED ! " + doorName + " in room " + roomName);
 
             snackioMap.setActiveRoom(roomName);
 
             Map room = snackioMap.getRoom(roomName);
             Position newPlayerPosition = room.getDoorPosition(destinationDoorName);
-            if(destinationDirection.equals("NORTH")){
+            if (destinationDirection.equals("NORTH")) {
                 newPlayerPosition.y += 20;
-            }else if(destinationDirection.equals("SOUTH")){
+            } else if (destinationDirection.equals("SOUTH")) {
                 newPlayerPosition.y -= 20;
-            }else if(destinationDirection.equals("EAST")){
+            } else if (destinationDirection.equals("EAST")) {
                 newPlayerPosition.x += 20;
-            }else if(destinationDirection.equals("WEST")){
+            } else if (destinationDirection.equals("WEST")) {
                 newPlayerPosition.x -= 20;
             }
-            player.setPosition(newPlayerPosition);
+            character.setPosition(newPlayerPosition);
+
+            character.setRoom(this.snackioMap.getActiveRoom().getName());
         }
 
         // is Character colliding obstacles ?
@@ -201,29 +205,33 @@ public class GameRenderer extends ApplicationAdapter {
         }
 
         // is Character colliding other Characters ?
-        if (this.isCharacterCollidingCharacter(player, playerProjection)) {
+        if (this.isCharacterCollidingCharacter(character, playerProjection)) {
             colliding = true;
         }
 
         // is Character triggering POI ?
-        isCharacterTriggeringPOI(player, playerProjection);
+        isCharacterTriggeringPOI(character, playerProjection);
 
         return colliding;
     }
 
     /**
      * Returns if a Character is colliding another Character on the loaded map
-     * @param player the player
+     *
+     * @param player           the player
      * @param playerProjection the player's Character projection
      * @return true if collision
      */
-    private boolean isCharacterCollidingCharacter(Character player, Rectangle playerProjection ) {
+    private boolean isCharacterCollidingCharacter(Character player, Rectangle playerProjection) {
         boolean colliding = false;
         for (Character character : characters) {
             if (Intersector.overlaps(character.getActualProjection(), playerProjection)) {
                 if (character != player) {
-                    colliding = true;
-                    break;
+                    // Make sure that both characters are on same layer
+                    if (character.getRoom().equals(player.getRoom())) {
+                        colliding = true;
+                        break;
+                    }
                 }
             }
         }
@@ -233,7 +241,8 @@ public class GameRenderer extends ApplicationAdapter {
 
     /**
      * Execute POI callback method if selected Character is overlapping a POI
-     * @param player the character
+     *
+     * @param player           the character
      * @param playerProjection the Character's projection
      */
     private void isCharacterTriggeringPOI(Character player, Rectangle playerProjection) {
@@ -247,6 +256,7 @@ public class GameRenderer extends ApplicationAdapter {
 
     /**
      * Returns if a Character is triggering a door on the loaded map
+     *
      * @param feetsProjection the Character's feets' projection
      * @return true if trigger detected
      */
@@ -254,8 +264,8 @@ public class GameRenderer extends ApplicationAdapter {
         MapObjects triggers = snackioMap.getMap().getLayers().get("triggers").getObjects();
 
         MapObject triggered = this.isCharacterCollidingMapObject(triggers, feetsProjection);
-        if(null != triggered){
-            if(triggered.getProperties().get("type").toString().toUpperCase().equals("DOOR")){
+        if (null != triggered) {
+            if (triggered.getProperties().get("type").toString().toUpperCase().equals("DOOR")) {
                 return triggered;
             }
         }
@@ -265,7 +275,8 @@ public class GameRenderer extends ApplicationAdapter {
     /**
      * Returns if a Character is colliding any map object in a given MapObjects instance
      * This method checks for Rectangle and Polygons
-     * @param objects map objects
+     *
+     * @param objects         map objects
      * @param feetsProjection the Character's feets' projection
      * @return MapObject if collision or null
      */
@@ -343,6 +354,9 @@ public class GameRenderer extends ApplicationAdapter {
      */
     public void setSnackioMap(Map map) {
         this.snackioMap = map;
+        for(Character character : characters){
+            character.setRoom(map.getName());
+        }
     }
 
     @Override

@@ -28,7 +28,6 @@ import fr.esigelec.snackio.networking.Position;
  * To do so, the room must also have a `triggers` layer and contain a shape with the type `DOOR` and the name `BACK_TO_MAIN`
  */
 public class MapRoom extends Map {
-    private String roomName;
     private Map mapContainer;
 
     /**
@@ -38,13 +37,8 @@ public class MapRoom extends Map {
      * @param mapPath absolute map path
      */
     MapRoom(String mapPath, String roomName, Map container) {
-        super(mapPath);
-        this.roomName = roomName;
+        super(mapPath, roomName);
         this.mapContainer = container;
-    }
-
-    public String getName() {
-        return roomName;
     }
 
     @Override

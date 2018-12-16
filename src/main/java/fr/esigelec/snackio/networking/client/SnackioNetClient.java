@@ -1,4 +1,5 @@
 package fr.esigelec.snackio.networking.client;
+
 import java.io.IOException;
 
 import com.esotericsoftware.kryonet.Client;
@@ -29,7 +30,7 @@ public class SnackioNetClient {
 
     private IGameEngine gameEngine;
 
-    public SnackioNetClient (IGameEngine engine) {
+    public SnackioNetClient(IGameEngine engine) {
         gameEngine = engine;
         Player localPlayer = gameEngine.getPlayer();
         client = new Client();
@@ -44,9 +45,9 @@ public class SnackioNetClient {
         serverPlayer = ObjectSpace.getRemoteObject(client, NetworkConfig.RMI_PLAYER_ID, INetPlayer.class);
 
         client.addListener(new Listener() {
-            public void disconnected (Connection connection) {
+            public void disconnected(Connection connection) {
                 EventQueue.invokeLater(new Runnable() {
-                    public void run () {
+                    public void run() {
                         // Closing the frame calls the close listener which will stop the client's update thread.
 
                     }
@@ -64,11 +65,10 @@ public class SnackioNetClient {
         new ObjectSpace(client).register(NetworkConfig.RMI_GAME_ENGINE_ID, gameEngine);
 
 
-
         // We'll do the connect on a new thread so the ChatFrame can show a progress bar.
         // Connecting to localhost is usually so fast you won't see the progress bar.
         new Thread("Connect") {
-            public void run () {
+            public void run() {
                 try {
                     client.connect(5000, host, NetworkConfig.port);
                     // Server communication after connection can go here, or in Listener#connected().
@@ -76,20 +76,29 @@ public class SnackioNetClient {
                     localPlayer.setID(client.getID());
 
 
-                    gameEngine.addPlayerAddedListener((x)->{
-                        new Thread(()->{
+                    gameEngine.addPlayerAddedListener((x) -> {
+                        new Thread(() -> {
 //                            serverPlayer.updatePlayerMotion(localPlayer.getID(), localPlayer.getPosition(), localPlayer.getDirection());
                         }).start();
                     });
                     serverPlayer.registerPlayer(localPlayer);
 
-                    localPlayer.addMoveListener(()->{
+                    localPlayer.addMoveListener(() -> {
                         try {
                             serverPlayer.updatePlayerMotion(localPlayer.getID(), localPlayer.getPosition(), localPlayer.getDirection());
                         } catch (NoCharacterSetException e) {
                             logger.error("Attempting to perform operations on a Player whose Character is not set");
                             e.printStackTrace();
                         }
+                    });
+                    localPlayer.addRoomChangeListener(() -> {
+                        try {
+                            serverPlayer.updatePlayerRoom(localPlayer.getID(), localPlayer.getRoom());
+                        } catch (NoCharacterSetException e) {
+                            logger.error("Attempting to perform operations on a Player whose Character is not set");
+                            e.printStackTrace();
+                        }
+
                     });
 
                 } catch (IOException ex) {
@@ -102,7 +111,6 @@ public class SnackioNetClient {
             }
         }.start();
     }
-
 
 
 }

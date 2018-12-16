@@ -84,6 +84,20 @@ public class NetworkGameEngine implements IGameEngine {
     }
 
     /**
+     * Update the room of a Player identified by its id
+     * @param id id of the player
+     * @param room name of the room
+     */
+    @Override
+    public void updatePlayerRoom(int id, String room) throws NoCharacterSetException {
+        Player player = this.game.getPlayer(id);
+
+        if (null != player) {
+            player.setRoom(room);
+        }
+    }
+
+    /**
      * Trigger all registered PlayerAdded listeners
      *
      * @param player the player newly added

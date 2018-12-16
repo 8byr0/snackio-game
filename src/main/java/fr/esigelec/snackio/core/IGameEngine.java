@@ -22,4 +22,6 @@ public interface IGameEngine {
     void addPlayerAddedListener(PlayerAddedListener listener);
 
     void startGame() throws GameCannotStartException;
+
+    void updatePlayerRoom(int id, String room) throws NoCharacterSetException;
 }

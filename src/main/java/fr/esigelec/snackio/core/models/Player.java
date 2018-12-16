@@ -104,8 +104,8 @@ public class Player {
     }
 
     /**
-     * Add a listener to the player's movements.
-     * This listener while be triggered each time the position of the Player's Character is updated
+     * Add a listener to the player's character movements.
+     * This listener will be triggered each time the position of the Player's Character is updated
      *
      * @param listener the MoveListener to be triggered
      * @throws NoCharacterSetException Exception thrown when the Character of this player is null
@@ -115,6 +115,20 @@ public class Player {
             throw new NoCharacterSetException();
         }
         character.addMoveListener((position) -> listener.run());
+    }
+
+    /**
+     * Add a listener to the player's character room state.
+     * This listener will be triggered each time the Player's Character changes rooms
+     *
+     * @param listener the RoomChangeListener to be triggered
+     * @throws NoCharacterSetException Exception thrown when the Character of this player is null
+     */
+    public void addRoomChangeListener(final Runnable listener) throws NoCharacterSetException {
+        if (null == character) {
+            throw new NoCharacterSetException();
+        }
+        character.addRoomChangeListener((room) -> listener.run());
     }
 
     /**
@@ -183,5 +197,19 @@ public class Player {
             throw new NoCharacterSetException();
         }
         this.character.setMoving(moving);
+    }
+
+    public String getRoom() throws NoCharacterSetException {
+        if (null == character) {
+            throw new NoCharacterSetException();
+        }
+        return this.character.getRoom();
+    }
+
+    public void setRoom(String room) throws NoCharacterSetException {
+        if (null == character) {
+            throw new NoCharacterSetException();
+        }
+        this.character.setRoom(room);
     }
 }
