@@ -15,7 +15,6 @@ import com.badlogic.gdx.math.Polygon;
 import com.badlogic.gdx.math.Rectangle;
 import fr.esigelec.snackio.game.character.Character;
 import fr.esigelec.snackio.game.map.Map;
-import fr.esigelec.snackio.game.map.MapRoom;
 import fr.esigelec.snackio.game.pois.iPoi;
 import fr.esigelec.snackio.networking.Position;
 
@@ -352,9 +351,9 @@ public class GameRenderer extends ApplicationAdapter {
      *
      * @param map a map instance
      */
-    public void setSnackioMap(Map map) {
+    void setSnackioMap(Map map) {
         this.snackioMap = map;
-        for(Character character : characters){
+        for (Character character : characters) {
             character.setRoom(map.getName());
         }
     }

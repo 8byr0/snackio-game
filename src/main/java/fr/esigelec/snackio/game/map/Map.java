@@ -1,7 +1,6 @@
 package fr.esigelec.snackio.game.map;
 
 import com.badlogic.gdx.ApplicationAdapter;
-import com.badlogic.gdx.ApplicationListener;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.assets.loaders.resolvers.InternalFileHandleResolver;
@@ -15,7 +14,6 @@ import com.badlogic.gdx.maps.tiled.TmxMapLoader;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
 import fr.esigelec.snackio.game.GameRenderer;
 import fr.esigelec.snackio.networking.Position;
-
 import java.util.HashMap;
 
 /**
@@ -129,9 +127,7 @@ public class Map extends ApplicationAdapter {
         if(null != renderer){
             renderer.dispose();
         }
-        rooms.forEach((id, room) -> {
-            room.dispose();
-        });
+        rooms.forEach((id, room) -> room.dispose());
     }
 
     /**
@@ -243,5 +239,4 @@ public class Map extends ApplicationAdapter {
     public void setName(String name) {
         this.name = name;
     }
-
 }

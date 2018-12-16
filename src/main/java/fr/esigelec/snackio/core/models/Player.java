@@ -22,7 +22,6 @@ import fr.esigelec.snackio.networking.Position;
  * // Create a Player named 'Hugues' whose Character is GOLDEN_KNIGHT
  * Player myPlayer = new Player("Hugues", CharacterFactory.CharacterType.GOLDEN_KNIGHT);
  * <p>
- * /////////////// NETWORK CONTROL
  * // Instantiate Network game engine to control gameplay
  * IGameEngine engine = new NetworkGameEngine(game, myPlayer);
  * // Instantiate a NetClient to exchange with client
@@ -199,6 +198,11 @@ public class Player {
         this.character.setMoving(moving);
     }
 
+    /**
+     * Get the actual room in which the player is (as String)
+     * @return String the name of the room
+     * @throws NoCharacterSetException Exception thrown when the Character of this player is null
+     */
     public String getRoom() throws NoCharacterSetException {
         if (null == character) {
             throw new NoCharacterSetException();
@@ -206,6 +210,11 @@ public class Player {
         return this.character.getRoom();
     }
 
+    /**
+     * Set the actual room in which the player is (as String)
+     * @param room the name of the room
+     * @throws NoCharacterSetException Exception thrown when the Character of this player is null
+     */
     public void setRoom(String room) throws NoCharacterSetException {
         if (null == character) {
             throw new NoCharacterSetException();

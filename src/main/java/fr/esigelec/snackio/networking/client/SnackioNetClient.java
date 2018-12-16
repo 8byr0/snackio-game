@@ -33,7 +33,7 @@ public class SnackioNetClient {
 
     public SnackioNetClient(IGameEngine engine) {
         gameEngine = engine;
-        Player localPlayer = gameEngine.getPlayer();
+
         client = new Client();
         client.start();
 
