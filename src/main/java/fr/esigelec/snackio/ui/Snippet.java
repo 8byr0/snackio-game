@@ -1,7 +1,10 @@
 package fr.esigelec.snackio.ui;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
@@ -51,5 +54,17 @@ public class Snippet implements Initializable {
 
     public void opensettingsView(ActionEvent actionEvent){
         System.out.println("settings");
+        try {
+            FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/menus/controllerConfig.fxml"));
+            Parent root1 = (Parent) fxmlLoader.load();
+            Stage stage = new Stage();
+            stage.setTitle("Controller settings");
+            stage.setScene(new Scene(root1));
+            settingsButton.setDisable(true);
+            stage.showAndWait();
+            settingsButton.setDisable(false);
+        } catch(Exception e) {
+            e.printStackTrace();
+        }
     }
 }
