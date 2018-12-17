@@ -14,6 +14,7 @@ import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 import fr.esigelec.snackio.game.character.Character;
 import fr.esigelec.snackio.game.map.Map;
+import fr.esigelec.snackio.game.overlay.MapInformationOverlay;
 import fr.esigelec.snackio.game.pois.iPoi;
 import fr.esigelec.snackio.networking.Position;
 
@@ -36,6 +37,9 @@ public class GameRenderer extends ApplicationAdapter {
 
     // MAP
     private Map snackioMap;
+
+    // GAME INFO
+    MapInformationOverlay overlay;
 
     // CAMERA
     private OrthographicCamera cam;
@@ -73,6 +77,8 @@ public class GameRenderer extends ApplicationAdapter {
      */
     @Override
     public void create() {
+        overlay = new MapInformationOverlay(SnackioGame.getInstance().getGameState());
+
         Music music = Gdx.audio.newMusic(Gdx.files.internal("sound/dungeon.ogg"));
         music.setVolume(0.15f);
         music.play();
@@ -96,6 +102,8 @@ public class GameRenderer extends ApplicationAdapter {
             poi.create();
             poi.setPosition(this.getRandomPosition(poi));
         }
+
+        overlay.create();
 
         created = true;
     }
@@ -138,15 +146,15 @@ public class GameRenderer extends ApplicationAdapter {
 
 
         for (iPoi poi : pointsOfInterest) {
-            if(poi.isCreated()){
+            if (poi.isCreated()) {
                 poi.render();
-            }
-            else{
+            } else {
                 poi.create();
                 poi.setPosition(this.getRandomPosition(poi));
             }
         }
 
+        overlay.render();
 
     }
 

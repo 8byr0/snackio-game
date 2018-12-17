@@ -38,7 +38,6 @@ public class SecondClient {
         if(servers.size() > 0) {
             cli.connectServer(servers.get(0));
         }
-//        engine.startGame();
-        game.start();
+        engine.startGame();
     }
 }

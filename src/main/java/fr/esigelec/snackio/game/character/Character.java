@@ -4,6 +4,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.graphics.Camera;
 import com.badlogic.gdx.graphics.g2d.Batch;
+import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.maps.MapObject;
@@ -71,7 +72,6 @@ public class Character extends MapObject {
     private AnimatedCharacterSkin skin;
 
     private ShapeRenderer shapeRenderer;
-
 
     /**
      * No-args constructor for KyroNet
@@ -227,6 +227,9 @@ public class Character extends MapObject {
      */
     public void dispose() {
         batch.dispose();
+        skin.dispose();
+        leftStepSound.dispose();
+        rightStepSound.dispose();
     }
 
     /**
@@ -347,6 +350,7 @@ public class Character extends MapObject {
 
     /**
      * Set the room of this character
+     *
      * @param roomName the room name
      */
     public void setRoom(String roomName) {
@@ -356,6 +360,7 @@ public class Character extends MapObject {
 
     /**
      * Get the actual room of this Character
+     *
      * @return the room name
      */
     public String getRoom() {

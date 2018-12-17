@@ -10,6 +10,7 @@ import fr.esigelec.snackio.game.character.motion.Direction;
 import fr.esigelec.snackio.game.character.listeners.PlayerAddedListener;
 import fr.esigelec.snackio.game.map.MapFactory;
 import fr.esigelec.snackio.game.pois.iPoi;
+import fr.esigelec.snackio.game.state.AbstractGameState;
 import fr.esigelec.snackio.networking.Position;
 
 import java.util.ArrayList;
@@ -21,6 +22,7 @@ public abstract class AbstractGameEngine implements IGameEngine{
     protected SnackioGame game;
     private ArrayList<PlayerAddedListener> playerAddedListeners = new ArrayList<>();
     protected Player player;
+    protected AbstractGameState gameState;
 
     /**
      * Default constructor
@@ -77,7 +79,7 @@ public abstract class AbstractGameEngine implements IGameEngine{
      */
     public void startGame() throws GameCannotStartException {
         // Start the game with my player
-        game.start();
+        game.start(gameState);
     }
 
     /**

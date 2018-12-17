@@ -7,33 +7,36 @@ import fr.esigelec.snackio.core.models.Player;
 import fr.esigelec.snackio.game.SnackioGame;
 import fr.esigelec.snackio.game.map.MapFactory;
 import fr.esigelec.snackio.game.pois.Coin;
+import fr.esigelec.snackio.game.state.CoinQuestGameState;
 
 import javax.swing.*;
 
 
 public class SoloGameEngine extends AbstractGameEngine {
-
-    private int coinsToFetch = 10;
-    private int fetchedCoins = 0;
-
     /**
      * Default constructor
      *
      * @param game snackioGame that will be managed by this engine
      */
-    public SoloGameEngine(SnackioGame game, Player player, MapFactory.MapType type) throws NoCharacterSetException, UnhandledControllerException {
+    public SoloGameEngine(SnackioGame game, Player player, MapFactory.MapType type, int coinsToFetch) throws NoCharacterSetException, UnhandledControllerException {
         super(game, player, type);
+
+        gameState = new CoinQuestGameState(coinsToFetch);
+
         Thread gameThread = new Thread(() -> {
 
+            // Add the first coin
             Coin firstCoin = new Coin();
             this.game.addPointOfInterest(firstCoin);
 
             this.game.addPoiTriggeredListener((poi, triggeringPlayer) -> {
-                if (fetchedCoins < coinsToFetch) {
+                if (((CoinQuestGameState) gameState).getFetchedCoins() < ((CoinQuestGameState) gameState).getCoinsToFetch() - 1) {
                     Coin anotherCoin = new Coin();
                     this.game.addPointOfInterest(anotherCoin);
-                    ++fetchedCoins;
+                    ((CoinQuestGameState) gameState).incrementFetchedPoints();
                 } else {
+                    ((CoinQuestGameState) gameState).incrementFetchedPoints();
+
                     JOptionPane jop1;
                     jop1 = new JOptionPane();
                     jop1.showMessageDialog(null, "YEAH ! You finished the game", "Game finished", JOptionPane.INFORMATION_MESSAGE);

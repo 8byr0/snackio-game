@@ -5,6 +5,8 @@ import com.badlogic.gdx.backends.lwjgl3.Lwjgl3ApplicationConfiguration;
 import fr.esigelec.snackio.core.exceptions.GameCannotStartException;
 import fr.esigelec.snackio.core.exceptions.NoCharacterSetException;
 import fr.esigelec.snackio.core.exceptions.UnhandledControllerException;
+import fr.esigelec.snackio.game.state.AbstractGameState;
+import fr.esigelec.snackio.game.state.CoinQuestGameState;
 import fr.esigelec.snackio.core.models.Player;
 import fr.esigelec.snackio.game.character.Character;
 import fr.esigelec.snackio.game.character.motion.IMotionController;
@@ -37,6 +39,7 @@ public class SnackioGame {
     private HashMap<Integer, Player> playersHashmap = new HashMap<>();
 
     private ArrayList<PoiTriggeredListener> poiTriggeredListeners = new ArrayList<>();
+    private AbstractGameState gameState;
 
     /**
      * Singleton implementation
@@ -57,23 +60,18 @@ public class SnackioGame {
         // Add a few bonuses / maluses
         // TODO remove this from here
         PointOfInterest speedBonus = new SpeedBonus();
-        speedBonus.setPosition(800, 800);
         addPointOfInterest(speedBonus);
 
         PointOfInterest speedMalus = new SpeedMalus();
-        speedMalus.setPosition(900, 900);
         addPointOfInterest(speedMalus);
-
-//        Coin testCoin = new Coin();
-//        testCoin.setPosition(750, 200);
-//        addPointOfInterest(testCoin);
     }
 
     /**
      * Start the game (open game window)
      * To successfully execute this, you need to provide a Player and a Map
      */
-    public void start() throws GameCannotStartException {
+    public void start(AbstractGameState gameState) throws GameCannotStartException {
+        this.gameState = gameState;
         if (null == defaultPlayer || null == gameRenderer) {
             throw new GameCannotStartException("Game could not start, Have you instantiated an engine?");
         }
@@ -186,5 +184,13 @@ public class SnackioGame {
         for(PoiTriggeredListener listener: poiTriggeredListeners){
             listener.poiTriggered(poi, player);
         }
+    }
+
+    public AbstractGameState getGameState() {
+        return this.gameState;
+    }
+
+    public void setGameState(CoinQuestGameState gameState) {
+        this.gameState = gameState;
     }
 }

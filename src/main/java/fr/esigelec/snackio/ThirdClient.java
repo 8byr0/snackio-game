@@ -29,7 +29,7 @@ public class ThirdClient {
 
         /////////////// NETWORK CONTROL
         // Instantiate Network game engine to control gameplay
-        AbstractGameEngine engine = new SoloGameEngine(game, myPlayer, MapFactory.MapType.DESERT_CASTLE);
+        AbstractGameEngine engine = new SoloGameEngine(game, myPlayer, MapFactory.MapType.DESERT_CASTLE, 5);
         // Instantiate a NetClient to exchange with client
 
         engine.startGame();
