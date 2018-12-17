@@ -11,12 +11,14 @@ import com.badlogic.gdx.maps.objects.RectangleMapObject;
 import com.badlogic.gdx.math.Intersector;
 import com.badlogic.gdx.math.Polygon;
 import com.badlogic.gdx.math.Rectangle;
+import com.badlogic.gdx.math.Vector2;
 import fr.esigelec.snackio.game.character.Character;
 import fr.esigelec.snackio.game.map.Map;
 import fr.esigelec.snackio.game.pois.iPoi;
 import fr.esigelec.snackio.networking.Position;
 
 import java.util.ArrayList;
+import java.util.concurrent.ThreadLocalRandom;
 
 /**
  * GameRenderer class is in charge of rendering all graphical elements to screen.
@@ -92,6 +94,7 @@ public class GameRenderer extends ApplicationAdapter {
         // Create all POI
         for (iPoi poi : pointsOfInterest) {
             poi.create();
+            poi.setPosition(this.getRandomPosition(poi));
         }
 
         created = true;
@@ -109,8 +112,8 @@ public class GameRenderer extends ApplicationAdapter {
         stateTime += Gdx.graphics.getDeltaTime();
 
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
-        snackioMap.getMap().getLayers().get("characters").getObjects().forEach((character)->{
-            if(!characters.contains(character)){
+        snackioMap.getMap().getLayers().get("characters").getObjects().forEach((character) -> {
+            if (!characters.contains(character)) {
                 snackioMap.getMap().getLayers().get("characters").getObjects().remove(character);
             }
         });
@@ -119,13 +122,11 @@ public class GameRenderer extends ApplicationAdapter {
         for (Character character : characters) {
             if (character.created()) {
                 if (character.getRoom().equals(this.snackioMap.getActiveRoom().getName())) {
-                    if(snackioMap.getMap().getLayers().get("characters").getObjects().getIndex(character) == -1)
-                    {
+                    if (snackioMap.getMap().getLayers().get("characters").getObjects().getIndex(character) == -1) {
                         snackioMap.getMap().getLayers().get("characters").getObjects().add(character);
                     }
-                }else{
-                    if(snackioMap.getMap().getLayers().get("characters").getObjects().getIndex(character) != -1)
-                    {
+                } else {
+                    if (snackioMap.getMap().getLayers().get("characters").getObjects().getIndex(character) != -1) {
                         snackioMap.getMap().getLayers().get("characters").getObjects().remove(character);
                     }
                 }
@@ -137,7 +138,13 @@ public class GameRenderer extends ApplicationAdapter {
 
 
         for (iPoi poi : pointsOfInterest) {
-            poi.render();
+            if(poi.isCreated()){
+                poi.render();
+            }
+            else{
+                poi.create();
+                poi.setPosition(this.getRandomPosition(poi));
+            }
         }
 
 
@@ -359,7 +366,8 @@ public class GameRenderer extends ApplicationAdapter {
 
     /**
      * Method triggered when the windows is resized
-     * @param width new width
+     *
+     * @param width  new width
      * @param height new height
      */
     @Override
@@ -421,5 +429,53 @@ public class GameRenderer extends ApplicationAdapter {
 
     void removeCharacter(Character character) {
         this.characters.remove(character);
+    }
+
+    Position getRandomPosition(iPoi poi) {
+        float mapWidth = this.snackioMap.getMapWidthInPixels();
+        float mapHeight = this.snackioMap.getMapWidthInPixels();
+
+        int tempRandomX = generateRandomInRange(0, mapWidth);
+        int tempRandomY = generateRandomInRange(0, mapHeight);
+        Position tempRandom = new Position(tempRandomX, tempRandomY);
+
+        while ((null != isCharacterCollidingMapObject(this.snackioMap.getMap().getLayers().get("triggers").getObjects(), poi.getActualProjection()) ||
+                (null != isCharacterCollidingMapObject(this.snackioMap.getMap().getLayers().get("obstacles").getObjects(), poi.getActualProjection())))) {
+            tempRandom.x = generateRandomInRange(0, mapWidth);
+            tempRandom.y = generateRandomInRange(0, mapHeight);
+        }
+        return tempRandom;
+    }
+
+    private boolean overlapsAreas(Position pos, ArrayList<Rectangle> rectangles) {
+        boolean overlaps = false;
+        for (Rectangle rectangle : rectangles) {
+
+            if (inRange(pos.x, rectangle.getX(), rectangle.getX() + rectangle.getWidth()) ||
+                    inRange(pos.y, rectangle.getY(), rectangle.getY() + rectangle.getHeight())) {
+                overlaps = true;
+                break;
+            }
+        }
+        return overlaps;
+    }
+
+    private boolean overlapsPolygons(Position pos, ArrayList<Polygon> polygons) {
+        boolean overlaps = false;
+        for (Polygon poly : polygons) {
+            if (Intersector.isPointInPolygon(poly.getVertices(), 1, 0, pos.x, pos.y)) {
+                overlaps = true;
+                break;
+            }
+        }
+        return overlaps;
+    }
+
+    private boolean inRange(float val, float min, float max) {
+        return val >= min && val <= max;
+    }
+
+    private int generateRandomInRange(float min, float max) {
+        return ThreadLocalRandom.current().nextInt((int) min, (int) max);
     }
 }

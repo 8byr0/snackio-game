@@ -49,7 +49,7 @@ public class Character extends MapObject {
     private String room;
 
     // Motion control
-    private int speed = 5;
+    private int speed = 15;
     private boolean moving = false;
     private Position position = new Position(150, 150);
     private iCharacterController motionController;

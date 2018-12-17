@@ -31,6 +31,8 @@ public abstract class AnimatedPointOfInterest extends ApplicationAdapter impleme
     private Position position = new Position(400,400);
     private OrthographicCamera cam;
 
+    private boolean created = false;
+
     @Override
     public void create() {
         batch = new SpriteBatch();
@@ -47,6 +49,7 @@ public abstract class AnimatedPointOfInterest extends ApplicationAdapter impleme
 
         coinAnimation = (Animation)new Animation(0.1f, animationFrames);
 
+        created = true;
     }
 
     /**
@@ -104,5 +107,10 @@ public abstract class AnimatedPointOfInterest extends ApplicationAdapter impleme
      */
     public void setPosition(Position position) {
         this.position = position;
+    }
+
+    @Override
+    public boolean isCreated() {
+        return created;
     }
 }

@@ -14,8 +14,10 @@ import fr.esigelec.snackio.game.pois.Coin;
 import fr.esigelec.snackio.game.pois.PointOfInterest;
 import fr.esigelec.snackio.game.pois.bonuses.SpeedBonus;
 import fr.esigelec.snackio.game.pois.iPoi;
+import fr.esigelec.snackio.game.pois.listeners.PoiTriggeredListener;
 import fr.esigelec.snackio.game.pois.maluses.SpeedMalus;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 
 /**
@@ -34,6 +36,7 @@ public class SnackioGame {
     private Player defaultPlayer;
     private HashMap<Integer, Player> playersHashmap = new HashMap<>();
 
+    private ArrayList<PoiTriggeredListener> poiTriggeredListeners = new ArrayList<>();
 
     /**
      * Singleton implementation
@@ -61,9 +64,9 @@ public class SnackioGame {
         speedMalus.setPosition(900, 900);
         addPointOfInterest(speedMalus);
 
-        Coin testCoin = new Coin();
-        testCoin.setPosition(750, 200);
-        addPointOfInterest(testCoin);
+//        Coin testCoin = new Coin();
+//        testCoin.setPosition(750, 200);
+//        addPointOfInterest(testCoin);
     }
 
     /**
@@ -88,6 +91,7 @@ public class SnackioGame {
     public void coinFound(Coin coin, Character character) {
         System.out.println("YEAH, coin found!");
         gameRenderer.removePointOfInterest(coin);
+        this.triggerPoiListeners(coin, null);
     }
 
     /**
@@ -172,5 +176,15 @@ public class SnackioGame {
             e.printStackTrace();
         }
         this.playersHashmap.remove(playerID);
+    }
+
+    public void addPoiTriggeredListener(PoiTriggeredListener listener){
+        this.poiTriggeredListeners.add(listener);
+    }
+
+    private void triggerPoiListeners(iPoi poi, Player player){
+        for(PoiTriggeredListener listener: poiTriggeredListeners){
+            listener.poiTriggered(poi, player);
+        }
     }
 }

@@ -19,6 +19,9 @@ public abstract class PointOfInterest extends ApplicationAdapter implements iPoi
     // MOTION
     private Position position = new Position(400, 400);
 
+    // STATUS
+    private boolean created = false;
+
     /**
      * Abstract method to implement when inheriting PointOfInterest
      * The content of this method is the code executed when a Character triggers
@@ -35,6 +38,7 @@ public abstract class PointOfInterest extends ApplicationAdapter implements iPoi
     public void create() {
         image = new StaticTexture("poi/speed_bonus.png", 32, 32);
         image.create();
+        this.created = true;
     }
 
     /**
@@ -80,5 +84,10 @@ public abstract class PointOfInterest extends ApplicationAdapter implements iPoi
      */
     public void setPosition(Position position) {
         this.position = position;
+    }
+
+    @Override
+    public boolean isCreated() {
+        return created;
     }
 }

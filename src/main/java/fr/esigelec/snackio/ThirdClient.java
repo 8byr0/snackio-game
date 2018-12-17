@@ -2,6 +2,7 @@ package fr.esigelec.snackio;
 
 import fr.esigelec.snackio.core.NetworkGameEngine;
 import fr.esigelec.snackio.core.AbstractGameEngine;
+import fr.esigelec.snackio.core.SoloGameEngine;
 import fr.esigelec.snackio.core.exceptions.GameCannotStartException;
 import fr.esigelec.snackio.core.exceptions.NoCharacterSetException;
 import fr.esigelec.snackio.core.exceptions.UnhandledCharacterTypeException;
@@ -28,16 +29,9 @@ public class ThirdClient {
 
         /////////////// NETWORK CONTROL
         // Instantiate Network game engine to control gameplay
-        AbstractGameEngine engine = new NetworkGameEngine(game, myPlayer, MapFactory.MapType.DESERT_CASTLE);
+        AbstractGameEngine engine = new SoloGameEngine(game, myPlayer, MapFactory.MapType.DESERT_CASTLE);
         // Instantiate a NetClient to exchange with client
-        SnackioNetClient cli = new SnackioNetClient(engine);
-        List<InetAddress> servers = cli.getAvailableServers();
-        System.out.println(servers);
 
-        if(servers.size() > 0) {
-            cli.connectServer(servers.get(0));
-        }
-//        engine.startGame();
-        game.start();
+        engine.startGame();
     }
 }

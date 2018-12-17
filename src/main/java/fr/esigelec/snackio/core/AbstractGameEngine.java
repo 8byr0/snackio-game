@@ -18,9 +18,9 @@ import java.util.ArrayList;
  * This interface declares all the method that are allowed to be called by SnackioNetServer instance.
  */
 public abstract class AbstractGameEngine implements IGameEngine{
-    private SnackioGame game;
+    protected SnackioGame game;
     private ArrayList<PlayerAddedListener> playerAddedListeners = new ArrayList<>();
-    private Player player;
+    protected Player player;
 
     /**
      * Default constructor

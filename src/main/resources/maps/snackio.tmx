@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.2" tiledversion="1.2.1" orientation="orthogonal" renderorder="right-down" width="100" height="100" tilewidth="32" tileheight="32" infinite="0" nextlayerid="38" nextobjectid="99">
+<map version="1.2" tiledversion="1.2.1" orientation="orthogonal" renderorder="right-down" width="100" height="100" tilewidth="32" tileheight="32" infinite="0" nextlayerid="38" nextobjectid="102">
  <tileset firstgid="1" source="base_out_atlas.tsx"/>
  <tileset firstgid="1025" source="terrain_atlas.tsx"/>
  <group id="13" name="environment">
@@ -2277,6 +2277,7 @@
   <object id="96" x="352.182" y="3116.55" width="31.4545" height="44.5455"/>
   <object id="97" x="362.182" y="3041.27" width="11.8182" height="79.6364"/>
   <object id="98" x="549.75" y="2949.5" width="20.25" height="59.75"/>
+  <object id="101" x="586" y="897" width="748" height="681"/>
  </objectgroup>
  <objectgroup id="25" name="triggers">
   <object id="76" name="CAVE_ENTRANCE_EXT" type="door" x="554.182" y="2665.82">
