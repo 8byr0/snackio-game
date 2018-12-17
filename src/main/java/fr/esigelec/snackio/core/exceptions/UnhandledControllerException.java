@@ -1,6 +1,6 @@
 package fr.esigelec.snackio.core.exceptions;
 
-import fr.esigelec.snackio.game.character.motion.MotionController;
+import fr.esigelec.snackio.game.character.motion.IMotionController;
 
 /**
  * Exception thrown when a given controller is not available
@@ -16,7 +16,7 @@ public class UnhandledControllerException extends Exception {
     /**
      * Class constructor
      */
-    public UnhandledControllerException(MotionController controller){
+    public UnhandledControllerException(IMotionController controller){
         super("The given controller (" + controller.toString() + ")is unhandled and cannot be set for this Player / Character.");
     }
 

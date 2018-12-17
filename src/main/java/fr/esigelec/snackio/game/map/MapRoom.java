@@ -1,12 +1,5 @@
 package fr.esigelec.snackio.game.map;
 
-import com.badlogic.gdx.maps.MapObject;
-import com.badlogic.gdx.maps.MapObjects;
-import com.badlogic.gdx.maps.objects.PolygonMapObject;
-import com.badlogic.gdx.maps.objects.RectangleMapObject;
-import com.badlogic.gdx.math.Rectangle;
-import fr.esigelec.snackio.networking.Position;
-
 /**
  * MapRoom is a map than can be accessed from another map.
  * Let's consider it's a kind of room inside the map.
@@ -28,7 +21,7 @@ import fr.esigelec.snackio.networking.Position;
  * To do so, the room must also have a `triggers` layer and contain a shape with the type `DOOR` and the name `BACK_TO_MAIN`
  */
 public class MapRoom extends Map {
-    private Map mapContainer;
+    private Map mainMap;
 
     /**
      * Constructor to create a map from a given map path
@@ -38,14 +31,23 @@ public class MapRoom extends Map {
      */
     MapRoom(String mapPath, String roomName, Map container) {
         super(mapPath, roomName);
-        this.mapContainer = container;
+        this.mainMap = container;
     }
 
+    /**
+     * Set the activeRoom.
+     * As long as we're already in a room, this method will just call mainMap to reset its view to it.
+     * @param roomName name of the triggered door
+     */
     @Override
-    public void setActiveRoom(String doorName) {
-        this.mapContainer.setActiveRoom(doorName);
+    public void setActiveRoom(String roomName) {
+        this.mainMap.setActiveRoom(roomName);
     }
 
+    /**
+     * Adding a Room to another room is currently not supported so this method override does nothing.
+     * @param room the room
+     */
     @Override
     public void addRoom(MapRoom room) {
         System.out.println("Adding a Room to another Room is not allowed.");

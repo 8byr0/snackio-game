@@ -7,7 +7,7 @@ import fr.esigelec.snackio.game.character.*;
 import fr.esigelec.snackio.game.character.Character;
 import fr.esigelec.snackio.game.character.motion.Direction;
 import fr.esigelec.snackio.game.character.motion.KeyboardController;
-import fr.esigelec.snackio.game.character.motion.MotionController;
+import fr.esigelec.snackio.game.character.motion.IMotionController;
 import fr.esigelec.snackio.game.character.motion.NetworkController;
 import fr.esigelec.snackio.networking.Position;
 
@@ -31,7 +31,7 @@ import fr.esigelec.snackio.networking.Position;
  * game.start(myPlayer);
  * }
  */
-public class Player {
+public class Player implements IRMIExecutablePlayer{
     private int id;
     private Character character;
 
@@ -74,15 +74,15 @@ public class Player {
 
     /**
      * Set the motion controller that will be used by the Player to control his Character
-     * The controller must be one of {@link MotionController}
+     * The controller must be one of {@link IMotionController}
      *
      * @param controller The controller triggered during game rendering
      * @throws UnhandledControllerException Thrown when the controller has no candidate in this method.
      */
-    public void setMotionController(MotionController controller) throws UnhandledControllerException {
-        if (controller == MotionController.KEYBOARD) {
+    public void setMotionController(IMotionController controller) throws UnhandledControllerException {
+        if (controller == IMotionController.KEYBOARD) {
             this.character.setMotionController(new KeyboardController());
-        } else if (controller == MotionController.NETWORK) {
+        } else if (controller == IMotionController.NETWORK) {
             this.character.setMotionController(new NetworkController());
         } else {
             throw new UnhandledControllerException(controller);

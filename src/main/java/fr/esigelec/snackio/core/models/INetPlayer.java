@@ -14,7 +14,7 @@ public interface INetPlayer {
      *
      * @param localPlayer the player that just registered
      */
-    void registerPlayer (Player localPlayer);
+    void registerPlayer (IRMIExecutablePlayer localPlayer);
 
     /**
      * Method to notify the server that the Player associated to this NetPlayer instance has been updated

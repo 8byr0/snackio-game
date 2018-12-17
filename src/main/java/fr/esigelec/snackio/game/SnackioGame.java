@@ -7,7 +7,7 @@ import fr.esigelec.snackio.core.exceptions.NoCharacterSetException;
 import fr.esigelec.snackio.core.exceptions.UnhandledControllerException;
 import fr.esigelec.snackio.core.models.Player;
 import fr.esigelec.snackio.game.character.Character;
-import fr.esigelec.snackio.game.character.motion.MotionController;
+import fr.esigelec.snackio.game.character.motion.IMotionController;
 import fr.esigelec.snackio.game.map.Map;
 import fr.esigelec.snackio.game.map.MapFactory;
 import fr.esigelec.snackio.game.pois.Coin;
@@ -117,9 +117,9 @@ public class SnackioGame {
     public void addPlayer(Player player, boolean active) throws UnhandledControllerException, NoCharacterSetException {
         if (active) {
             this.defaultPlayer = player;
-            defaultPlayer.setMotionController(MotionController.KEYBOARD);
+            defaultPlayer.setMotionController(IMotionController.KEYBOARD);
         } else {
-            player.setMotionController(MotionController.NETWORK);
+            player.setMotionController(IMotionController.NETWORK);
         }
 
         gameRenderer.addCharacter(player.getCharacter(), active);

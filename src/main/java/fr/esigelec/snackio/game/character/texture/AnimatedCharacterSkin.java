@@ -33,6 +33,14 @@ public class AnimatedCharacterSkin extends ApplicationAdapter {
 
     }
 
+    /**
+     * Class constructor to instantiate an AnimatedCharacterSkin
+     * TODO pass a mapped config of texture to define which frame belongs to which direction / animation
+     *
+     * @param pathToTexture Absolute path to texture img file (e.g. `sprites/character.png`)
+     * @param cols          number of columns in the texture
+     * @param rows          number of rows in the texture
+     */
     public AnimatedCharacterSkin(String pathToTexture, int cols, int rows) {
         this.pathToSprite = pathToTexture;
         this.COLS = cols;
@@ -40,6 +48,9 @@ public class AnimatedCharacterSkin extends ApplicationAdapter {
         animationsHashMap = new HashMap<>();
     }
 
+    /**
+     * Method called during GUI creation (called once)
+     */
     @Override
     public void create() {
         characterTexture = new Texture(Gdx.files.internal(pathToSprite));
@@ -47,6 +58,9 @@ public class AnimatedCharacterSkin extends ApplicationAdapter {
 
     }
 
+    /**
+     * Method called during GUI render (called continuously)
+     */
     @Override
     public void render() {
         stateTime += Gdx.graphics.getDeltaTime();
@@ -59,23 +73,23 @@ public class AnimatedCharacterSkin extends ApplicationAdapter {
     private void loadAllAnimations() {
         // LOAD STATIC TEXTURES
         // Static NORTH
-        this.animationsHashMap.put(Character.CharacterStatus.STATIC_NORTH, getAnimation(characterTexture, 0,1,0));
+        this.animationsHashMap.put(Character.CharacterStatus.STATIC_NORTH, getAnimation(characterTexture, 0, 1, 0));
         // Static WEST
-        this.animationsHashMap.put(Character.CharacterStatus.STATIC_WEST, getAnimation(characterTexture, 0,1,1));
+        this.animationsHashMap.put(Character.CharacterStatus.STATIC_WEST, getAnimation(characterTexture, 0, 1, 1));
         // Static SOUTH
-        this.animationsHashMap.put(Character.CharacterStatus.STATIC_SOUTH, getAnimation(characterTexture, 0,1,2));
+        this.animationsHashMap.put(Character.CharacterStatus.STATIC_SOUTH, getAnimation(characterTexture, 0, 1, 2));
         // Static EAST
-        this.animationsHashMap.put(Character.CharacterStatus.STATIC_EAST, getAnimation(characterTexture, 0,1,3));
+        this.animationsHashMap.put(Character.CharacterStatus.STATIC_EAST, getAnimation(characterTexture, 0, 1, 3));
 
         // LOAD ANIMATIONS
         // Walking NORTH
-        this.animationsHashMap.put(Character.CharacterStatus.MOVING_NORTH, getAnimation(characterTexture, 1,9,0));
+        this.animationsHashMap.put(Character.CharacterStatus.MOVING_NORTH, getAnimation(characterTexture, 1, 9, 0));
         // Walking WEST
-        this.animationsHashMap.put(Character.CharacterStatus.MOVING_WEST, getAnimation(characterTexture, 1,9,1));
+        this.animationsHashMap.put(Character.CharacterStatus.MOVING_WEST, getAnimation(characterTexture, 1, 9, 1));
         // Walking SOUTH
-        this.animationsHashMap.put(Character.CharacterStatus.MOVING_SOUTH, getAnimation(characterTexture, 1,9,2));
+        this.animationsHashMap.put(Character.CharacterStatus.MOVING_SOUTH, getAnimation(characterTexture, 1, 9, 2));
         // Walking EAST
-        this.animationsHashMap.put(Character.CharacterStatus.MOVING_EAST, getAnimation(characterTexture, 1,9,3));
+        this.animationsHashMap.put(Character.CharacterStatus.MOVING_EAST, getAnimation(characterTexture, 1, 9, 3));
     }
 
     /**
@@ -111,38 +125,41 @@ public class AnimatedCharacterSkin extends ApplicationAdapter {
         if (moving) {
             switch (direction) {
                 case NORTH:
-                    currentFrame = (TextureRegion)animationsHashMap.get(Character.CharacterStatus.MOVING_NORTH).getKeyFrame(stateTime, true);
+                    currentFrame = (TextureRegion) animationsHashMap.get(Character.CharacterStatus.MOVING_NORTH).getKeyFrame(stateTime, true);
                     break;
                 case WEST:
-                    currentFrame = (TextureRegion)animationsHashMap.get(Character.CharacterStatus.MOVING_WEST).getKeyFrame(stateTime, true);
+                    currentFrame = (TextureRegion) animationsHashMap.get(Character.CharacterStatus.MOVING_WEST).getKeyFrame(stateTime, true);
                     break;
                 case SOUTH:
-                    currentFrame = (TextureRegion)animationsHashMap.get(Character.CharacterStatus.MOVING_SOUTH).getKeyFrame(stateTime, true);
+                    currentFrame = (TextureRegion) animationsHashMap.get(Character.CharacterStatus.MOVING_SOUTH).getKeyFrame(stateTime, true);
                     break;
                 case EAST:
-                    currentFrame = (TextureRegion)animationsHashMap.get(Character.CharacterStatus.MOVING_EAST).getKeyFrame(stateTime, true);
+                    currentFrame = (TextureRegion) animationsHashMap.get(Character.CharacterStatus.MOVING_EAST).getKeyFrame(stateTime, true);
                     break;
             }
         } else {
             switch (direction) {
                 case NORTH:
-                    currentFrame = (TextureRegion)animationsHashMap.get(Character.CharacterStatus.STATIC_NORTH).getKeyFrame(stateTime, true);
+                    currentFrame = (TextureRegion) animationsHashMap.get(Character.CharacterStatus.STATIC_NORTH).getKeyFrame(stateTime, true);
                     break;
                 case WEST:
-                    currentFrame = (TextureRegion)animationsHashMap.get(Character.CharacterStatus.STATIC_WEST).getKeyFrame(stateTime, true);
+                    currentFrame = (TextureRegion) animationsHashMap.get(Character.CharacterStatus.STATIC_WEST).getKeyFrame(stateTime, true);
                     break;
                 case SOUTH:
-                    currentFrame = (TextureRegion)animationsHashMap.get(Character.CharacterStatus.STATIC_SOUTH).getKeyFrame(stateTime, true);
+                    currentFrame = (TextureRegion) animationsHashMap.get(Character.CharacterStatus.STATIC_SOUTH).getKeyFrame(stateTime, true);
                     break;
                 case EAST:
-                    currentFrame = (TextureRegion)animationsHashMap.get(Character.CharacterStatus.STATIC_EAST).getKeyFrame(stateTime, true);
+                    currentFrame = (TextureRegion) animationsHashMap.get(Character.CharacterStatus.STATIC_EAST).getKeyFrame(stateTime, true);
                     break;
             }
         }
         return currentFrame;
     }
 
-
+    /**
+     * Set the duration of each frame
+     * @param duration the duration // TODO find which unit it is
+     */
     public void setFrameDuration(float duration) {
         this.frameDuration = duration;
     }

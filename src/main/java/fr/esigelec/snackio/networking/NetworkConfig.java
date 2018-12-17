@@ -58,6 +58,11 @@ public class NetworkConfig {
         kryo.register(KeyboardController.class);
         kryo.register(NetworkController.class);
 
+        // GDX
+        kryo.register(com.badlogic.gdx.graphics.Color.class);
+        kryo.register(com.badlogic.gdx.maps.MapProperties.class);
+        kryo.register(com.badlogic.gdx.utils.ObjectMap.class);
+
         // The classes of all method parameters and return values
         // for remote objects must also be registered.
         kryo.register(String[].class);

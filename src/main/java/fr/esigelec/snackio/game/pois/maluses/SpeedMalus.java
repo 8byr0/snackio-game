@@ -10,6 +10,9 @@ import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
+/**
+ * A speed malus is a malus which will reduce by 2 the speed of a Character when triggered
+ */
 @SuppressWarnings("Duplicates")
 public class SpeedMalus extends PointOfInterest {
 

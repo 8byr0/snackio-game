@@ -7,6 +7,9 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import fr.esigelec.snackio.game.GameRenderer;
 
+/**
+ * A static texture is a texture that is not animated
+ */
 public class StaticTexture extends ApplicationAdapter {
     private int WIDTH;
     private int HEIGHT;
@@ -18,11 +21,12 @@ public class StaticTexture extends ApplicationAdapter {
 
     /**
      * Create a StaticTexture instance base on an image
+     *
      * @param pathToIcon path to texture image
-     * @param width width of the image
-     * @param height height of the image
+     * @param width      width of the image
+     * @param height     height of the image
      */
-    public StaticTexture(String pathToIcon, int width, int height){
+    public StaticTexture(String pathToIcon, int width, int height) {
         this.pathToIcon = pathToIcon;
         WIDTH = width;
         HEIGHT = height;
@@ -39,7 +43,12 @@ public class StaticTexture extends ApplicationAdapter {
         cam = GameRenderer.getInstance().getCamera();
     }
 
-    public void render(float x, float y){
+    /**
+     * Method called continuously when rendering game
+     * @param x x position
+     * @param y y position
+     */
+    public void render(float x, float y) {
         batch.setProjectionMatrix(cam.combined);
 
         batch.begin();
@@ -47,16 +56,29 @@ public class StaticTexture extends ApplicationAdapter {
         batch.end();
     }
 
+    /**
+     * Behavior when this object is destroyed
+     */
     @Override
-    public void dispose(){
+    public void dispose() {
         batch.dispose();
         texture.dispose();
     }
 
+    /**
+     * Get the width of the texture
+     *
+     * @return width value
+     */
     public float getHeight() {
         return HEIGHT;
     }
 
+    /**
+     * Get the height of the texture
+     *
+     * @return height value
+     */
     public float getWidth() {
         return WIDTH;
     }

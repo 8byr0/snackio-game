@@ -6,12 +6,13 @@ import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.assets.loaders.resolvers.InternalFileHandleResolver;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
+import com.badlogic.gdx.graphics.g2d.Batch;
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.maps.MapProperties;
 import com.badlogic.gdx.maps.objects.PolygonMapObject;
 import com.badlogic.gdx.maps.objects.RectangleMapObject;
 import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.TmxMapLoader;
-import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
 import fr.esigelec.snackio.game.GameRenderer;
 import fr.esigelec.snackio.networking.Position;
 import java.util.HashMap;
@@ -23,7 +24,7 @@ public class Map extends ApplicationAdapter {
 
     // Graphical objects
     private TiledMap map;
-    private OrthogonalTiledMapRenderer renderer;
+    private CustomTiledMapRenderer renderer;
     private boolean created = false;
 
     // Map info
@@ -64,8 +65,9 @@ public class Map extends ApplicationAdapter {
         // Retrieve Game camera
         cam = GameRenderer.getInstance().getCamera();
 
+        Batch batch = new SpriteBatch();
         // Initialize map renderer
-        renderer = new OrthogonalTiledMapRenderer(map, 1f);
+        renderer = new CustomTiledMapRenderer(map, 1f, batch);
 
         created = true;
     }
@@ -207,6 +209,12 @@ public class Map extends ApplicationAdapter {
         return found;
     }
 
+    /**
+     * Get the position of a Door based on its name
+     * TODO throw exception if door not found
+     * @param doorName the name of the door
+     * @return the Position of the door on this map
+     */
     public Position getDoorPosition(String doorName) {
         Position pos = new Position();
         boolean found = false;
@@ -232,10 +240,18 @@ public class Map extends ApplicationAdapter {
         return pos;
     }
 
+    /**
+     * Get the name of this map
+     * @return the name of this map
+     */
     public String getName() {
         return name;
     }
 
+    /**
+     * Set the name of this map
+     * @param name the new name to give to this map
+     */
     public void setName(String name) {
         this.name = name;
     }

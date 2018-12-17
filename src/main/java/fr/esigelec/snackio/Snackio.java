@@ -18,7 +18,9 @@ import org.apache.logging.log4j.Logger;
 import java.net.InetAddress;
 import java.util.List;
 
-
+/**
+ * Entry point of the full software
+ */
 public class Snackio extends Application {
     private static final Logger logger = LogManager.getLogger(Snackio.class);
 
@@ -52,7 +54,7 @@ public class Snackio extends Application {
         // Instantiate a NetClient to exchange with client
         SnackioNetClient cli = new SnackioNetClient(engine);
         List<InetAddress> servers = cli.getAvailableServers();
-        System.out.println(servers);
+        logger.debug(servers);
 
         if(servers.size() > 0) {
             cli.connectServer(servers.get(0));

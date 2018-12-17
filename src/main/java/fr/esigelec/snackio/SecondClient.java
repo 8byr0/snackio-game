@@ -14,6 +14,9 @@ import fr.esigelec.snackio.networking.client.SnackioNetClient;
 import java.net.InetAddress;
 import java.util.List;
 
+/**
+ * THIS CLASS IS ONLY TO DEBUG USING MULTIPLE CLIENTS
+ */
 public class SecondClient {
     @SuppressWarnings("Duplicates")
     public static void main(String[] args) throws GameCannotStartException, UnhandledCharacterTypeException, NoCharacterSetException, UnhandledControllerException {

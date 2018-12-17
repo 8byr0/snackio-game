@@ -1,6 +1,6 @@
 package fr.esigelec.snackio.game.pois;
 
-import com.badlogic.gdx.ApplicationListener;
+import com.badlogic.gdx.ApplicationAdapter;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
@@ -12,7 +12,11 @@ import fr.esigelec.snackio.game.GameRenderer;
 import fr.esigelec.snackio.game.character.Character;
 import fr.esigelec.snackio.networking.Position;
 
-public abstract class AnimatedPointOfInterest implements ApplicationListener, iPoi {
+/**
+ * Animated POI has the same behavior as a static POI but its graphical behavior is animated
+ * TODO when a position is specified, the room should also be handled
+ */
+public abstract class AnimatedPointOfInterest extends ApplicationAdapter implements iPoi {
     private static final int WIDTH = 32;
     private static final int HEIGHT = 32;
 
@@ -45,11 +49,9 @@ public abstract class AnimatedPointOfInterest implements ApplicationListener, iP
 
     }
 
-    @Override
-    public void resize(int i, int i1) {
-
-    }
-
+    /**
+     * Method called continuously to render the graphics
+     */
     @Override
     public void render() {
         stateTime += Gdx.graphics.getDeltaTime();
@@ -60,31 +62,47 @@ public abstract class AnimatedPointOfInterest implements ApplicationListener, iP
         batch.end();
     }
 
+    /**
+     * Get the current frame of this animation
+     * @param stateTime state to get
+     * @return the Frame to display at given time
+     */
     private TextureRegion getCurrentFrame(float stateTime){
         return (TextureRegion)coinAnimation.getKeyFrame(stateTime, true);
     }
 
-    @Override
-    public void pause() {
-
-    }
-
-    @Override
-    public void resume() {
-
-    }
-
+    /**
+     * Method called when this object is destroyed
+     */
     @Override
     public void dispose() {
-
+        batch.dispose();
     }
 
+    /**
+     * Get the projection of this POI on the map
+     * @return Rectangle corresponding to projection
+     */
     public Rectangle getActualProjection() {
         return new Rectangle(position.x, position.y, WIDTH, HEIGHT);
     }
 
+    /**
+     * Set the position of this PointOfInterest on the map
+     * @param x x position
+     * @param y y position
+     */
     public void setPosition(float x, float y){
         position.x = x;
         position.y = y;
+    }
+
+    /**
+     * Set the position of this PointOfInterest on the map
+     *
+     * @param position position on the map
+     */
+    public void setPosition(Position position) {
+        this.position = position;
     }
 }

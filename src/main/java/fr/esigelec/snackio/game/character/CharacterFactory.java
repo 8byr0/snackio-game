@@ -1,7 +1,6 @@
 package fr.esigelec.snackio.game.character;
 
 import fr.esigelec.snackio.core.exceptions.UnhandledCharacterTypeException;
-import fr.esigelec.snackio.core.exceptions.UnhandledControllerException;
 import fr.esigelec.snackio.game.character.texture.AnimatedCharacterSkin;
 
 /**

@@ -1,10 +1,12 @@
 package fr.esigelec.snackio.game.character;
 
-import com.badlogic.gdx.ApplicationAdapter;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.graphics.Camera;
+import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
+import com.badlogic.gdx.maps.MapObject;
 import com.badlogic.gdx.math.Rectangle;
 import fr.esigelec.snackio.game.GameRenderer;
 import fr.esigelec.snackio.game.character.listeners.MoveListener;
@@ -20,7 +22,7 @@ import java.util.ArrayList;
 /**
  * Character instance is the GUI projection of a player on the map.
  */
-public class Character extends ApplicationAdapter {
+public class Character extends MapObject {
 
     public enum CharacterStatus {
         // STATIC
@@ -67,6 +69,9 @@ public class Character extends ApplicationAdapter {
     private SpriteBatch batch;
 
     private AnimatedCharacterSkin skin;
+
+    private ShapeRenderer shapeRenderer;
+
 
     /**
      * No-args constructor for KyroNet
@@ -157,15 +162,11 @@ public class Character extends ApplicationAdapter {
      * The render() method is called continuously by libgdx to perform
      * rendering.
      */
-    @Override
-    public void render() {
+    public void render(Batch batch) {
         stateTime += Gdx.graphics.getDeltaTime();
         batch.setProjectionMatrix(cam.combined);
-
         handleMotionController();
-        batch.begin();
         batch.draw(skin.getCurrentFrame(direction, moving), position.x, position.y);
-        batch.end();
         skin.render();
     }
 
@@ -177,7 +178,6 @@ public class Character extends ApplicationAdapter {
             motionController.execute(this);
         }
     }
-
 
     /**
      * Set the position of the character on the map
@@ -212,13 +212,12 @@ public class Character extends ApplicationAdapter {
      * Implementation of ApplicationListener's interface.
      * This method is called once when libgdx engine is ready and running.
      */
-    @Override
     public void create() {
         leftStepSound = Gdx.audio.newMusic(Gdx.files.internal("sound/step_left.ogg"));
         rightStepSound = Gdx.audio.newMusic(Gdx.files.internal("sound/step_right.ogg"));
         batch = new SpriteBatch();
         this.cam = GameRenderer.getInstance().getCamera();
-
+        shapeRenderer = new ShapeRenderer();
         skin.create();
         created = true;
     }
@@ -226,7 +225,6 @@ public class Character extends ApplicationAdapter {
     /**
      * Dispose all elements created in create() method
      */
-    @Override
     public void dispose() {
         batch.dispose();
     }
@@ -347,11 +345,19 @@ public class Character extends ApplicationAdapter {
         return moving;
     }
 
+    /**
+     * Set the room of this character
+     * @param roomName the room name
+     */
     public void setRoom(String roomName) {
         this.room = roomName;
         this.triggerRoomChangeListeners();
     }
 
+    /**
+     * Get the actual room of this Character
+     * @return the room name
+     */
     public String getRoom() {
         return this.room;
     }

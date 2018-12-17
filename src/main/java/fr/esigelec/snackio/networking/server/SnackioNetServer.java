@@ -14,6 +14,7 @@ import com.esotericsoftware.minlog.Log;
 import fr.esigelec.snackio.core.IGameEngine;
 import fr.esigelec.snackio.core.exceptions.NoCharacterSetException;
 import fr.esigelec.snackio.core.exceptions.UnhandledControllerException;
+import fr.esigelec.snackio.core.models.IRMIExecutablePlayer;
 import fr.esigelec.snackio.core.models.Player;
 import fr.esigelec.snackio.game.character.motion.Direction;
 import fr.esigelec.snackio.networking.Position;
@@ -115,7 +116,7 @@ public class SnackioNetServer {
     class NetPlayer extends Connection implements INetPlayer {
         IGameEngine gameEngine;
         String name;
-        Player localPlayer;
+        IRMIExecutablePlayer localPlayer;
 
         /**
          * Default Class ocnstructor
@@ -136,7 +137,7 @@ public class SnackioNetServer {
          *
          * @param receivedPlayer the player that just registered
          */
-        public void registerPlayer(Player receivedPlayer) {
+        public void registerPlayer(IRMIExecutablePlayer receivedPlayer) {
             this.localPlayer = receivedPlayer;
 
             Thread t = new Thread(() -> {
@@ -178,6 +179,11 @@ public class SnackioNetServer {
             t.start();
         }
 
+        /**
+         * Update the room of a player
+         * @param id ID of the updated Player
+         * @param room new room name on the Game's map
+         */
         @Override
         public void updatePlayerRoom(int id, String room) {
             Thread t = new Thread(() -> {
@@ -196,6 +202,11 @@ public class SnackioNetServer {
 
     }
 
+    /**
+     * This main is only intended for debug purpose.
+     * @param args args
+     * @throws IOException exception
+     */
     public static void main(String[] args) throws IOException {
         Log.set(Log.LEVEL_DEBUG);
         new SnackioNetServer();

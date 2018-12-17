@@ -14,7 +14,7 @@ import com.esotericsoftware.kryonet.rmi.ObjectSpace;
 import fr.esigelec.snackio.Snackio;
 import fr.esigelec.snackio.core.IGameEngine;
 import fr.esigelec.snackio.core.exceptions.NoCharacterSetException;
-import fr.esigelec.snackio.core.models.Player;
+import fr.esigelec.snackio.core.models.IRMIExecutablePlayer;
 import fr.esigelec.snackio.core.models.INetPlayer;
 import fr.esigelec.snackio.networking.NetworkConfig;
 import org.apache.logging.log4j.LogManager;
@@ -22,6 +22,7 @@ import org.apache.logging.log4j.Logger;
 
 /**
  * Network interface that exchanges with server.
+ *
  */
 public class SnackioNetClient {
     private static final Logger logger = LogManager.getLogger(Snackio.class);
@@ -31,6 +32,10 @@ public class SnackioNetClient {
 
     private IGameEngine gameEngine;
 
+    /**
+     * Default class constructor
+     * @param engine the game engine to use
+     */
     public SnackioNetClient(IGameEngine engine) {
         gameEngine = engine;
 
@@ -60,8 +65,12 @@ public class SnackioNetClient {
 
     }
 
+    /**
+     * Connect a SnackioNetServer
+     * @param serverAddress the address of the server. see {@link SnackioNetClient#getAvailableServers()} to find available servers
+     */
     public void connectServer(InetAddress serverAddress) {
-        Player localPlayer = gameEngine.getPlayer();
+        IRMIExecutablePlayer localPlayer = gameEngine.getPlayer();
 
         new Thread("Connect") {
             public void run() {
@@ -104,6 +113,11 @@ public class SnackioNetClient {
 
     }
 
+    /**
+     * Use lan discovery to find all available servers on lan
+     * TODO instead of a list of addresses return a list of objects containing address, name and remaining players
+     * @return a list of all addresses
+     */
     public List<InetAddress> getAvailableServers() {
         List<InetAddress> availableServers;
         availableServers = client.discoverHosts(NetworkConfig.udpPort, NetworkConfig.timeout);

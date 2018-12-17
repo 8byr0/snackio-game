@@ -2,10 +2,8 @@ package fr.esigelec.snackio.game;
 
 import com.badlogic.gdx.*;
 import com.badlogic.gdx.audio.Music;
-import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
-import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.maps.MapObject;
 import com.badlogic.gdx.maps.MapObjects;
 import com.badlogic.gdx.maps.objects.PolygonMapObject;
@@ -33,7 +31,6 @@ public class GameRenderer extends ApplicationAdapter {
     // Rendering
     private boolean created = false;
     private float stateTime;
-    private ShapeRenderer shapeRenderer;
 
     // MAP
     private Map snackioMap;
@@ -97,8 +94,6 @@ public class GameRenderer extends ApplicationAdapter {
             poi.create();
         }
 
-        // Initialize map renderer
-        shapeRenderer = new ShapeRenderer();
         created = true;
     }
 
@@ -115,32 +110,27 @@ public class GameRenderer extends ApplicationAdapter {
 
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
+
+        // Add Characters to map's characters layer
+        for (Character character : characters) {
+            if (character.created()) {
+                if (character.getRoom().equals(this.snackioMap.getActiveRoom().getName())) {
+                    if(snackioMap.getMap().getLayers().get("characters").getObjects().getIndex(character) == -1)
+                    {
+                        snackioMap.getMap().getLayers().get("characters").getObjects().add(character);
+                    }
+                }
+            }
+        }
+
         // Render tiled map
         snackioMap.render();
-
-        float x = activeCharacter.getPosition().x;
-        float y = activeCharacter.getPosition().y;
-        shapeRenderer.setProjectionMatrix(cam.combined);
-
-        shapeRenderer.begin(ShapeRenderer.ShapeType.Filled); //I'm using the Filled ShapeType, but remember you have three of them
-        shapeRenderer.setColor(Color.LIGHT_GRAY);
-
-        shapeRenderer.rect(x + 16, y, 32, 16); //assuming you have created those x, y, width and height variables
-        shapeRenderer.end();
 
 
         for (iPoi poi : pointsOfInterest) {
             poi.render();
         }
 
-        // Render all created characters
-        for (Character character : characters) {
-            if (character.created()) {
-                if (character.getRoom().equals(this.snackioMap.getActiveRoom().getName())) {
-                    character.render();
-                }
-            }
-        }
 
     }
 
@@ -358,6 +348,11 @@ public class GameRenderer extends ApplicationAdapter {
         }
     }
 
+    /**
+     * Method triggered when the windows is resized
+     * @param width new width
+     * @param height new height
+     */
     @Override
     public void resize(int width, int height) {
         cam.viewportWidth = Gdx.graphics.getWidth();

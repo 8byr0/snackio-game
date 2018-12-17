@@ -3,6 +3,7 @@ package fr.esigelec.snackio.core;
 import fr.esigelec.snackio.core.exceptions.GameCannotStartException;
 import fr.esigelec.snackio.core.exceptions.NoCharacterSetException;
 import fr.esigelec.snackio.core.exceptions.UnhandledControllerException;
+import fr.esigelec.snackio.core.models.IRMIExecutablePlayer;
 import fr.esigelec.snackio.core.models.Player;
 import fr.esigelec.snackio.game.SnackioGame;
 import fr.esigelec.snackio.game.character.motion.Direction;
@@ -60,7 +61,7 @@ public class NetworkGameEngine implements IGameEngine {
      * @return Player instance
      */
     @Override
-    public Player getPlayer() {
+    public IRMIExecutablePlayer getPlayer() {
         return player;
     }
 
@@ -115,9 +116,9 @@ public class NetworkGameEngine implements IGameEngine {
      * @param player the player to add to the game
      */
     @Override
-    public void addPlayer(Player player) throws NoCharacterSetException, UnhandledControllerException {
-        game.addPlayer(player, false);
-        triggerPlayerAddedListeners(player);
+    public void addPlayer(IRMIExecutablePlayer player) throws NoCharacterSetException, UnhandledControllerException {
+        game.addPlayer((Player)player, false);
+        triggerPlayerAddedListeners((Player)player);
     }
 
     /**
