@@ -119,6 +119,11 @@ public class GameRenderer extends ApplicationAdapter {
                     {
                         snackioMap.getMap().getLayers().get("characters").getObjects().add(character);
                     }
+                }else{
+                    if(snackioMap.getMap().getLayers().get("characters").getObjects().getIndex(character) != -1)
+                    {
+                        snackioMap.getMap().getLayers().get("characters").getObjects().remove(character);
+                    }
                 }
             }
         }
