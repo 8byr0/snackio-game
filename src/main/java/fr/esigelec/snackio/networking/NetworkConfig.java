@@ -3,6 +3,7 @@ package fr.esigelec.snackio.networking;
 import com.esotericsoftware.kryo.Kryo;
 import com.esotericsoftware.kryonet.EndPoint;
 import com.esotericsoftware.kryonet.rmi.ObjectSpace;
+import fr.esigelec.snackio.core.AbstractGameEngine;
 import fr.esigelec.snackio.core.IGameEngine;
 import fr.esigelec.snackio.core.models.INetPlayer;
 import fr.esigelec.snackio.core.models.Player;
@@ -44,6 +45,7 @@ public class NetworkConfig {
         // The interfaces that will be used as remote objects must be registered.
         kryo.register(INetPlayer.class);
         kryo.register(Player.class);
+        kryo.register(AbstractGameEngine.class);
         kryo.register(IGameEngine.class);
         kryo.register(Position.class);
         kryo.register(Character.class);

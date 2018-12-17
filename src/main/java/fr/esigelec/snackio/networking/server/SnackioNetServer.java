@@ -3,19 +3,18 @@ package fr.esigelec.snackio.networking.server;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.HashMap;
 
 import com.esotericsoftware.kryonet.Connection;
 import com.esotericsoftware.kryonet.Listener;
 import com.esotericsoftware.kryonet.Server;
 import com.esotericsoftware.kryonet.rmi.ObjectSpace;
+import com.esotericsoftware.kryonet.rmi.TimeoutException;
 import com.esotericsoftware.minlog.Log;
 import fr.esigelec.snackio.core.IGameEngine;
 import fr.esigelec.snackio.core.exceptions.NoCharacterSetException;
 import fr.esigelec.snackio.core.exceptions.UnhandledControllerException;
 import fr.esigelec.snackio.core.models.IRMIExecutablePlayer;
-import fr.esigelec.snackio.core.models.Player;
 import fr.esigelec.snackio.game.character.motion.Direction;
 import fr.esigelec.snackio.networking.Position;
 import fr.esigelec.snackio.core.models.INetPlayer;
@@ -75,9 +74,18 @@ public class SnackioNetServer {
 
         server.addListener(new Listener() {
             public void disconnected(Connection connection) {
+                System.out.println("PLAYER DISCONNECTED");
                 NetPlayer player = (NetPlayer) connection;
-//                players.remove(player);
+
                 playersHashmap.remove(player.getID());
+
+                new Thread(() -> {
+                    playersHashmap.forEach(((integer, netPlayer) -> {
+                        if(netPlayer.isConnected()) {
+                            netPlayer.gameEngine.removePlayer(player.getID());
+                        }
+                    }));
+                }).start();
                 // TODO remove player from other participants
             }
         });
@@ -167,11 +175,14 @@ public class SnackioNetServer {
             System.out.println("Player position updated");
             Thread t = new Thread(() -> {
                 playersHashmap.forEach(((integer, player) -> {
-                    if (player != this) {
+                    if (player != this && player.isConnected()) {
                         try {
                             player.gameEngine.updatePlayerPosition(id, position, direction);
                         } catch (NoCharacterSetException e) {
                             e.printStackTrace();
+                        } catch (TimeoutException e) {
+                            e.printStackTrace();
+                            System.out.println("UNABLE TO UPDATE PLAYER POSITION (timeout)");
                         }
                     }
                 }));
@@ -181,14 +192,15 @@ public class SnackioNetServer {
 
         /**
          * Update the room of a player
-         * @param id ID of the updated Player
+         *
+         * @param id   ID of the updated Player
          * @param room new room name on the Game's map
          */
         @Override
         public void updatePlayerRoom(int id, String room) {
             Thread t = new Thread(() -> {
                 playersHashmap.forEach(((integer, player) -> {
-                    if (player != this) {
+                    if (player != this && player.isConnected()) {
                         try {
                             player.gameEngine.updatePlayerRoom(id, room);
                         } catch (NoCharacterSetException e) {
@@ -204,6 +216,7 @@ public class SnackioNetServer {
 
     /**
      * This main is only intended for debug purpose.
+     *
      * @param args args
      * @throws IOException exception
      */

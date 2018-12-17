@@ -15,6 +15,7 @@ import fr.esigelec.snackio.game.pois.PointOfInterest;
 import fr.esigelec.snackio.game.pois.bonuses.SpeedBonus;
 import fr.esigelec.snackio.game.pois.iPoi;
 import fr.esigelec.snackio.game.pois.maluses.SpeedMalus;
+
 import java.util.HashMap;
 
 /**
@@ -68,10 +69,9 @@ public class SnackioGame {
     /**
      * Start the game (open game window)
      * To successfully execute this, you need to provide a Player and a Map
-     *
      */
     public void start() throws GameCannotStartException {
-        if(null == defaultPlayer || null == gameRenderer){
+        if (null == defaultPlayer || null == gameRenderer) {
             throw new GameCannotStartException("Game could not start, Have you instantiated an engine?");
         }
         Lwjgl3ApplicationConfiguration config = new Lwjgl3ApplicationConfiguration();
@@ -111,6 +111,7 @@ public class SnackioGame {
     /**
      * Add a Player to the Game
      * If active, it will be kept as the main one
+     *
      * @param player the Player to add
      * @param active if true, the Character will be followed by the main Camera
      */
@@ -129,6 +130,7 @@ public class SnackioGame {
 
     /**
      * Get the active player of this Game
+     *
      * @return the Player added with active=true
      */
     public Player getPlayer() {
@@ -140,20 +142,35 @@ public class SnackioGame {
 
     /**
      * Get a Player of this Game identified by its ID
+     *
      * @param id ID of the Player
      * @return the Player instance
      */
     public Player getPlayer(int id) {
         // TODO make sure player exists
+        if (!this.playersHashmap.containsKey(id)) {
+            System.out.println("ERROR PLAYER DOES NOT EXIST");
+        }
         return this.playersHashmap.get(id);
     }
 
     /**
      * Set the tiled map
+     *
      * @param map the map to set
      */
-    public void setMap(MapFactory.MapType map){
+    public void setMap(MapFactory.MapType map) {
         Map theMap = MapFactory.getMap(map);
         this.gameRenderer.setSnackioMap(theMap);
+    }
+
+    public void removePlayer(int playerID) {
+        Player playerToRemove = this.playersHashmap.get(playerID);
+        try {
+            this.gameRenderer.removeCharacter(playerToRemove.getCharacter());
+        } catch (NoCharacterSetException e) {
+            e.printStackTrace();
+        }
+        this.playersHashmap.remove(playerID);
     }
 }

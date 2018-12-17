@@ -1,5 +1,4 @@
 package fr.esigelec.snackio.core;
-
 import fr.esigelec.snackio.core.exceptions.GameCannotStartException;
 import fr.esigelec.snackio.core.exceptions.NoCharacterSetException;
 import fr.esigelec.snackio.core.exceptions.UnhandledControllerException;
@@ -27,4 +26,6 @@ public interface IGameEngine {
     void startGame() throws GameCannotStartException;
 
     void updatePlayerRoom(int id, String room) throws NoCharacterSetException;
+
+    void removePlayer(int id);
 }

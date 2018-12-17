@@ -23,7 +23,7 @@ import fr.esigelec.snackio.networking.Position;
  * Player myPlayer = new Player("Hugues", CharacterFactory.CharacterType.GOLDEN_KNIGHT);
  * <p>
  * // Instantiate Network game engine to control gameplay
- * IGameEngine engine = new NetworkGameEngine(game, myPlayer);
+ * AbstractGameEngine engine = new NetworkGameEngine(game, myPlayer);
  * // Instantiate a NetClient to exchange with client
  * SnackioNetClient cli = new SnackioNetClient(engine);
  * <p>

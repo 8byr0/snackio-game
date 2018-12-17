@@ -109,7 +109,11 @@ public class GameRenderer extends ApplicationAdapter {
         stateTime += Gdx.graphics.getDeltaTime();
 
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
-
+        snackioMap.getMap().getLayers().get("characters").getObjects().forEach((character)->{
+            if(!characters.contains(character)){
+                snackioMap.getMap().getLayers().get("characters").getObjects().remove(character);
+            }
+        });
 
         // Add Characters to map's characters layer
         for (Character character : characters) {
@@ -413,5 +417,9 @@ public class GameRenderer extends ApplicationAdapter {
             new Thread(() -> Gdx.app.postRunnable(character::create)).start();
         }
         characters.add(character);
+    }
+
+    void removeCharacter(Character character) {
+        this.characters.remove(character);
     }
 }

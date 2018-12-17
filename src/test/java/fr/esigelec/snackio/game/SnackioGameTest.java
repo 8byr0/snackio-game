@@ -1,7 +1,5 @@
 package fr.esigelec.snackio.game;
 
-import fr.esigelec.snackio.core.IGameEngine;
-import fr.esigelec.snackio.core.NetworkGameEngine;
 import fr.esigelec.snackio.core.exceptions.GameCannotStartException;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;

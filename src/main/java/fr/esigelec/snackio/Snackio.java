@@ -1,7 +1,7 @@
 package fr.esigelec.snackio;
 
 import fr.esigelec.snackio.core.NetworkGameEngine;
-import fr.esigelec.snackio.core.IGameEngine;
+import fr.esigelec.snackio.core.AbstractGameEngine;
 import fr.esigelec.snackio.core.exceptions.GameCannotStartException;
 import fr.esigelec.snackio.core.exceptions.NoCharacterSetException;
 import fr.esigelec.snackio.core.exceptions.UnhandledCharacterTypeException;
@@ -9,6 +9,7 @@ import fr.esigelec.snackio.core.exceptions.UnhandledControllerException;
 import fr.esigelec.snackio.core.models.Player;
 import fr.esigelec.snackio.game.SnackioGame;
 import fr.esigelec.snackio.game.character.CharacterFactory;
+import fr.esigelec.snackio.game.map.MapFactory;
 import fr.esigelec.snackio.networking.client.SnackioNetClient;
 import javafx.application.Application;
 import javafx.stage.Stage;
@@ -50,7 +51,7 @@ public class Snackio extends Application {
 
         /////////////// NETWORK CONTROL
         // Instantiate Network game engine to control gameplay
-        IGameEngine engine = new NetworkGameEngine(game, myPlayer);
+        AbstractGameEngine engine = new NetworkGameEngine(game, myPlayer, MapFactory.MapType.DESERT_CASTLE);
         // Instantiate a NetClient to exchange with client
         SnackioNetClient cli = new SnackioNetClient(engine);
         List<InetAddress> servers = cli.getAvailableServers();
