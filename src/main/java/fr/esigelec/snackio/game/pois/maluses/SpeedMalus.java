@@ -16,6 +16,10 @@ import java.awt.event.ActionListener;
 @SuppressWarnings("Duplicates")
 public class SpeedMalus extends PointOfInterest {
 
+    public SpeedMalus(){
+        super("poi/speed_bonus.png");
+    }
+
     @Override
     public void execute(Character character) {
         if(!character.isPOIActive(this)) {

@@ -11,35 +11,24 @@ import fr.esigelec.snackio.networking.Position;
 /**
  * Abstract PointOfInterest class that must be inherited for any Bonus/Malus implemented
  */
-public abstract class PointOfInterest extends ApplicationAdapter implements iPoi {
+public abstract class PointOfInterest extends AbstractPointOfInterest implements iPoi {
     // PROPERTIES
     protected int durationInSeconds = 10;
 
     // TEXTURE / RENDERING
-    protected StaticTexture image;
+    private StaticTexture image;
+    private String pathToImage;
 
-    // MOTION
-    private Position position = new Position(400, 400);
-
-    // STATUS
-    private boolean created = false;
-    private Map room;
-
-    /**
-     * Abstract method to implement when inheriting PointOfInterest
-     * The content of this method is the code executed when a Character triggers
-     * a PointOfInterest
-     *
-     * @param character Character that triggered the PointOfInterest
-     */
-    public abstract void execute(Character character);
+    public PointOfInterest(String pathToImage){
+        this.pathToImage = pathToImage;
+    }
 
     /**
      * Method called by libgdx when creating this PointOfInterest
      */
     @Override
     public void create() {
-        image = new StaticTexture("poi/speed_bonus.png", 32, 32);
+        image = new StaticTexture(pathToImage, 32, 32);
         image.create();
         this.created = true;
     }
@@ -69,38 +58,5 @@ public abstract class PointOfInterest extends ApplicationAdapter implements iPoi
         return new Rectangle(position.x, position.y, image.getWidth(), image.getHeight());
     }
 
-    /**
-     * Set the position of this PointOfInterest on the map
-     *
-     * @param x x position on the Map
-     * @param y y position on the Map
-     */
-    public void setPosition(float x, float y) {
-        position.x = x;
-        position.y = y;
-    }
 
-    /**
-     * Set the position of this PointOfInterest on the map
-     *
-     * @param position Position of the POI on the map
-     */
-    public void setPosition(Position position) {
-        this.position = position;
-    }
-
-    @Override
-    public boolean isCreated() {
-        return created;
-    }
-
-    @Override
-    public void setRoom(Map room){
-        this.room = room;
-    }
-
-    @Override
-    public Map getRoom(){
-        return this.room;
-    }
 }

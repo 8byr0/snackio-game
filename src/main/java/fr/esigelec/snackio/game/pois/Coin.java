@@ -9,6 +9,12 @@ import fr.esigelec.snackio.game.character.Character;
  * Coin graphical behavior
  */
 public class Coin extends AnimatedPointOfInterest {
+
+    public Coin(){
+        super("poi/coin/coin0", ".png",8);
+
+    }
+
     /**
      * Method triggered when this coin is fetched by a Character
      * @param character Character who fetched the coin
