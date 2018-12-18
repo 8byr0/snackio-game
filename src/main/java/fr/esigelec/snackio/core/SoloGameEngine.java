@@ -21,7 +21,7 @@ public class SoloGameEngine extends AbstractGameEngine {
     public SoloGameEngine(SnackioGame game, Player player, MapFactory.MapType type, int coinsToFetch) throws NoCharacterSetException, UnhandledControllerException {
         super(game, player, type);
 
-        gameState = new CoinQuestGameState(coinsToFetch);
+        gameState = new CoinQuestGameState(type, coinsToFetch);
 
         Thread gameThread = new Thread(() -> {
 

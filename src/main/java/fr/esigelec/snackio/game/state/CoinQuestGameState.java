@@ -1,23 +1,17 @@
 package fr.esigelec.snackio.game.state;
 
+import fr.esigelec.snackio.core.GameMode;
 import fr.esigelec.snackio.game.map.MapFactory;
-import fr.esigelec.snackio.game.state.AbstractGameState;
 
 public class CoinQuestGameState extends AbstractGameState {
     private int fetchedCoins = 0;
     private int coinsToFetch;
 
-    public CoinQuestGameState(int coinsToFetch){
+    public CoinQuestGameState(MapFactory.MapType type, int coinsToFetch){
+        super(type, GameMode.COINS_QUEST);
         this.coinsToFetch = coinsToFetch;
     }
 
-    public MapFactory.MapType getMapType() {
-        return mapType;
-    }
-
-    public void setMapType(MapFactory.MapType mapType) {
-        this.mapType = mapType;
-    }
 
     public int getFetchedCoins() {
         return fetchedCoins;

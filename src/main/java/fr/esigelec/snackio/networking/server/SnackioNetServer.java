@@ -77,14 +77,16 @@ public class SnackioNetServer {
                 System.out.println("PLAYER DISCONNECTED");
                 NetPlayer player = (NetPlayer) connection;
 
-                playersHashmap.remove(player.getID());
-
                 new Thread(() -> {
                     playersHashmap.forEach(((integer, netPlayer) -> {
-                        if(netPlayer.isConnected()) {
-                            netPlayer.gameEngine.removePlayer(player.getID());
+                        if (netPlayer != player) {
+                            if (netPlayer.isConnected()) {
+                                netPlayer.gameEngine.removePlayer(player.getID());
+                            }
                         }
                     }));
+                    playersHashmap.remove(player.getID());
+
                 }).start();
                 // TODO remove player from other participants
             }

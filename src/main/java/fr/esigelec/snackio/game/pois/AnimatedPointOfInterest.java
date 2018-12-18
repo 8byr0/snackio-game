@@ -41,7 +41,6 @@ public abstract class AnimatedPointOfInterest extends ApplicationAdapter impleme
         pathToIcon = "poi/speed_bonus.png";
 
         animationFrames = new TextureRegion[8];
-        int index = 0;
 
         for (int itr=1; itr <=8; ++itr ) {
             animationFrames[itr-1] = new TextureRegion(new Texture(Gdx.files.internal("poi/coin/coin0"+Integer.toString(itr)+".png")));

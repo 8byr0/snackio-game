@@ -10,6 +10,7 @@ import fr.esigelec.snackio.game.character.motion.Direction;
 import fr.esigelec.snackio.game.character.listeners.PlayerAddedListener;
 import fr.esigelec.snackio.game.map.MapFactory;
 import fr.esigelec.snackio.game.pois.iPoi;
+import fr.esigelec.snackio.game.state.MultiplayerGameState;
 import fr.esigelec.snackio.networking.Position;
 
 import java.util.ArrayList;
@@ -26,6 +27,7 @@ public class NetworkGameEngine extends AbstractGameEngine {
      */
     public NetworkGameEngine(SnackioGame game, Player player, MapFactory.MapType type) throws NoCharacterSetException, UnhandledControllerException {
         super(game,player,type);
+        this.gameState = new MultiplayerGameState(type);
     }
 
     /**
