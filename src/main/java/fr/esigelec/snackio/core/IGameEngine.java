@@ -2,7 +2,7 @@ package fr.esigelec.snackio.core;
 import fr.esigelec.snackio.core.exceptions.GameCannotStartException;
 import fr.esigelec.snackio.core.exceptions.NoCharacterSetException;
 import fr.esigelec.snackio.core.exceptions.UnhandledControllerException;
-import fr.esigelec.snackio.core.models.IRMIExecutablePlayer;
+import fr.esigelec.snackio.networking.models.IRMIExecutablePlayer;
 import fr.esigelec.snackio.game.character.motion.Direction;
 import fr.esigelec.snackio.game.character.listeners.PlayerAddedListener;
 import fr.esigelec.snackio.game.pois.iPoi;

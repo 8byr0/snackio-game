@@ -1,6 +1,6 @@
 package fr.esigelec.snackio.game.pois.listeners;
 
-import fr.esigelec.snackio.core.models.Player;
+import fr.esigelec.snackio.core.Player;
 import fr.esigelec.snackio.game.pois.iPoi;
 
 /**

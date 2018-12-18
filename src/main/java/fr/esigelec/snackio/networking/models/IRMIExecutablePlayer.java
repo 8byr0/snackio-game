@@ -1,4 +1,4 @@
-package fr.esigelec.snackio.core.models;
+package fr.esigelec.snackio.networking.models;
 
 import fr.esigelec.snackio.core.exceptions.NoCharacterSetException;
 import fr.esigelec.snackio.game.character.motion.Direction;

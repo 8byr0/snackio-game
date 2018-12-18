@@ -6,7 +6,7 @@ import fr.esigelec.snackio.core.exceptions.GameCannotStartException;
 import fr.esigelec.snackio.core.exceptions.NoCharacterSetException;
 import fr.esigelec.snackio.core.exceptions.UnhandledCharacterTypeException;
 import fr.esigelec.snackio.core.exceptions.UnhandledControllerException;
-import fr.esigelec.snackio.core.models.Player;
+import fr.esigelec.snackio.core.Player;
 import fr.esigelec.snackio.game.SnackioGame;
 import fr.esigelec.snackio.game.character.CharacterFactory;
 import fr.esigelec.snackio.game.map.MapFactory;

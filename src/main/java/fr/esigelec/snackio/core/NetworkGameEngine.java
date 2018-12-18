@@ -3,17 +3,9 @@ package fr.esigelec.snackio.core;
 import fr.esigelec.snackio.core.exceptions.GameCannotStartException;
 import fr.esigelec.snackio.core.exceptions.NoCharacterSetException;
 import fr.esigelec.snackio.core.exceptions.UnhandledControllerException;
-import fr.esigelec.snackio.core.models.IRMIExecutablePlayer;
-import fr.esigelec.snackio.core.models.Player;
 import fr.esigelec.snackio.game.SnackioGame;
-import fr.esigelec.snackio.game.character.motion.Direction;
-import fr.esigelec.snackio.game.character.listeners.PlayerAddedListener;
 import fr.esigelec.snackio.game.map.MapFactory;
-import fr.esigelec.snackio.game.pois.iPoi;
 import fr.esigelec.snackio.game.state.MultiplayerGameState;
-import fr.esigelec.snackio.networking.Position;
-
-import java.util.ArrayList;
 
 /**
  * NetworkGameEngine is the engine that handles interactions between SnackioNetServer and SnackioGame

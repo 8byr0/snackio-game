@@ -1,8 +1,9 @@
-package fr.esigelec.snackio.core.models;
+package fr.esigelec.snackio.core;
 
 import fr.esigelec.snackio.core.exceptions.NoCharacterSetException;
 import fr.esigelec.snackio.core.exceptions.UnhandledCharacterTypeException;
 import fr.esigelec.snackio.core.exceptions.UnhandledControllerException;
+import fr.esigelec.snackio.networking.models.IRMIExecutablePlayer;
 import fr.esigelec.snackio.game.character.*;
 import fr.esigelec.snackio.game.character.Character;
 import fr.esigelec.snackio.game.character.motion.Direction;
@@ -31,7 +32,7 @@ import fr.esigelec.snackio.networking.Position;
  * game.start(myPlayer);
  * }
  */
-public class Player implements IRMIExecutablePlayer{
+public class Player implements IRMIExecutablePlayer {
     private int id;
     private Character character;
 

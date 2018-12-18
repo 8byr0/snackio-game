@@ -14,10 +14,10 @@ import com.esotericsoftware.minlog.Log;
 import fr.esigelec.snackio.core.IGameEngine;
 import fr.esigelec.snackio.core.exceptions.NoCharacterSetException;
 import fr.esigelec.snackio.core.exceptions.UnhandledControllerException;
-import fr.esigelec.snackio.core.models.IRMIExecutablePlayer;
+import fr.esigelec.snackio.networking.models.IRMIExecutablePlayer;
 import fr.esigelec.snackio.game.character.motion.Direction;
 import fr.esigelec.snackio.networking.Position;
-import fr.esigelec.snackio.core.models.INetPlayer;
+import fr.esigelec.snackio.networking.models.INetPlayer;
 import fr.esigelec.snackio.networking.NetworkConfig;
 
 import javax.swing.*;

@@ -1,6 +1,6 @@
 package fr.esigelec.snackio.game.character.listeners;
 
-import fr.esigelec.snackio.core.models.Player;
+import fr.esigelec.snackio.core.Player;
 
 /**
  * Interface triggered when a Player is added to GameEngine

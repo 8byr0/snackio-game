@@ -7,7 +7,7 @@ import fr.esigelec.snackio.core.exceptions.NoCharacterSetException;
 import fr.esigelec.snackio.core.exceptions.UnhandledControllerException;
 import fr.esigelec.snackio.game.state.AbstractGameState;
 import fr.esigelec.snackio.game.state.CoinQuestGameState;
-import fr.esigelec.snackio.core.models.Player;
+import fr.esigelec.snackio.core.Player;
 import fr.esigelec.snackio.game.character.Character;
 import fr.esigelec.snackio.game.character.motion.IMotionController;
 import fr.esigelec.snackio.game.map.Map;
