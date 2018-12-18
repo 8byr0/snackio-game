@@ -2,6 +2,8 @@ package fr.esigelec.snackio.game.pois;
 
 import com.badlogic.gdx.math.Rectangle;
 import fr.esigelec.snackio.game.character.Character;
+import fr.esigelec.snackio.game.map.Map;
+import fr.esigelec.snackio.game.map.MapRoom;
 import fr.esigelec.snackio.networking.Position;
 
 /**
@@ -15,4 +17,8 @@ public interface iPoi{
     Rectangle getActualProjection();
     void execute(Character character);
     void setPosition(Position position);
+
+    void setRoom(Map randomRoom);
+
+    Map getRoom();
 }

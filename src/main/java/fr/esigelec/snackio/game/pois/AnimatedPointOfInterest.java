@@ -10,6 +10,7 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Rectangle;
 import fr.esigelec.snackio.game.GameRenderer;
 import fr.esigelec.snackio.game.character.Character;
+import fr.esigelec.snackio.game.map.Map;
 import fr.esigelec.snackio.networking.Position;
 
 /**
@@ -30,6 +31,7 @@ public abstract class AnimatedPointOfInterest extends ApplicationAdapter impleme
 
     private Position position = new Position(400,400);
     private OrthographicCamera cam;
+    private Map room;
 
     private boolean created = false;
 
@@ -111,5 +113,15 @@ public abstract class AnimatedPointOfInterest extends ApplicationAdapter impleme
     @Override
     public boolean isCreated() {
         return created;
+    }
+
+    @Override
+    public void setRoom(Map room){
+        this.room = room;
+    }
+
+    @Override
+    public Map getRoom(){
+        return this.room;
     }
 }

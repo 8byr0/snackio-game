@@ -88,7 +88,6 @@ public class SnackioNetServer {
                     playersHashmap.remove(player.getID());
 
                 }).start();
-                // TODO remove player from other participants
             }
         });
         server.bind(NetworkConfig.tcpPort, NetworkConfig.udpPort);

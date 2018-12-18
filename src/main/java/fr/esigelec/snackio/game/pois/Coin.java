@@ -18,7 +18,7 @@ public class Coin extends AnimatedPointOfInterest {
         Music music = Gdx.audio.newMusic(Gdx.files.internal("sound/coin.wav"));
         music.play();
 
-        // TODO find another way to execute this
+        // TODO find another way to execute this (should be ok with listeners)
         SnackioGame.getInstance().coinFound(this, character);
     }
 }

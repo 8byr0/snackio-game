@@ -15,6 +15,7 @@ import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.TmxMapLoader;
 import fr.esigelec.snackio.game.GameRenderer;
 import fr.esigelec.snackio.networking.Position;
+
 import java.util.HashMap;
 
 /**
@@ -68,6 +69,12 @@ public class Map extends ApplicationAdapter {
         Batch batch = new SpriteBatch();
         // Initialize map renderer
         renderer = new CustomTiledMapRenderer(map, 1f, batch);
+
+        rooms.forEach((name, room) -> {
+            if (!room.isCreated()) {
+                room.create();
+            }
+        });
 
         created = true;
     }
@@ -123,10 +130,10 @@ public class Map extends ApplicationAdapter {
      */
     @Override
     public void dispose() {
-        if(null != map){
+        if (null != map) {
             map.dispose();
         }
-        if(null != renderer){
+        if (null != renderer) {
             renderer.dispose();
         }
         rooms.forEach((id, room) -> room.dispose());
@@ -212,6 +219,7 @@ public class Map extends ApplicationAdapter {
     /**
      * Get the position of a Door based on its name
      * TODO throw exception if door not found
+     *
      * @param doorName the name of the door
      * @return the Position of the door on this map
      */
@@ -242,6 +250,7 @@ public class Map extends ApplicationAdapter {
 
     /**
      * Get the name of this map
+     *
      * @return the name of this map
      */
     public String getName() {
@@ -250,9 +259,14 @@ public class Map extends ApplicationAdapter {
 
     /**
      * Set the name of this map
+     *
      * @param name the new name to give to this map
      */
     public void setName(String name) {
         this.name = name;
+    }
+
+    public HashMap<String, MapRoom> getRooms() {
+        return rooms;
     }
 }

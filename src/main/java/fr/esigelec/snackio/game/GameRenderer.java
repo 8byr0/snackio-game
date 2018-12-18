@@ -11,7 +11,6 @@ import com.badlogic.gdx.maps.objects.RectangleMapObject;
 import com.badlogic.gdx.math.Intersector;
 import com.badlogic.gdx.math.Polygon;
 import com.badlogic.gdx.math.Rectangle;
-import com.badlogic.gdx.math.Vector2;
 import fr.esigelec.snackio.game.character.Character;
 import fr.esigelec.snackio.game.map.Map;
 import fr.esigelec.snackio.game.overlay.MapInformationOverlay;
@@ -19,13 +18,14 @@ import fr.esigelec.snackio.game.pois.iPoi;
 import fr.esigelec.snackio.networking.Position;
 
 import java.util.ArrayList;
+import java.util.List;
+import java.util.Random;
 import java.util.concurrent.ThreadLocalRandom;
 
 /**
  * GameRenderer class is in charge of rendering all graphical elements to screen.
  * Characters, bonuses, maluses... All these objects must be managed from here.
  * Game renderer is package-private
- * TODO add a method to get an empty position randomly and a method to know if a position is empty
  */
 public class GameRenderer extends ApplicationAdapter {
 
@@ -100,12 +100,30 @@ public class GameRenderer extends ApplicationAdapter {
         // Create all POI
         for (iPoi poi : pointsOfInterest) {
             poi.create();
-            poi.setPosition(this.getRandomPosition(poi));
+            poi.setRoom(this.getRandomRoom(true));
+            poi.setPosition(this.getRandomPosition(poi.getRoom(), poi.getActualProjection()));
         }
 
         overlay.create();
 
         created = true;
+    }
+
+    /**
+     * Get a random room from all the rooms available and loaded in this game
+     *
+     * @param includeMainRoom set to true if you want to include the main room (root)
+     * @return Map instance one of the rooms or the root room
+     */
+    private Map getRandomRoom(boolean includeMainRoom) {
+        Random generator = new Random();
+        List<Map> roomsList = new ArrayList<Map>(this.snackioMap.getRooms().values());
+
+        if (includeMainRoom) {
+            roomsList.add(this.snackioMap);
+        }
+
+        return roomsList.get(new Random().nextInt(roomsList.size()));
     }
 
     /**
@@ -147,10 +165,13 @@ public class GameRenderer extends ApplicationAdapter {
 
         for (iPoi poi : pointsOfInterest) {
             if (poi.isCreated()) {
-                poi.render();
+                if (poi.getRoom().getName().equals(this.snackioMap.getActiveRoom().getName())) {
+                    poi.render();
+                }
             } else {
                 poi.create();
-                poi.setPosition(this.getRandomPosition(poi));
+                poi.setRoom(this.getRandomRoom(true));
+                poi.setPosition(this.getRandomPosition(poi.getRoom(), poi.getActualProjection()));
             }
         }
 
@@ -196,14 +217,19 @@ public class GameRenderer extends ApplicationAdapter {
 
             Map room = snackioMap.getRoom(roomName);
             Position newPlayerPosition = room.getDoorPosition(destinationDoorName);
-            if (destinationDirection.equals("NORTH")) {
-                newPlayerPosition.y += 20;
-            } else if (destinationDirection.equals("SOUTH")) {
-                newPlayerPosition.y -= 20;
-            } else if (destinationDirection.equals("EAST")) {
-                newPlayerPosition.x += 20;
-            } else if (destinationDirection.equals("WEST")) {
-                newPlayerPosition.x -= 20;
+            switch (destinationDirection) {
+                case "NORTH":
+                    newPlayerPosition.y += 20;
+                    break;
+                case "SOUTH":
+                    newPlayerPosition.y -= 20;
+                    break;
+                case "EAST":
+                    newPlayerPosition.x += 20;
+                    break;
+                case "WEST":
+                    newPlayerPosition.x -= 20;
+                    break;
             }
             character.setPosition(newPlayerPosition);
 
@@ -255,14 +281,16 @@ public class GameRenderer extends ApplicationAdapter {
     /**
      * Execute POI callback method if selected Character is overlapping a POI
      *
-     * @param player           the character
-     * @param playerProjection the Character's projection
+     * @param character           the character
+     * @param characterProjection the Character's projection
      */
-    private void isCharacterTriggeringPOI(Character player, Rectangle playerProjection) {
+    private void isCharacterTriggeringPOI(Character character, Rectangle characterProjection) {
         for (iPoi poi : pointsOfInterest) {
-            if (Intersector.overlaps(poi.getActualProjection(), playerProjection)) {
-                poi.execute(player);
-                break;
+            if (character.getRoom().equals(poi.getRoom().getName())) {
+                if (Intersector.overlaps(poi.getActualProjection(), characterProjection)) {
+                    poi.execute(character);
+                    break;
+                }
             }
         }
     }
@@ -439,50 +467,36 @@ public class GameRenderer extends ApplicationAdapter {
         this.characters.remove(character);
     }
 
-    Position getRandomPosition(iPoi poi) {
-        float mapWidth = this.snackioMap.getMapWidthInPixels();
-        float mapHeight = this.snackioMap.getMapWidthInPixels();
+    /**
+     * Get a random position on the game's map (in a given room) for a given object projection
+     * This position is ensured to be free(i.e. not an obstacle or trigger)
+     *
+     * @param projection the projection of the object on the map
+     * @return a Position on the map
+     */
+    private Position getRandomPosition(Map room, Rectangle projection) {
+        float mapWidth = room.getMapWidthInPixels();
+        float mapHeight = room.getMapWidthInPixels();
 
         int tempRandomX = generateRandomInRange(0, mapWidth);
         int tempRandomY = generateRandomInRange(0, mapHeight);
         Position tempRandom = new Position(tempRandomX, tempRandomY);
 
-        while ((null != isCharacterCollidingMapObject(this.snackioMap.getMap().getLayers().get("triggers").getObjects(), poi.getActualProjection()) ||
-                (null != isCharacterCollidingMapObject(this.snackioMap.getMap().getLayers().get("obstacles").getObjects(), poi.getActualProjection())))) {
+        while ((null != isCharacterCollidingMapObject(room.getMap().getLayers().get("triggers").getObjects(), projection) ||
+                (null != isCharacterCollidingMapObject(room.getMap().getLayers().get("obstacles").getObjects(), projection)))) {
             tempRandom.x = generateRandomInRange(0, mapWidth);
             tempRandom.y = generateRandomInRange(0, mapHeight);
         }
         return tempRandom;
     }
 
-    private boolean overlapsAreas(Position pos, ArrayList<Rectangle> rectangles) {
-        boolean overlaps = false;
-        for (Rectangle rectangle : rectangles) {
-
-            if (inRange(pos.x, rectangle.getX(), rectangle.getX() + rectangle.getWidth()) ||
-                    inRange(pos.y, rectangle.getY(), rectangle.getY() + rectangle.getHeight())) {
-                overlaps = true;
-                break;
-            }
-        }
-        return overlaps;
-    }
-
-    private boolean overlapsPolygons(Position pos, ArrayList<Polygon> polygons) {
-        boolean overlaps = false;
-        for (Polygon poly : polygons) {
-            if (Intersector.isPointInPolygon(poly.getVertices(), 1, 0, pos.x, pos.y)) {
-                overlaps = true;
-                break;
-            }
-        }
-        return overlaps;
-    }
-
-    private boolean inRange(float val, float min, float max) {
-        return val >= min && val <= max;
-    }
-
+    /**
+     * Get a random value in a given range
+     * TODO move this to a dedicated class
+     * @param min range min
+     * @param max range max
+     * @return int value between min and max
+     */
     private int generateRandomInRange(float min, float max) {
         return ThreadLocalRandom.current().nextInt((int) min, (int) max);
     }

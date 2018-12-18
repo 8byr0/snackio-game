@@ -3,6 +3,8 @@ package fr.esigelec.snackio.game.pois;
 import com.badlogic.gdx.ApplicationAdapter;
 import com.badlogic.gdx.math.Rectangle;
 import fr.esigelec.snackio.game.character.Character;
+import fr.esigelec.snackio.game.map.Map;
+import fr.esigelec.snackio.game.map.MapRoom;
 import fr.esigelec.snackio.game.util.StaticTexture;
 import fr.esigelec.snackio.networking.Position;
 
@@ -21,6 +23,7 @@ public abstract class PointOfInterest extends ApplicationAdapter implements iPoi
 
     // STATUS
     private boolean created = false;
+    private Map room;
 
     /**
      * Abstract method to implement when inheriting PointOfInterest
@@ -89,5 +92,15 @@ public abstract class PointOfInterest extends ApplicationAdapter implements iPoi
     @Override
     public boolean isCreated() {
         return created;
+    }
+
+    @Override
+    public void setRoom(Map room){
+        this.room = room;
+    }
+
+    @Override
+    public Map getRoom(){
+        return this.room;
     }
 }
