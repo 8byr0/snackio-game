@@ -4,6 +4,8 @@ import javafx.collections.FXCollections;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.Group;
+import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.TextField;
@@ -20,21 +22,25 @@ public class ServerConfigMenu implements Initializable {
     private Button submit;
 
     @FXML
-    private ChoiceBox map;
+    private ChoiceBox<String> map;
 
     @FXML
-    private ChoiceBox mode;
+    private ChoiceBox<String> mode;
 
     private Stage stage;
+
+    private Scene scene;
 
     public ServerConfigMenu() {
 
     }
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        //map.setItems(FXCollections.observableArrayList("1", "2" , "3"));
-        //mode.setItems(FXCollections.observableArrayList("1", "2" , "3"));
-        //submit.setOnAction(this::submitServer);
+        map = new ChoiceBox<String>();
+        mode = new ChoiceBox<String>();
+        map.setItems(FXCollections.observableArrayList("1", "2" , "3"));
+        mode.setItems(FXCollections.observableArrayList("1", "2" , "3"));
+        submit.setOnAction(this::submitServer);
     }
 
     public void submitServer(ActionEvent actionEvent) {

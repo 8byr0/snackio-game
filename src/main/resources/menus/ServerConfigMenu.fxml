@@ -41,12 +41,12 @@
                      <Label prefHeight="25.0" prefWidth="118.0" text="Team 1" GridPane.rowIndex="2" />
                      <Label prefHeight="25.0" prefWidth="118.0" text="Team 2" GridPane.rowIndex="3" />
                      <Label prefHeight="25.0" prefWidth="118.0" text="Mode" GridPane.rowIndex="4" />
-                     <ChoiceBox id="map" prefHeight="25.0" prefWidth="225.0" GridPane.columnIndex="1" GridPane.rowIndex="1" />
-                     <ChoiceBox id="mode" prefHeight="25.0" prefWidth="228.0" GridPane.columnIndex="1" GridPane.rowIndex="4" />
-                     <TextField GridPane.columnIndex="1" GridPane.rowIndex="3" fx:id="roomName"/>
+                     <ChoiceBox fx:id="map" id="map" prefHeight="25.0" prefWidth="225.0" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+                     <ChoiceBox fx:id="mode" id="mode" prefHeight="25.0" prefWidth="228.0" GridPane.columnIndex="1" GridPane.rowIndex="4" />
+                     <TextField fx:id="roomName" GridPane.columnIndex="1" GridPane.rowIndex="3" />
                   </children>
                </GridPane>
-               <Button id="submit" layoutX="521.0" layoutY="199.0" mnemonicParsing="false" text="Submit" />
+               <Button fx:id="submit" id="submit" layoutX="521.0" layoutY="199.0" mnemonicParsing="false" text="Submit" />
             </children></AnchorPane>
         </items>
     </SplitPane>
