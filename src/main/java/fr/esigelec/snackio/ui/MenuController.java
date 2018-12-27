@@ -15,7 +15,9 @@ public class MenuController {
         MAIN_MENU,
         SOLO_MENU,
         MULTI_MENU,
-        SERVER_CONFIG_MENU
+        SERVER_CONFIG_MENU,
+        PREVIOUS,
+        NEXT
     }
 
     private static MenuController instance;
@@ -45,6 +47,9 @@ public class MenuController {
                 pathToMenuFile = "/menus/SoloMenu.fxml";
                 break;
             case SERVER_CONFIG_MENU:
+                pathToMenuFile = "/menus/ServerConfigMenu.fxml";
+
+            case PREVIOUS:
                 pathToMenuFile = "/menus/ServerConfigMenu.fxml";
 
                 break;

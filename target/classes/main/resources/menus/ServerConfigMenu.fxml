@@ -1,9 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<<<<<<< HEAD
 <<<<<<< HEAD:target/classes/main/resources/menus/ServerConfigMenu.fxml
 =======
 <?import javafx.scene.control.Button?>
 >>>>>>> ServerConfigMenu mise en page:target/classes/menus/ServerConfigMenu.fxml
+=======
+<?import javafx.scene.control.Button?>
+>>>>>>> amélioration de la page de config des touches
 <?import javafx.scene.control.ChoiceBox?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.SplitPane?>
@@ -23,16 +27,21 @@
             </AnchorPane>
             <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="100.0" prefWidth="160.0">
             <children>
+<<<<<<< HEAD
 <<<<<<< HEAD:target/classes/main/resources/menus/ServerConfigMenu.fxml
                <GridPane layoutX="13.0" layoutY="14.0" prefHeight="229.0" prefWidth="452.0">
 =======
                <GridPane layoutX="13.0" layoutY="14.0" prefHeight="223.0" prefWidth="452.0">
 >>>>>>> ServerConfigMenu mise en page:target/classes/menus/ServerConfigMenu.fxml
+=======
+               <GridPane layoutX="13.0" layoutY="14.0" prefHeight="223.0" prefWidth="452.0">
+>>>>>>> amélioration de la page de config des touches
                  <columnConstraints>
                    <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
                    <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
                  </columnConstraints>
                  <rowConstraints>
+<<<<<<< HEAD
 <<<<<<< HEAD:target/classes/main/resources/menus/ServerConfigMenu.fxml
                    <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                    <RowConstraints maxHeight="40.666656494140625" minHeight="10.0" prefHeight="24.666656494140625" vgrow="SOMETIMES" />
@@ -52,6 +61,16 @@
                   <children>
                      <TextField GridPane.columnIndex="1" />
 >>>>>>> ServerConfigMenu mise en page:target/classes/menus/ServerConfigMenu.fxml
+=======
+                   <RowConstraints maxHeight="51.999996185302734" minHeight="10.0" prefHeight="39.333343505859375" vgrow="SOMETIMES" />
+                   <RowConstraints maxHeight="52.666676839192704" minHeight="10.0" prefHeight="46.00002034505208" vgrow="SOMETIMES" />
+                   <RowConstraints maxHeight="81.33334350585939" minHeight="10.0" prefHeight="45.66667683919272" vgrow="SOMETIMES" />
+                     <RowConstraints maxHeight="75.99997965494794" minHeight="10.0" prefHeight="44.99995930989584" vgrow="SOMETIMES" />
+                     <RowConstraints maxHeight="46.3333740234375" minHeight="10.0" prefHeight="46.3333740234375" vgrow="SOMETIMES" />
+                 </rowConstraints>
+                  <children>
+                     <TextField GridPane.columnIndex="1" />
+>>>>>>> amélioration de la page de config des touches
                      <TextField GridPane.columnIndex="1" GridPane.rowIndex="2" />
                      <Label prefHeight="25.0" prefWidth="118.0" text="Room Name" />
                      <Label prefHeight="25.0" prefWidth="118.0" text="Map" GridPane.rowIndex="1" />
@@ -59,6 +78,7 @@
                      <Label prefHeight="25.0" prefWidth="118.0" text="Team 1" GridPane.rowIndex="2" />
                      <Label prefHeight="25.0" prefWidth="118.0" text="Team 2" GridPane.rowIndex="3" />
                      <Label prefHeight="25.0" prefWidth="118.0" text="Mode" GridPane.rowIndex="4" />
+<<<<<<< HEAD
 <<<<<<< HEAD:target/classes/main/resources/menus/ServerConfigMenu.fxml
 <<<<<<< HEAD:target/classes/main/resources/menus/ServerConfigMenu.fxml
                      <ChoiceBox fx:id="Mode" prefWidth="150.0" GridPane.columnIndex="1" GridPane.rowIndex="1" />
@@ -82,6 +102,14 @@
                </GridPane>
                <Button fx:id="submit" id="submit" layoutX="521.0" layoutY="199.0" mnemonicParsing="false" text="Submit" />
 >>>>>>> ServerConfigMenu choicebox:target/classes/menus/ServerConfigMenu.fxml
+=======
+                     <ChoiceBox fx:id="map" id="map" prefHeight="25.0" prefWidth="225.0" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+                     <ChoiceBox fx:id="mode" id="mode" prefHeight="25.0" prefWidth="228.0" GridPane.columnIndex="1" GridPane.rowIndex="4" />
+                     <TextField fx:id="roomName" GridPane.columnIndex="1" GridPane.rowIndex="3" />
+                  </children>
+               </GridPane>
+               <Button fx:id="submit" id="submit" layoutX="521.0" layoutY="199.0" mnemonicParsing="false" text="Submit" />
+>>>>>>> amélioration de la page de config des touches
             </children></AnchorPane>
         </items>
     </SplitPane>
