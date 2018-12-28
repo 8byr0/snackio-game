@@ -7,6 +7,7 @@ import javafx.scene.Scene;
 import javafx.stage.Stage;
 
 import java.io.IOException;
+import java.net.URL;
 
 public class MenuController {
     private Stage primaryStage;
@@ -15,9 +16,7 @@ public class MenuController {
         MAIN_MENU,
         SOLO_MENU,
         MULTI_MENU,
-        SERVER_CONFIG_MENU,
-        PREVIOUS,
-        NEXT
+        SERVER_CONFIG_MENU
     }
 
     private static MenuController instance;
@@ -38,9 +37,11 @@ public class MenuController {
         String pathToMenuFile = null;
         switch (menu) {
             case MAIN_MENU:
+                Snippet.back("YES");
                 pathToMenuFile = "/menus/MainMenu.fxml";
                 break;
             case MULTI_MENU:
+                Snippet.back("NO");
                 pathToMenuFile = "/menus/MultiMenu.fxml";
                 break;
             case SOLO_MENU:
@@ -48,10 +49,6 @@ public class MenuController {
                 break;
             case SERVER_CONFIG_MENU:
                 pathToMenuFile = "/menus/ServerConfigMenu.fxml";
-
-            case PREVIOUS:
-                pathToMenuFile = "/menus/ServerConfigMenu.fxml";
-
                 break;
             default:
                 Log.warn("Requested menu does not exist. Cannot proceed.");

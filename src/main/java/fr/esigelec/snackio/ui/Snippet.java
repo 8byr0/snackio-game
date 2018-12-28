@@ -6,12 +6,13 @@ import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
-import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
 
 import java.net.URL;
 import java.util.ResourceBundle;
 public class Snippet implements Initializable {
+    public static MenuController.Menus previousLocation;
+    public static String sert;
     @FXML
     public Button homeButton;
 
@@ -28,13 +29,27 @@ public class Snippet implements Initializable {
 
     }
 
+    public static void setPreviousLocation(MenuController.Menus previous) {
+        previousLocation = previous;
+    }
+
     @Override
     public void initialize(URL location, ResourceBundle resources) {
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
         backButton.setDisable(true);
 =======
         //homeButton.setDisable(true);
+=======
+        if(sert=="YES"){
+            backButton.setDisable(true);
+            homeButton.setDisable(true);
+        }else if (sert=="NO"){
+            backButton.setDisable(false);
+            homeButton.setDisable(false);
+        }
+>>>>>>> back button OK
         backButton.setOnAction(this::backPrevious);
 >>>>>>> ServerConfigMenu
 =======
@@ -45,11 +60,17 @@ public class Snippet implements Initializable {
         settingsButton.setOnAction(this::opensettingsView);
 
     }
+
     public void backtoHome(ActionEvent actionEvent) {
         MenuController.getInstance(stage).openMenu(MenuController.Menus.MAIN_MENU);
     }
+
+    public static void back(String sel){
+        sert=sel;
+    }
+
     public void backPrevious(ActionEvent actionEvent) {
-        System.out.println("previous page");
+        MenuController.getInstance(stage).openMenu(previousLocation);
     }
 
     public void opensettingsView(ActionEvent actionEvent){

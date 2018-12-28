@@ -1,29 +1,23 @@
 package fr.esigelec.snackio.ui;
+<<<<<<< HEAD
 
+=======
+>>>>>>> back button OK
 import fr.esigelec.snackio.game.SnackioGame;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.scene.Parent;
 import javafx.scene.control.Button;
-import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
-import javafx.scene.Node;
-
 import java.net.URL;
 import java.util.ResourceBundle;
 
 public class MainMenu  implements Initializable {
-
-    @FXML
-    private AnchorPane mainAnchorpane;
-
     @FXML
     private Button openSoloMenuButton;
 
     @FXML
     private Button openMultiMenuButton;
-
     private Stage stage;
 
     public MainMenu() {
@@ -42,5 +36,4 @@ public class MainMenu  implements Initializable {
     public void openMultiMenu(ActionEvent actionEvent) {
         MenuController.getInstance(stage).openMenu(MenuController.Menus.MULTI_MENU);
     }
-
 }
