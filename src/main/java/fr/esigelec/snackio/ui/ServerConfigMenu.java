@@ -28,7 +28,7 @@ public class ServerConfigMenu implements Initializable {
     private ChoiceBox<String> mode;
 
     private Stage stage;
-
+    private String quest;
     private Scene scene;
 
     public ServerConfigMenu() {
@@ -36,6 +36,7 @@ public class ServerConfigMenu implements Initializable {
     }
     @Override
     public void initialize(URL location, ResourceBundle resources) {
+        Snippet.setPreviousLocation(MenuController.Menus.MULTI_MENU);
         map = new ChoiceBox<String>();
         mode = new ChoiceBox<String>();
         map.setItems(FXCollections.observableArrayList("1", "2" , "3"));

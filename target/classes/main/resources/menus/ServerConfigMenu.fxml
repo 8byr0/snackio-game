@@ -1,8 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
+<<<<<<< HEAD
 
 <<<<<<< HEAD
 <<<<<<< HEAD:target/classes/main/resources/menus/ServerConfigMenu.fxml
 =======
+=======
+>>>>>>> back button OK
 <?import javafx.scene.control.Button?>
 >>>>>>> ServerConfigMenu mise en page:target/classes/menus/ServerConfigMenu.fxml
 =======
@@ -113,5 +116,4 @@
             </children></AnchorPane>
         </items>
     </SplitPane>
-
 </AnchorPane>
