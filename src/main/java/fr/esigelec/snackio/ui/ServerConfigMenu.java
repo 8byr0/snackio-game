@@ -1,6 +1,8 @@
 package fr.esigelec.snackio.ui;
 
+import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -8,6 +10,7 @@ import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.ChoiceBox;
+import javafx.scene.control.ComboBox;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
@@ -16,8 +19,6 @@ import java.net.URL;
 import java.util.ResourceBundle;
 
 public class ServerConfigMenu implements Initializable {
-    @FXML
-    private AnchorPane configAnchorpane;
 
     @FXML
     private TextField roomName;
@@ -26,10 +27,10 @@ public class ServerConfigMenu implements Initializable {
     private Button submit;
 
     @FXML
-    private ChoiceBox<String> map;
+    private ComboBox map;
 
     @FXML
-    private ChoiceBox<String> mode;
+    private ComboBox mode;
 
     private Stage stage;
     private String quest;
@@ -41,12 +42,10 @@ public class ServerConfigMenu implements Initializable {
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         Snippet.setPreviousLocation(MenuController.Menus.MULTI_MENU);
-        map = new ChoiceBox<String>();
-        mode = new ChoiceBox<String>();
-        map.setItems(FXCollections.observableArrayList("1", "2" , "3"));
-        mode.setItems(FXCollections.observableArrayList("1", "2" , "3"));
-        configAnchorpane.getChildren().add(map);
-        configAnchorpane.getChildren().add(mode);
+        ObservableList<String> options = FXCollections.observableArrayList("1", "2" , "3");
+        map = new ComboBox(options);
+        mode = new ComboBox(options);
+
         submit.setOnAction(this::submitServer);
     }
 

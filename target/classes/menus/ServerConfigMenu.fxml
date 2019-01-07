@@ -42,8 +42,8 @@
                      <Label prefHeight="25.0" prefWidth="118.0" text="Team 2" GridPane.rowIndex="3" />
                      <Label prefHeight="25.0" prefWidth="118.0" text="Mode" GridPane.rowIndex="4" />
                      <TextField fx:id="roomName" GridPane.columnIndex="1" GridPane.rowIndex="3" />
-                     <ComboBox fx:id="ma" prefHeight="25.0" prefWidth="283.0" GridPane.columnIndex="1" GridPane.rowIndex="1" />
-                     <ComboBox prefHeight="25.0" prefWidth="243.0" GridPane.columnIndex="1" GridPane.rowIndex="4" />
+                     <ComboBox prefHeight="25.0" prefWidth="283.0" GridPane.columnIndex="1" GridPane.rowIndex="1" fx:id="map"/>
+                     <ComboBox prefHeight="25.0" prefWidth="243.0" GridPane.columnIndex="1" GridPane.rowIndex="4" fx:id="mode"/>
                   </children>
                </GridPane>
                <Button id="submit" fx:id="submit" layoutX="521.0" layoutY="199.0" mnemonicParsing="false" text="Submit" />
