@@ -9,12 +9,16 @@ import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.TextField;
+import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
 
 import java.net.URL;
 import java.util.ResourceBundle;
 
 public class ServerConfigMenu implements Initializable {
+    @FXML
+    private AnchorPane configAnchorpane;
+
     @FXML
     private TextField roomName;
 
@@ -41,6 +45,8 @@ public class ServerConfigMenu implements Initializable {
         mode = new ChoiceBox<String>();
         map.setItems(FXCollections.observableArrayList("1", "2" , "3"));
         mode.setItems(FXCollections.observableArrayList("1", "2" , "3"));
+        configAnchorpane.getChildren().add(map);
+        configAnchorpane.getChildren().add(mode);
         submit.setOnAction(this::submitServer);
     }
 
