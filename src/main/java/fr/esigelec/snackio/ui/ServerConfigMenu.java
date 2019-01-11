@@ -13,6 +13,7 @@ import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.GridPane;
 import javafx.stage.Stage;
 
 import java.net.URL;
@@ -36,16 +37,28 @@ public class ServerConfigMenu implements Initializable {
     private String quest;
     private Scene scene;
 
+    @FXML
+    private GridPane grid;
+
     public ServerConfigMenu() {
 
     }
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         Snippet.setPreviousLocation(MenuController.Menus.MULTI_MENU);
-        ObservableList<String> options = FXCollections.observableArrayList("1", "2" , "3");
-        map = new ComboBox(options);
+        ObservableList<String> options = FXCollections.observableArrayList("option 1", "option 2" , "option 3");
+        map = new ComboBox();
         mode = new ComboBox(options);
+        map.getItems().addAll(
+                "jacob.smith@example.com",
+                "isabella.johnson@example.com",
+                "ethan.williams@example.com",
+                "emma.jones@example.com",
+                "michael.brown@example.com"
+        );
 
+        grid.add(map, 1, 1);
+        grid.add(mode, 1, 4);
         submit.setOnAction(this::submitServer);
     }
 
