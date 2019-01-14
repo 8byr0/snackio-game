@@ -6,7 +6,7 @@
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" styleClass="background" stylesheets="@../CSS/menus.css" xmlns="http://javafx.com/javafx/8.0.172-ea" xmlns:fx="http://javafx.com/fxml/1">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" styleClass="background" stylesheets="@../CSS/menus.css" xmlns="http://javafx.com/javafx/8.0.172-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="fr.esigelec.snackio.ui.ControllerConfig">
    <children>
       <ImageView fitHeight="59.0" fitWidth="64.0" layoutX="271.0" layoutY="121.0" pickOnBounds="true" preserveRatio="true">
          <image>
@@ -28,10 +28,10 @@
             <Image url="@../img/right.png" />
          </image>
       </ImageView>
-       <TextField fx:id="roomName" layoutX="287.0" layoutY="87.0" prefHeight="25.0" prefWidth="26.0" />
-      <TextField fx:id="roomName1" layoutX="179.0" layoutY="168.0" prefHeight="25.0" prefWidth="26.0" />
-      <TextField fx:id="roomName2" layoutX="287.0" layoutY="257.0" prefHeight="25.0" prefWidth="26.0" />
-      <TextField fx:id="roomName21" layoutX="396.0" layoutY="168.0" prefHeight="25.0" prefWidth="26.0" />
-      <Button layoutX="264.0" layoutY="333.0" prefHeight="25.0" prefWidth="73.0" text="Validate" styleClass="button" stylesheets="@../CSS/menus.css"/>
+       <TextField fx:id="" layoutX="266.0" layoutY="87.0" prefHeight="25.0" prefWidth="73.0" />
+      <TextField fx:id="leftT" layoutX="146.0" layoutY="168.0" prefHeight="25.0" prefWidth="59.0" />
+      <TextField fx:id="roomName2" layoutX="264.0" layoutY="257.0" prefHeight="25.0" prefWidth="73.0" />
+      <TextField fx:id="roomName21" layoutX="396.0" layoutY="168.0" prefHeight="25.0" prefWidth="59.0" />
+      <Button layoutX="264.0" layoutY="333.0" prefHeight="25.0" prefWidth="73.0" styleClass="button" stylesheets="@../CSS/menus.css" text="Validate" />
    </children>
 </AnchorPane>

@@ -6,6 +6,7 @@ import fr.esigelec.snackio.game.GameRenderer;
 import fr.esigelec.snackio.game.character.Character;
 import fr.esigelec.snackio.networking.Position;
 
+
 /**
  * Control a character with keyboard
  * This controller uses mapped keys from config to change character Direction, Moving and Position.
@@ -24,7 +25,7 @@ public class KeyboardController implements iCharacterController {
         // Store position for faster access
         Position position = character.getPosition();
         int speed = character.getSpeed();
-
+        int a=Input.Keys.LEFT;
         if (Gdx.input.isKeyPressed(Input.Keys.LEFT)) {
             character.setDirection(Direction.WEST);
 
