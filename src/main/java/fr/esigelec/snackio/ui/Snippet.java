@@ -35,13 +35,9 @@ public class Snippet implements Initializable {
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
+
         backButton.setDisable(true);
-=======
         //homeButton.setDisable(true);
-=======
         if(sert=="YES"){
             backButton.setDisable(true);
             homeButton.setDisable(true);
@@ -49,13 +45,10 @@ public class Snippet implements Initializable {
             backButton.setDisable(false);
             homeButton.setDisable(false);
         }
->>>>>>> back button OK
         backButton.setOnAction(this::backPrevious);
->>>>>>> ServerConfigMenu
-=======
+
         homeButton.setDisable(true);
         //backButton.setOnAction(this::backPrevious);
->>>>>>> ServerConfigMenu
         homeButton.setOnAction(this::backtoHome);
         settingsButton.setOnAction(this::opensettingsView);
 

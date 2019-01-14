@@ -1,9 +1,11 @@
 package fr.esigelec.snackio.ui;
+
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
 import javafx.stage.Stage;
+
 import java.net.URL;
 import java.util.ResourceBundle;
 
@@ -23,31 +25,13 @@ public class MultiMenu implements Initializable {
 
     }
 
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-    public void openJoinMenu(ActionEvent actionEvent) {
-<<<<<<< HEAD
-=======
-    public void openMulMenu(ActionEvent actionEvent) {
-        //stage = (Stage) multiAnchorPane.getScene().getWindow();
->>>>>>> ServerConfigMenu
-        MenuController.getInstance(stage).openMenu(MenuController.Menus.MAIN_MENU);
-=======
-    public void openMulMenu(ActionEvent actionEvent) {
-        //stage = (Stage) multiAnchorPane.getScene().getWindow();
-        SnackioGame game = SnackioGame.getInstance();
-        //MenuController.getInstance(stage).openMenu(MenuController.Menus.MAIN_MENU);
->>>>>>> ServerConfigMenu
-=======
     public void openJoinMenu(ActionEvent actionEvent) {
         MenuController.getInstance(stage).openMenu(MenuController.Menus.MAIN_MENU);
->>>>>>> fixing conflict
-=======
->>>>>>> back button OK
+
     }
 
-    public void openHostMenu (ActionEvent actionEvent) {
+
+    public void openHostMenu(ActionEvent actionEvent) {
         MenuController.getInstance(stage).openMenu(MenuController.Menus.SERVER_CONFIG_MENU);
     }
 }

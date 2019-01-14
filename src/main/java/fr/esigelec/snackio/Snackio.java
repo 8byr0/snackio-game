@@ -11,6 +11,7 @@ import fr.esigelec.snackio.game.SnackioGame;
 import fr.esigelec.snackio.game.character.CharacterFactory;
 import fr.esigelec.snackio.game.map.MapFactory;
 import fr.esigelec.snackio.networking.client.SnackioNetClient;
+import fr.esigelec.snackio.ui.MenuController;
 import javafx.application.Application;
 import javafx.stage.Stage;
 import org.apache.logging.log4j.LogManager;
@@ -43,24 +44,24 @@ public class Snackio extends Application {
         logger.info("...Initialisation finished");
 
 
-        // Create a Game
-        SnackioGame game = SnackioGame.getInstance();
-
-        // Create the local player
-        Player myPlayer = new Player("Hugues", CharacterFactory.CharacterType.GOLDEN_KNIGHT);
-
-        /////////////// NETWORK CONTROL
-        // Instantiate Network game engine to control gameplay
-        AbstractGameEngine engine = new NetworkGameEngine(game, myPlayer, MapFactory.MapType.DESERT_CASTLE);
-        // Instantiate a NetClient to exchange with client
-        SnackioNetClient cli = new SnackioNetClient(engine);
-        List<InetAddress> servers = cli.getAvailableServers();
-        logger.debug(servers);
-
-        if(servers.size() > 0) {
-            cli.connectServer(servers.get(0));
-        }
-        engine.startGame();
+//        // Create a Game
+//        SnackioGame game = SnackioGame.getInstance();
+//
+//        // Create the local player
+//        Player myPlayer = new Player("Hugues", CharacterFactory.CharacterType.GOLDEN_KNIGHT);
+//
+//        /////////////// NETWORK CONTROL
+//        // Instantiate Network game engine to control gameplay
+//        AbstractGameEngine engine = new NetworkGameEngine(game, myPlayer, MapFactory.MapType.DESERT_CASTLE);
+//        // Instantiate a NetClient to exchange with client
+//        SnackioNetClient cli = new SnackioNetClient(engine);
+//        List<InetAddress> servers = cli.getAvailableServers();
+//        logger.debug(servers);
+//
+//        if(servers.size() > 0) {
+//            cli.connectServer(servers.get(0));
+//        }
+//        engine.startGame();
 
     }
 
