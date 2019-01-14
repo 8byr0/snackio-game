@@ -1,8 +1,5 @@
 package fr.esigelec.snackio.ui;
-<<<<<<< HEAD
 
-=======
->>>>>>> back button OK
 import fr.esigelec.snackio.game.SnackioGame;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
