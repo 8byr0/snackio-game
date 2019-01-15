@@ -35,9 +35,7 @@ public class Snippet implements Initializable {
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-
-        backButton.setDisable(true);
-        //homeButton.setDisable(true);
+        homeButton.setDisable(false);
         if(sert=="YES"){
             backButton.setDisable(true);
             homeButton.setDisable(true);
@@ -46,9 +44,6 @@ public class Snippet implements Initializable {
             homeButton.setDisable(false);
         }
         backButton.setOnAction(this::backPrevious);
-
-        homeButton.setDisable(true);
-        //backButton.setOnAction(this::backPrevious);
         homeButton.setOnAction(this::backtoHome);
         settingsButton.setOnAction(this::opensettingsView);
 
