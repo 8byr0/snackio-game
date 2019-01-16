@@ -45,6 +45,7 @@ public class Snackio extends Application {
 
 
 //        // Create a Game
+//
 //        SnackioGame game = SnackioGame.getInstance();
 //
 //        // Create the local player

@@ -28,6 +28,7 @@ public class MainMenu  implements Initializable {
     }
 
     public void openSoloMenu(ActionEvent actionEvent) {
+
         SnackioGame game = SnackioGame.getInstance();
     }
 
