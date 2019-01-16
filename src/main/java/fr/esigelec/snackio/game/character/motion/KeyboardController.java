@@ -1,11 +1,9 @@
 package fr.esigelec.snackio.game.character.motion;
-
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import fr.esigelec.snackio.game.GameRenderer;
 import fr.esigelec.snackio.game.character.Character;
 import fr.esigelec.snackio.networking.Position;
-
 
 /**
  * Control a character with keyboard
@@ -17,6 +15,15 @@ public class KeyboardController implements iCharacterController {
      *  Change the position, direction and moving state of a Character
      * @param character Character to control
      */
+    public static int left,right,up,down;
+    public static void setLeftButton(int sel){ left=sel; }
+    public static int getLeftButton(){ return left; }
+    public static void setRightButton(int sel){ right=sel; }
+    public static int getRightButton(){ return right; }
+    public static void setDownButton(int sel){ down=sel; }
+    public static int getDownButton(){ return down; }
+    public static void setUpButton(int sel){ up=sel; }
+    public static int getUpButton(){ return up; }
     @Override
     public void execute(Character character) {
         character.setMoving(false);
@@ -25,8 +32,10 @@ public class KeyboardController implements iCharacterController {
         // Store position for faster access
         Position position = character.getPosition();
         int speed = character.getSpeed();
-        int a=Input.Keys.LEFT;
-        if (Gdx.input.isKeyPressed(Input.Keys.LEFT)) {
+        if(left==0){
+            left=Input.Keys.LEFT;
+        }
+        if (Gdx.input.isKeyPressed(left)){
             character.setDirection(Direction.WEST);
 
             if (!engine.isCharacterColliding(character, character.getFullProjection(position.x - speed + 16, position.y),
@@ -36,7 +45,10 @@ public class KeyboardController implements iCharacterController {
                 character.setMoving(true);
             }
         }
-        if (Gdx.input.isKeyPressed(Input.Keys.RIGHT)) {
+        if(right==0){
+            right=Input.Keys.RIGHT;
+        }
+        if (Gdx.input.isKeyPressed(right)) {
             character.setDirection(Direction.EAST);
 
             if (!engine.isCharacterColliding(character, character.getFullProjection(position.x + speed + 16, position.y),
@@ -46,7 +58,10 @@ public class KeyboardController implements iCharacterController {
                 character.setMoving(true);
             }
         }
-        if (Gdx.input.isKeyPressed(Input.Keys.DOWN)) {
+        if(down==0){
+            down=Input.Keys.DOWN;
+        }
+        if (Gdx.input.isKeyPressed(down)) {
             character.setDirection(Direction.SOUTH);
 
             if (!engine.isCharacterColliding(character, character.getFullProjection(position.x + 16, position.y - speed),
@@ -56,7 +71,10 @@ public class KeyboardController implements iCharacterController {
                 character.setMoving(true);
             }
         }
-        if (Gdx.input.isKeyPressed(Input.Keys.UP)) {
+        if(up==0){
+            up=Input.Keys.UP;
+        }
+        if (Gdx.input.isKeyPressed(up)) {
             character.setDirection(Direction.NORTH);
 
             if (!engine.isCharacterColliding(character, character.getFullProjection(position.x + 16, position.y + speed),

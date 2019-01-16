@@ -24,11 +24,6 @@ public class Snippet implements Initializable {
 
     private Stage stage;
 
-    public Snippet() {
-
-
-    }
-
     public static void setPreviousLocation(MenuController.Menus previous) {
         previousLocation = previous;
     }
