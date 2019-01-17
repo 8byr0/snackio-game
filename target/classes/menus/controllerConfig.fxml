@@ -32,7 +32,5 @@
       <TextField fx:id="left_button_textfield" alignment="CENTER" layoutX="146.0" layoutY="168.0" prefHeight="25.0" prefWidth="59.0" />
       <TextField fx:id="down_button_textfield" alignment="CENTER" layoutX="264.0" layoutY="257.0" prefHeight="25.0" prefWidth="73.0" />
       <TextField fx:id="right_button_textfield" alignment="CENTER" layoutX="396.0" layoutY="168.0" prefHeight="25.0" prefWidth="59.0" />
-      <TextField fx:id="rig_button_textfield" layoutX="396.0" layoutY="108.0" prefHeight="25.0" prefWidth="79.0" />
-      <Button fx:id="guut" layoutX="264.0" layoutY="333.0" prefHeight="25.0" prefWidth="73.0" styleClass="button" stylesheets="@../CSS/menus.css" text="Validate" />
-   </children>
+      </children>
 </AnchorPane>

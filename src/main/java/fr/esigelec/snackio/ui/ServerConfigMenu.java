@@ -1,5 +1,9 @@
 package fr.esigelec.snackio.ui;
 
+import fr.esigelec.snackio.game.character.Character;
+import fr.esigelec.snackio.game.character.CharacterFactory;
+import fr.esigelec.snackio.game.character.texture.AnimatedCharacterSkin;
+import fr.esigelec.snackio.game.map.MapFactory;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -11,9 +15,10 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.GridPane;
 import javafx.stage.Stage;
+import org.lwjgl.system.CallbackI;
 
 import java.net.URL;
-import java.util.ResourceBundle;
+import java.util.*;
 
 public class ServerConfigMenu implements Initializable {
 
@@ -27,7 +32,7 @@ public class ServerConfigMenu implements Initializable {
     private ComboBox map;
 
     @FXML
-    private ComboBox<String> mode;
+    private ComboBox mode;
 
     private Stage stage;
     private Scene scene;
@@ -41,45 +46,13 @@ public class ServerConfigMenu implements Initializable {
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         Snippet.setPreviousLocation(MenuController.Menus.MULTI_MENU);
-        ObservableList<String> options = FXCollections.observableArrayList();
-        int i = 1;
-        String img1 = "http://icons.iconarchive.com/icons/vincentburton/diaguita-ceramic-bowl/128/Diaguita-Ceramic-Bowl-"
-                + i + "-icon.png";
-        i = 2;
-        String img2 = "http://icons.iconarchive.com/icons/vincentburton/diaguita-ceramic-bowl/128/Diaguita-Ceramic-Bowl-"
-                + i + "-icon.png";
-        options.addAll(img1,img2);
-        map = new ComboBox(options);
-        mode = new ComboBox(options);
-        map.setCellFactory(c -> new StatusListCell());
-        //map.setButtonCell(new StatusListCell());
-        mode.setCellFactory(c -> new StatusListCell());
-        //mode.setButtonCell(new StatusListCell());
-
-        grid.add(map, 1, 1);
-        grid.add(mode, 1, 4);
+        map.getItems().setAll(MapFactory.MapType.values());
+        mode.getItems().setAll(CharacterFactory.CharacterType.values());
         submit.setOnAction(this::submitServer);
     }
 
     public void submitServer(ActionEvent actionEvent) {
-        //roomName.getText();
         MenuController.getInstance(stage).openMenu(MenuController.Menus.MULTI_MENU);
     }
 }
 
-class StatusListCell extends ListCell<String> {
-    protected void updateItem(String item, boolean empty){
-        super.updateItem(item, empty);
-        setGraphic(null);
-        setText(null);
-        if(item!=null){
-
-            ImageView imageView = new ImageView(new Image(item));
-            imageView.setFitWidth(40);
-            imageView.setFitHeight(40);
-            setGraphic(imageView);
-            setText("choix");
-        }
-    }
-
-}
