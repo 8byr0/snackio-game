@@ -15,8 +15,10 @@ public class KeyboardController implements iCharacterController {
      *  Change the position, direction and moving state of a Character
      * @param character Character to control
      */
-    public static int left,right,up,down;
+    public static int left=Input.Keys.LEFT,right=Input.Keys.RIGHT,up=Input.Keys.UP,down=Input.Keys.DOWN,ab;
     public static void setLeftButton(int sel){ left=sel; }
+    public void setTest(int sel){ab=sel;}
+    public int getTest(){return ab;}
     public static int getLeftButton(){ return left; }
     public static void setRightButton(int sel){ right=sel; }
     public static int getRightButton(){ return right; }
@@ -32,9 +34,6 @@ public class KeyboardController implements iCharacterController {
         // Store position for faster access
         Position position = character.getPosition();
         int speed = character.getSpeed();
-        if(left==0){
-            left=Input.Keys.LEFT;
-        }
         if (Gdx.input.isKeyPressed(left)){
             character.setDirection(Direction.WEST);
 
@@ -45,9 +44,7 @@ public class KeyboardController implements iCharacterController {
                 character.setMoving(true);
             }
         }
-        if(right==0){
-            right=Input.Keys.RIGHT;
-        }
+
         if (Gdx.input.isKeyPressed(right)) {
             character.setDirection(Direction.EAST);
 
@@ -58,9 +55,6 @@ public class KeyboardController implements iCharacterController {
                 character.setMoving(true);
             }
         }
-        if(down==0){
-            down=Input.Keys.DOWN;
-        }
         if (Gdx.input.isKeyPressed(down)) {
             character.setDirection(Direction.SOUTH);
 
@@ -70,9 +64,6 @@ public class KeyboardController implements iCharacterController {
 
                 character.setMoving(true);
             }
-        }
-        if(up==0){
-            up=Input.Keys.UP;
         }
         if (Gdx.input.isKeyPressed(up)) {
             character.setDirection(Direction.NORTH);

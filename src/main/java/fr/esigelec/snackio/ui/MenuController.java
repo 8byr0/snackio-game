@@ -16,7 +16,8 @@ public class MenuController {
         MAIN_MENU,
         SOLO_MENU,
         MULTI_MENU,
-        SERVER_CONFIG_MENU
+        SERVER_CONFIG_MENU,
+        JOIN_ROOM_MENU
     }
 
     private static MenuController instance;
@@ -49,6 +50,9 @@ public class MenuController {
                 break;
             case SERVER_CONFIG_MENU:
                 pathToMenuFile = "/menus/ServerConfigMenu.fxml";
+                break;
+            case JOIN_ROOM_MENU:
+                pathToMenuFile = "/menus/JoinRoomMenu.fxml";
                 break;
             default:
                 Log.warn("Requested menu does not exist. Cannot proceed.");
