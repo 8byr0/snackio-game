@@ -1,24 +1,13 @@
 package fr.esigelec.snackio;
-
-import fr.esigelec.snackio.core.NetworkGameEngine;
-import fr.esigelec.snackio.core.AbstractGameEngine;
 import fr.esigelec.snackio.core.exceptions.GameCannotStartException;
 import fr.esigelec.snackio.core.exceptions.NoCharacterSetException;
 import fr.esigelec.snackio.core.exceptions.UnhandledCharacterTypeException;
 import fr.esigelec.snackio.core.exceptions.UnhandledControllerException;
-import fr.esigelec.snackio.core.Player;
-import fr.esigelec.snackio.game.SnackioGame;
-import fr.esigelec.snackio.game.character.CharacterFactory;
-import fr.esigelec.snackio.game.map.MapFactory;
-import fr.esigelec.snackio.networking.client.SnackioNetClient;
 import fr.esigelec.snackio.ui.MenuController;
 import javafx.application.Application;
 import javafx.stage.Stage;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-
-import java.net.InetAddress;
-import java.util.List;
 
 /**
  * Entry point of the full software

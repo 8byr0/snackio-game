@@ -30,7 +30,6 @@ public class ServerConfigMenu implements Initializable {
     private ComboBox<String> mode;
 
     private Stage stage;
-    private String quest;
     private Scene scene;
 
     @FXML

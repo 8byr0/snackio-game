@@ -26,7 +26,7 @@ public class MultiMenu implements Initializable {
     }
 
     public void openJoinMenu(ActionEvent actionEvent) {
-        MenuController.getInstance(stage).openMenu(MenuController.Menus.MAIN_MENU);
+        MenuController.getInstance(stage).openMenu(MenuController.Menus.JOIN_ROOM_MENU);
 
     }
 
