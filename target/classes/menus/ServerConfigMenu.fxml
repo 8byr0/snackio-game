@@ -47,7 +47,7 @@
                       <TextField fx:id="teamName2" GridPane.columnIndex="1" GridPane.rowIndex="3" />
                      <Label prefHeight="25.0" prefWidth="118.0" text="Mode" GridPane.rowIndex="4" />
 
-                      <ComboBox fx:id="mode" GridPane.columnIndex="1" GridPane.rowIndex="4" visible="false"/>
+                      <ComboBox fx:id="mode" GridPane.columnIndex="1" GridPane.rowIndex="4"/>
                   </children>
                </GridPane>
                <Button id="submit" fx:id="submit" layoutX="521.0" layoutY="210.0" mnemonicParsing="false" text="Submit" />
