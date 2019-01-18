@@ -74,25 +74,8 @@ public class JoinRoomMenu  implements Initializable {
                     SnackioGame game = SnackioGame.getInstance();
                     //        // Create the local player
                     Player myPlayer = new Player("Hugues", CharacterFactory.CharacterType.GOLDEN_KNIGHT);
-
                     if(info=="getConnection"){
-                        switch(String.valueOf(character.getSelectionModel().getSelectedItem())){
-                            case "INDIANA":
-                                myPlayer = new Player(playerName.getText(), CharacterFactory.CharacterType.INDIANA);
-                                break;
-                            case "INSPECTOR":
-                                myPlayer = new Player(playerName.getText(), CharacterFactory.CharacterType.INSPECTOR);;
-                                break;
-                            case "NUDE_MAN":
-                                myPlayer = new Player(playerName.getText(), CharacterFactory.CharacterType.NUDE_MAN);
-                                break;
-                            case "BALD_MAN":
-                                myPlayer = new Player(playerName.getText(), CharacterFactory.CharacterType.BALD_MAN);
-                                break;
-                            case "GOLDEN_KNIGHT":
-                                myPlayer = new Player(playerName.getText(), CharacterFactory.CharacterType.GOLDEN_KNIGHT);
-                                break;
-                        }
+                        myPlayer = new Player(playerName.getText(), CharacterFactory.CharacterType.valueOf(String.valueOf(character.getSelectionModel().getSelectedItem())));
 
                     }
                     //
@@ -105,12 +88,13 @@ public class JoinRoomMenu  implements Initializable {
 
                     //        logger.debug(servers);
                     if(servers.size() > 0) {
-                        System.out.println("servers>0");
                         join.setDisable(false);
+                        //Pour se connecter au server
                         if(info=="getConnection"){
                             System.out.println("connection");
                             cli.connectServer(servers.get(0));
                         }
+                        //Pour recupérer les différents serveurs existants dans
                         if(info=="getInformation"){
                             System.out.println("information");
                             server_box.getItems().setAll(servers);
