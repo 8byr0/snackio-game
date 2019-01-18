@@ -10,6 +10,7 @@ import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
+import com.badlogic.gdx.maps.MapLayer;
 import fr.esigelec.snackio.core.GameMode;
 import fr.esigelec.snackio.game.state.AbstractGameState;
 import fr.esigelec.snackio.game.state.CoinQuestGameState;
@@ -78,7 +79,11 @@ public class MapInformationOverlay extends ApplicationAdapter {
         if (state.getGameMode() == GameMode.COINS_QUEST) {
             batch.draw(getCurrentFrame(stateTime), 82, 85, COIN_WIDTH, COIN_HEIGHT);
 
-            font.draw(batch, ((CoinQuestGameState) state).getFetchedCoins() + "/" + ((CoinQuestGameState) state).getCoinsToFetch(), 120, 115);
+            font.draw(batch, ((CoinQuestGameState) state).getFetchedCoins()
+                    + "/" + ((CoinQuestGameState) state).getCoinsToFetch()
+                    + "\n2 VIES"
+                    + "\nEquipe 1, Room 1, id 6"
+                    , 120, 115);
         }
         batch.end();
 
@@ -103,4 +108,7 @@ public class MapInformationOverlay extends ApplicationAdapter {
         return (TextureRegion) coinAnimation.getKeyFrame(stateTime, true);
     }
 
+    private void ExtraInfoDisplay(){
+        //batch.draw();
+    }
 }
