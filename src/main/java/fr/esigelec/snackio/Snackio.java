@@ -51,7 +51,7 @@ public class Snackio extends Application {
 
         /////////////// NETWORK CONTROL
         // Instantiate Network game engine to control gameplay
-        AbstractGameEngine engine = new NetworkGameEngine(game, myPlayer, MapFactory.MapType.DESERT_CASTLE);
+        AbstractGameEngine engine = new NetworkGameEngine(game, myPlayer, MapFactory.MapType.CASTLE);
         // Instantiate a NetClient to exchange with client
         SnackioNetClient cli = new SnackioNetClient(engine);
         List<InetAddress> servers = cli.getAvailableServers();
