@@ -35,12 +35,17 @@ import fr.esigelec.snackio.networking.Position;
 public class Player implements IRMIExecutablePlayer {
     private int id;
     private Character character;
+    private int lives = 3;
 
     /**
      * Class constructor
      */
     public Player() {
 
+    }
+
+    public int getLives() {
+        return lives;
     }
 
     /**

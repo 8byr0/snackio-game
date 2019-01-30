@@ -12,8 +12,10 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.maps.MapLayer;
 import fr.esigelec.snackio.core.GameMode;
+import fr.esigelec.snackio.core.Player;
 import fr.esigelec.snackio.game.state.AbstractGameState;
 import fr.esigelec.snackio.game.state.CoinQuestGameState;
+import fr.esigelec.snackio.game.state.MultiplayerGameState;
 
 
 public class MapInformationOverlay extends ApplicationAdapter {
@@ -76,15 +78,28 @@ public class MapInformationOverlay extends ApplicationAdapter {
 
         batch.setProjectionMatrix(cam.combined);
         batch.begin();
-        if (state.getGameMode() == GameMode.COINS_QUEST) {
+        if (state instanceof CoinQuestGameState) {
             batch.draw(getCurrentFrame(stateTime), 82, 85, COIN_WIDTH, COIN_HEIGHT);
 
             font.draw(batch, ((CoinQuestGameState) state).getFetchedCoins()
                     + "/" + ((CoinQuestGameState) state).getCoinsToFetch()
-                    + "\n2 VIES"
-                    + "\nEquipe 1, Room 1, id 6"
                     , 120, 115);
+
+            font.draw(batch, "2 VIES"
+                    + "\nEquipe 1, Room 1, id 6"
+                    , 200, 115);
         }
+
+        if(state instanceof MultiplayerGameState){
+            int offset = 1;
+            for(Player player : ((MultiplayerGameState) state).getPlayers()){
+                font.draw(batch, player.toString(), 200, offset * 50);
+                offset += 1;
+            }
+
+            font.draw(batch, Integer.toString(((MultiplayerGameState) state).getActivePlayer().getLives()), 10,10);
+        }
+
         batch.end();
 
     }
