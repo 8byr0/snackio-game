@@ -19,11 +19,16 @@ public class KeyboardController implements iCharacterController {
     @Override
     public void execute(Character character) {
         character.setMoving(false);
+        character.setAttacking(false);
         GameRenderer engine = GameRenderer.getInstance();
 
         // Store position for faster access
         Position position = character.getPosition();
         int speed = character.getSpeed();
+
+        if (Gdx.input.isKeyPressed(Input.Keys.A)) {
+            character.setAttacking(true);
+        }
 
         if (Gdx.input.isKeyPressed(Input.Keys.LEFT)) {
             character.setDirection(Direction.WEST);

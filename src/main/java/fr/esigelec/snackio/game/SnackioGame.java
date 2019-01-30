@@ -72,9 +72,11 @@ public class SnackioGame {
      */
     public void start(AbstractGameState gameState) throws GameCannotStartException {
         this.gameState = gameState;
+
         if (null == defaultPlayer || null == gameRenderer) {
             throw new GameCannotStartException("Game could not start, Have you instantiated an engine?");
         }
+
         Lwjgl3ApplicationConfiguration config = new Lwjgl3ApplicationConfiguration();
         Lwjgl3Application app = new Lwjgl3Application(gameRenderer, config);
     }
@@ -166,6 +168,10 @@ public class SnackioGame {
         this.gameRenderer.setSnackioMap(theMap);
     }
 
+    /**
+     * Remove a player from the game
+     * @param playerID the id of the player
+     */
     public void removePlayer(int playerID) {
         Player playerToRemove = this.playersHashmap.get(playerID);
         try {
@@ -176,16 +182,29 @@ public class SnackioGame {
         this.playersHashmap.remove(playerID);
     }
 
+    /**
+     * Add a trigger listener
+     * @param listener the listener to add
+     */
     public void addPoiTriggeredListener(PoiTriggeredListener listener){
         this.poiTriggeredListeners.add(listener);
     }
 
+    /**
+     * Trigger all registered listeners
+     * @param poi poi to trigger
+     * @param player the player that triggered
+     */
     private void triggerPoiListeners(iPoi poi, Player player){
         for(PoiTriggeredListener listener: poiTriggeredListeners){
             listener.poiTriggered(poi, player);
         }
     }
 
+    /**
+     * Get game state
+     * @return the game state
+     */
     public AbstractGameState getGameState() {
         return this.gameState;
     }

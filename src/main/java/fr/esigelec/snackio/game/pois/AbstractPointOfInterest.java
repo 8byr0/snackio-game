@@ -1,9 +1,13 @@
 package fr.esigelec.snackio.game.pois;
 
 import com.badlogic.gdx.ApplicationAdapter;
+import fr.esigelec.snackio.core.Player;
 import fr.esigelec.snackio.game.character.Character;
 import fr.esigelec.snackio.game.map.Map;
+import fr.esigelec.snackio.game.pois.listeners.PoiTriggeredListener;
 import fr.esigelec.snackio.networking.Position;
+
+import java.util.ArrayList;
 
 /**
  * This class handles all the common attributes of both PointOfInterest and AnimatedPointOfInterest
@@ -16,6 +20,7 @@ public abstract class AbstractPointOfInterest extends ApplicationAdapter impleme
     protected boolean created = false;
     protected Map room;
 
+    private ArrayList<PoiTriggeredListener> listeners = new ArrayList<>();
 
     /**
      * Abstract method to implement when inheriting PointOfInterest
@@ -74,4 +79,24 @@ public abstract class AbstractPointOfInterest extends ApplicationAdapter impleme
     public Map getRoom(){
         return this.room;
     }
+
+    /**
+     * Add a trigger listener
+     * @param listener the listener to add
+     */
+    public void addPoiTriggeredListener(PoiTriggeredListener listener){
+        this.listeners.add(listener);
+    }
+
+    /**
+     * Triggered all registered listeners
+     * @param poi poi triggered
+     * @param player player that trigger
+     */
+    private void triggerPoiListeners(iPoi poi, Player player){
+        for(PoiTriggeredListener listener: listeners){
+            listener.poiTriggered(poi, player);
+        }
+    }
+
 }

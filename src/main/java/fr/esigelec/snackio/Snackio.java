@@ -49,9 +49,9 @@ public class Snackio extends Application {
         // Create the local player
         Player myPlayer = new Player("Hugues", CharacterFactory.CharacterType.GOLDEN_KNIGHT);
 
-        /////////////// NETWORK CONTROL
         // Instantiate Network game engine to control gameplay
         AbstractGameEngine engine = new NetworkGameEngine(game, myPlayer, MapFactory.MapType.DESERT_CASTLE);
+
         // Instantiate a NetClient to exchange with client
         SnackioNetClient cli = new SnackioNetClient(engine);
         List<InetAddress> servers = cli.getAvailableServers();

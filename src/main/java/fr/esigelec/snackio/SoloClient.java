@@ -14,12 +14,12 @@ import fr.esigelec.snackio.game.map.MapFactory;
 /**
  * THIS CLASS IS ONLY TO DEBUG USING MULTIPLE CLIENTS
  */
-public class ThirdClient {
+public class SoloClient {
     public static void main(String[] args) throws GameCannotStartException, UnhandledCharacterTypeException, NoCharacterSetException, UnhandledControllerException {
         SnackioGame game = SnackioGame.getInstance();
 
         // Create the local player
-        Player myPlayer = new Player("Bob", CharacterFactory.CharacterType.INSPECTOR);
+        Player myPlayer = new Player("Bob", CharacterFactory.CharacterType.BASE_NUDE_MAN);
         myPlayer.getCharacter().setPosition(100,900);
 
         /////////////// NETWORK CONTROL

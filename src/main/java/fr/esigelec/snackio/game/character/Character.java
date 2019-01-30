@@ -4,7 +4,6 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.graphics.Camera;
 import com.badlogic.gdx.graphics.g2d.Batch;
-import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.maps.MapObject;
@@ -24,6 +23,11 @@ import java.util.ArrayList;
  * Character instance is the GUI projection of a player on the map.
  */
 public class Character extends MapObject {
+    AnimatedCharacterSkin weapon;
+
+    public void addWeapon(AnimatedCharacterSkin weapon) {
+        this.weapon = weapon;
+    }
 
     public enum CharacterStatus {
         // STATIC
@@ -35,7 +39,12 @@ public class Character extends MapObject {
         MOVING_NORTH,
         MOVING_WEST,
         MOVING_SOUTH,
-        MOVING_EAST
+        MOVING_EAST,
+        // ATTACKING
+        ATTACKING_NORTH,
+        ATTACKING_EAST,
+        ATTACKING_WEST,
+        ATTACKING_SOUTH
     }
 
     public enum StepSound {
@@ -52,6 +61,7 @@ public class Character extends MapObject {
     // Motion control
     private int speed = 5;
     private boolean moving = false;
+    private boolean attacking = false;
     private Position position = new Position(150, 150);
     private iCharacterController motionController;
     private Direction direction = Direction.NORTH;
@@ -69,7 +79,8 @@ public class Character extends MapObject {
     private Camera cam;
     private SpriteBatch batch;
 
-    private AnimatedCharacterSkin skin;
+    private AnimatedCharacterSkin walkingSkin;
+    private AnimatedCharacterSkin attackingSkin;
 
     private ShapeRenderer shapeRenderer;
 
@@ -84,9 +95,10 @@ public class Character extends MapObject {
      * Default Character constructor
      * It is package-private because it should only be called by the CharacterFactory
      */
-    Character(AnimatedCharacterSkin skin) {
+    Character(AnimatedCharacterSkin skin, AnimatedCharacterSkin attackingSkin) {
         activePointsOfInterest = new ArrayList<>();
-        this.skin = skin;
+        this.walkingSkin = skin;
+        this.attackingSkin = attackingSkin;
     }
 
     /**
@@ -140,6 +152,17 @@ public class Character extends MapObject {
     }
 
     /**
+     * Set the moving state of the character
+     * This method also triggers all listeners that asked to be notified.
+     * When a character is in moving state, his projection will be keyframe animation
+     *
+     * @param attacking boolean
+     */
+    public void setAttacking(boolean attacking) {
+        this.attacking = attacking;
+    }
+
+    /**
      * Trigger move listeners methods
      */
     private void triggerMoveListeners() {
@@ -158,6 +181,22 @@ public class Character extends MapObject {
     }
 
     /**
+     * Implementation of ApplicationListener's interface.
+     * This method is called once when libgdx engine is ready and running.
+     */
+    public void create() {
+        leftStepSound = Gdx.audio.newMusic(Gdx.files.internal("sound/step_left.ogg"));
+        rightStepSound = Gdx.audio.newMusic(Gdx.files.internal("sound/step_right.ogg"));
+        batch = new SpriteBatch();
+        this.cam = GameRenderer.getInstance().getCamera();
+        shapeRenderer = new ShapeRenderer();
+        walkingSkin.create();
+        attackingSkin.create();
+        weapon.create();
+        created = true;
+    }
+
+    /**
      * Implementation of ApplicationListener's method.
      * The render() method is called continuously by libgdx to perform
      * rendering.
@@ -166,8 +205,16 @@ public class Character extends MapObject {
         stateTime += Gdx.graphics.getDeltaTime();
         batch.setProjectionMatrix(cam.combined);
         handleMotionController();
-        batch.draw(skin.getCurrentFrame(direction, moving), position.x, position.y);
-        skin.render();
+        if (isAttacking()) {
+            batch.draw(attackingSkin.getCurrentFrame(direction, moving, attacking), position.x, position.y);
+        } else {
+            batch.draw(walkingSkin.getCurrentFrame(direction, moving, attacking), position.x, position.y);
+        }
+        batch.draw(weapon.getCurrentFrame(direction, moving, attacking), position.x, position.y);
+
+        weapon.render();
+        walkingSkin.render();
+        attackingSkin.render();
     }
 
     /**
@@ -209,25 +256,11 @@ public class Character extends MapObject {
     }
 
     /**
-     * Implementation of ApplicationListener's interface.
-     * This method is called once when libgdx engine is ready and running.
-     */
-    public void create() {
-        leftStepSound = Gdx.audio.newMusic(Gdx.files.internal("sound/step_left.ogg"));
-        rightStepSound = Gdx.audio.newMusic(Gdx.files.internal("sound/step_right.ogg"));
-        batch = new SpriteBatch();
-        this.cam = GameRenderer.getInstance().getCamera();
-        shapeRenderer = new ShapeRenderer();
-        skin.create();
-        created = true;
-    }
-
-    /**
      * Dispose all elements created in create() method
      */
     public void dispose() {
         batch.dispose();
-        skin.dispose();
+        walkingSkin.dispose();
         leftStepSound.dispose();
         rightStepSound.dispose();
     }
@@ -346,6 +379,15 @@ public class Character extends MapObject {
      */
     public boolean isMoving() {
         return moving;
+    }
+
+    /**
+     * Returns if the character is moving or not
+     *
+     * @return true if moving, false otherwise
+     */
+    public boolean isAttacking() {
+        return attacking;
     }
 
     /**
