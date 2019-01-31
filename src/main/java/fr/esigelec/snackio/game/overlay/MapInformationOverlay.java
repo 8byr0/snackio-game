@@ -69,38 +69,52 @@ public class MapInformationOverlay extends ApplicationAdapter {
         stateTime += Gdx.graphics.getDeltaTime();
 
         renderCamera();
-        shapeRenderer.setProjectionMatrix(cam.combined);
-        shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
-        shapeRenderer.setColor(Color.RED);
-        shapeRenderer.rect(80, 80, 100, 10);
-        shapeRenderer.end();
 
 
-        batch.setProjectionMatrix(cam.combined);
-        batch.begin();
+
+
         if (state instanceof CoinQuestGameState) {
+            shapeRenderer.setProjectionMatrix(cam.combined);
+            shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
+            shapeRenderer.setColor(Color.RED);
+            shapeRenderer.rect(80, 80, 100, 10);
+            shapeRenderer.end();
+
+
+            batch.setProjectionMatrix(cam.combined);
+            batch.begin();
             batch.draw(getCurrentFrame(stateTime), 82, 85, COIN_WIDTH, COIN_HEIGHT);
 
+            //show the coin information
             font.draw(batch, ((CoinQuestGameState) state).getFetchedCoins()
                     + "/" + ((CoinQuestGameState) state).getCoinsToFetch()
                     , 120, 115);
-
-            font.draw(batch, "2 VIES"
-                    + "\nEquipe 1, Room 1, id 6"
-                    , 200, 115);
+            batch.end();
         }
 
         if(state instanceof MultiplayerGameState){
+            batch.setProjectionMatrix(cam.combined);
+            batch.begin();
+
+            //show the player information
             int offset = 1;
             for(Player player : ((MultiplayerGameState) state).getPlayers()){
-                font.draw(batch, player.toString(), 200, offset * 50);
+                font.draw(batch, "Joueur " + offset + ": "
+                        + player.toString(), 200, 150 + offset * 50);
                 offset += 1;
             }
+            font.draw(batch, "Votre salle: " + ((MultiplayerGameState) state).getRoomName(), 200, 100);
 
-            font.draw(batch, Integer.toString(((MultiplayerGameState) state).getActivePlayer().getLives()), 10,10);
+            //font.draw(batch, "2 VIES" + "\nEquipe 1, Room 1, id 6", 200, 100);
+            //font.draw(batch, "2 VIES" + "\nEquipe 1, Room 1, id 6", 200, 150);
+            //font.draw(batch, "Votre profil: " + (((MultiplayerGameState) state).getActivePlayer().toString()), 200,150);
+
+            font.draw(batch, "Vies restants: " + (((MultiplayerGameState) state)
+                    .getActivePlayer().getLives()), 200,50);
+            batch.end();
         }
 
-        batch.end();
+
 
     }
 

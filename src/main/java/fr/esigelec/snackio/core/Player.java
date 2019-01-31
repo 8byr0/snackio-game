@@ -227,4 +227,10 @@ public class Player implements IRMIExecutablePlayer {
         }
         this.character.setRoom(room);
     }
+
+    @Override
+    public String toString() {
+        return  "id=" + id +
+                ", lives=" + lives;
+    }
 }
