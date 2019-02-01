@@ -60,7 +60,7 @@ public class ServerConfigMenu implements Initializable {
         for (Enum character: somethingList){
             RadioButton rbCha = new RadioButton(character.toString());
 
-            ImageView imgCha= new ImageView("http://icons.iconarchive.com/icons/vincentburton/diaguita-ceramic-bowl/128/Diaguita-Ceramic-Bowl-1-icon.png");
+            ImageView imgCha= new ImageView("sprites/character2.png");
             imgCha.setFitHeight(40);
             imgCha.setFitWidth(40);
             rbCha.setGraphic(imgCha);
@@ -86,7 +86,7 @@ public class ServerConfigMenu implements Initializable {
         HBox mapBox = new HBox();
         for (Enum map: mapList){
             RadioButton rbMap = new RadioButton(map.toString());
-            ImageView imgMap= new ImageView("http://icons.iconarchive.com/icons/vincentburton/diaguita-ceramic-bowl/128/Diaguita-Ceramic-Bowl-2-icon.png");
+            ImageView imgMap= new ImageView("maps/desert_castle.png");
             imgMap.setFitWidth(40);
             imgMap.setFitHeight(40);
             rbMap.setGraphic(imgMap);
