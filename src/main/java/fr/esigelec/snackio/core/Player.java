@@ -35,6 +35,7 @@ import fr.esigelec.snackio.networking.Position;
 public class Player implements IRMIExecutablePlayer {
     private int id;
     private Character character;
+    private String name;
     private int lives = 3;
 
     /**
@@ -48,6 +49,11 @@ public class Player implements IRMIExecutablePlayer {
         return lives;
     }
 
+    public String getName() {
+
+        return name;
+    }
+
     /**
      * Class constructor specifying name and Character
      * Character must be one of {@link CharacterFactory.CharacterType}
@@ -57,6 +63,7 @@ public class Player implements IRMIExecutablePlayer {
      * @throws UnhandledCharacterTypeException When the given Character cannot be processed by the factory
      */
     public Player(String name, CharacterFactory.CharacterType character) throws UnhandledCharacterTypeException {
+        this.name = name;
         this.character = CharacterFactory.getCharacter(character);
     }
 
@@ -230,7 +237,7 @@ public class Player implements IRMIExecutablePlayer {
 
     @Override
     public String toString() {
-        return  "id=" + id +
+        return  "id=" + id + ", name=" + name +
                 ", lives=" + lives;
     }
 }
