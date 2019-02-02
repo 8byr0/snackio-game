@@ -6,8 +6,10 @@ import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.input.MouseDragEvent;
 import javafx.stage.Stage;
 
+import java.awt.event.MouseEvent;
 import java.net.URL;
 import java.util.ResourceBundle;
 public class Snippet implements Initializable {
@@ -22,10 +24,30 @@ public class Snippet implements Initializable {
     @FXML
     private Button settingsButton;
 
+
+    @FXML
+    void entered(MouseDragEvent event) {
+        System.out.println("entered");
+    }
+
+    @FXML
+    void exited(MouseDragEvent event) {
+        System.out.println("exited");
+    }
+
+    @FXML
+    void testiny(MouseDragEvent event) {
+        System.out.println("testiny");
+    }
+
     private Stage stage;
 
     public static void setPreviousLocation(MenuController.Menus previous) {
         previousLocation = previous;
+    }
+
+    public static void back(String sel){
+        sert=sel;
     }
 
     @Override
@@ -41,6 +63,7 @@ public class Snippet implements Initializable {
         backButton.setOnAction(this::backPrevious);
         homeButton.setOnAction(this::backtoHome);
         settingsButton.setOnAction(this::opensettingsView);
+        //settingsButton.setOnMouseEntered(this::entered);
 
     }
 
@@ -48,9 +71,7 @@ public class Snippet implements Initializable {
         MenuController.getInstance(stage).openMenu(MenuController.Menus.MAIN_MENU);
     }
 
-    public static void back(String sel){
-        sert=sel;
-    }
+
 
     public void backPrevious(ActionEvent actionEvent) {
         MenuController.getInstance(stage).openMenu(previousLocation);

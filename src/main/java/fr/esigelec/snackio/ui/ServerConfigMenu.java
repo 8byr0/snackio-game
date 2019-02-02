@@ -49,6 +49,14 @@ public class ServerConfigMenu implements Initializable {
         map.getItems().setAll(MapFactory.MapType.values());
         character.getItems().setAll(CharacterFactory.CharacterType.values());
         submit.setOnAction(this::submitServer);
+        submit.setOnMouseEntered(event -> {
+            submit.setTranslateX(1);
+            submit.setStyle("-fx-opacity: 1");
+        });
+        submit.setOnMouseExited(event -> {
+            submit.setTranslateX(0);
+            submit.setStyle("-fx-opacity: 0.6");
+        });
     }
 
     public void submitServer(ActionEvent actionEvent) {
@@ -69,11 +77,12 @@ public class ServerConfigMenu implements Initializable {
                         //        // Instantiate a NetClient to exchange with client
                         SnackioNetClient cli = new SnackioNetClient(engine);
                         NetworkGameEngine nEngine=new NetworkGameEngine(game,myPlayer,MapFactory.MapType.valueOf(String.valueOf(map.getSelectionModel().getSelectedItem())));
-                        List<InetAddress> servers = cli.getAvailableServers();
+
                         String[] difficultWords = new String[10];
                         difficultWords[0]="you";
                         SnackioNetServer.main(difficultWords);
-                        //cli.connectServer(servers.get(0));
+                        List<InetAddress> servers = cli.getAvailableServers();
+                        cli.connectServer(servers.get(0));
                         engine.startGame();
                         //000000000
                         } catch (IOException e) {

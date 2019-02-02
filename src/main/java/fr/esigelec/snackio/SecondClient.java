@@ -33,8 +33,6 @@ public class SecondClient {
         // Instantiate a NetClient to exchange with client
         SnackioNetClient cli = new SnackioNetClient(engine);
         List<InetAddress> servers = cli.getAvailableServers();
-        System.out.println(servers);
-
         if(servers.size() > 0) {
             cli.connectServer(servers.get(0));
         }

@@ -22,6 +22,22 @@ public class MultiMenu implements Initializable {
         Snippet.setPreviousLocation(MenuController.Menus.MAIN_MENU);
         openJoinMenuButton.setOnAction(this::openJoinMenu);
         openHostMenuButton.setOnAction(this::openHostMenu);
+        openJoinMenuButton.setOnMouseEntered(event -> {
+            openJoinMenuButton.setTranslateX(1);
+            openJoinMenuButton.setStyle("-fx-opacity: 1");
+        });
+        openJoinMenuButton.setOnMouseExited(event -> {
+            openJoinMenuButton.setTranslateX(0);
+            openJoinMenuButton.setStyle("-fx-opacity: 0.6");
+        });
+        openHostMenuButton.setOnMouseEntered(event -> {
+            openHostMenuButton.setTranslateX(1);
+            openHostMenuButton.setStyle("-fx-opacity: 1");
+        });
+        openHostMenuButton.setOnMouseExited(event -> {
+            openHostMenuButton.setTranslateX(0);
+            openHostMenuButton.setStyle("-fx-opacity: 0.6");
+        });
 
     }
 
