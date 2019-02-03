@@ -58,23 +58,23 @@ public class ServerConfigMenu implements Initializable {
         //character.getItems().setAll(CharacterFactory.CharacterType.values());
         HBox characterBox = new HBox();
         for (Enum character: somethingList){
-            RadioButton rbCha = new RadioButton(character.toString());
+            ToggleButton rbCha = new ToggleButton();
 
-            ImageView imgCha= new ImageView("sprites/character2.png");
+            ImageView imgCha= new ImageView("sprites/menu_"+character.toString()+".png");
             imgCha.setFitHeight(40);
             imgCha.setFitWidth(40);
             rbCha.setGraphic(imgCha);
+            rbCha.setId(character.toString());
             rbCha.setToggleGroup(characterGroup);
             characterBox.getChildren().add(rbCha);
         }
         grid.add(characterBox,1,3);
-
         characterGroup.selectedToggleProperty().addListener(new ChangeListener<Toggle>() {
             public void changed(ObservableValue<? extends Toggle> ov, Toggle old_toggle, Toggle new_toggle) {
                 // Has selection.
                 if (characterGroup.getSelectedToggle() != null) {
-                    RadioButton choice = (RadioButton) characterGroup.getSelectedToggle();
-                    System.out.println("Character: " + choice.getText());
+                    ToggleButton choice = (ToggleButton) characterGroup.getSelectedToggle();
+                    System.out.println("Character: " + choice.getId());
                 }
             }
         });
@@ -85,10 +85,11 @@ public class ServerConfigMenu implements Initializable {
         List<Enum> mapList = Arrays.asList(MapFactory.MapType.values());
         HBox mapBox = new HBox();
         for (Enum map: mapList){
-            RadioButton rbMap = new RadioButton(map.toString());
-            ImageView imgMap= new ImageView("maps/desert_castle.png");
+            ToggleButton rbMap = new ToggleButton();
+            ImageView imgMap= new ImageView("maps/"+map.toString()+".png");
             imgMap.setFitWidth(40);
             imgMap.setFitHeight(40);
+            rbMap.setId(map.toString());
             rbMap.setGraphic(imgMap);
             rbMap.setToggleGroup(mapGroup);
             mapBox.getChildren().add(rbMap);
@@ -99,8 +100,8 @@ public class ServerConfigMenu implements Initializable {
             public void changed(ObservableValue<? extends Toggle> ov, Toggle old_toggle, Toggle new_toggle) {
                 // Has selection.
                 if (mapGroup.getSelectedToggle() != null) {
-                    RadioButton choice = (RadioButton) mapGroup.getSelectedToggle();
-                    System.out.println("Map: " + choice.getText());
+                    ToggleButton choice = (ToggleButton) mapGroup.getSelectedToggle();
+                    System.out.println("Map: " + choice.getId());
                 }
             }
         });
@@ -119,20 +120,20 @@ public class ServerConfigMenu implements Initializable {
                             try{
                         SnackioGame game = SnackioGame.getInstance();
                         //        // Create the local player
-                                RadioButton rbCha = (RadioButton)characterGroup.getSelectedToggle();
+                                ToggleButton rbCha = (ToggleButton) characterGroup.getSelectedToggle();
                         Player myPlayer = new Player(playerName.getText(),
-                                CharacterFactory.CharacterType.valueOf(String.valueOf(rbCha.getText())));
+                                CharacterFactory.CharacterType.valueOf(String.valueOf(rbCha.getId())));
 
                         //
                         //        /////////////// NETWORK CONTROL
                         //        // Instantiate Network game engine to control gameplay
-                                RadioButton rbMap = (RadioButton)mapGroup.getSelectedToggle();
+                                ToggleButton rbMap = (ToggleButton) mapGroup.getSelectedToggle();
                         AbstractGameEngine engine = new NetworkGameEngine(game, myPlayer,
-                                MapFactory.MapType.valueOf(String.valueOf(rbMap.getText())));
+                                MapFactory.MapType.valueOf(String.valueOf(rbMap.getId())));
                         //        // Instantiate a NetClient to exchange with client
                         SnackioNetClient cli = new SnackioNetClient(engine);
                         NetworkGameEngine nEngine=new NetworkGameEngine(game,myPlayer,
-                                MapFactory.MapType.valueOf(String.valueOf(rbMap.getText())));
+                                MapFactory.MapType.valueOf(String.valueOf(rbMap.getId())));
                         List<InetAddress> servers = cli.getAvailableServers();
                         String[] difficultWords = new String[10];
                         difficultWords[0]="you";

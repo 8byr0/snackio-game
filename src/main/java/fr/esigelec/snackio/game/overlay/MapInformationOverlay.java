@@ -21,6 +21,8 @@ import fr.esigelec.snackio.game.state.MultiplayerGameState;
 public class MapInformationOverlay extends ApplicationAdapter {
     private static final int COIN_WIDTH = 32;
     private static final int COIN_HEIGHT = 32;
+    private static final int HEART_WIDTH = 32;
+    private static final int HEART_HEIGHT = 32;
     private float stateTime = 0f;
 
     // PLAYER INFO
@@ -35,6 +37,9 @@ public class MapInformationOverlay extends ApplicationAdapter {
     private ShapeRenderer shapeRenderer;
     private TextureRegion[] animationFrames;
     private Animation coinAnimation;
+
+    private TextureRegion[] animationFramesHeart;
+    private Animation heartAnimation;
 
     /**
      * Default class constructor
@@ -54,14 +59,26 @@ public class MapInformationOverlay extends ApplicationAdapter {
         font.getRegion().getTexture().setFilter(Texture.TextureFilter.Linear, Texture.TextureFilter.Linear);
         font.getData().setScale(2.5f);
 
+        //         //heart animation
+        animationFramesHeart = new TextureRegion[1];
+
+        for (int itr = 1; itr <= 1; ++itr) {
+            animationFramesHeart[itr - 1] = new TextureRegion(new Texture(Gdx.files.internal("poi/heart/heart"
+                    + Integer.toString(itr) + ".png")));
+        }
+
+        heartAnimation = (Animation) new Animation(0.1f, animationFramesHeart);
+
+
+        //         //coin animation
         animationFrames = new TextureRegion[8];
 
         for (int itr = 1; itr <= 8; ++itr) {
-            animationFrames[itr - 1] = new TextureRegion(new Texture(Gdx.files.internal("poi/coin/coin0" + Integer.toString(itr) + ".png")));
+            animationFrames[itr - 1] = new TextureRegion(new Texture(Gdx.files.internal("poi/coin/coin0"
+                    + Integer.toString(itr) + ".png")));
         }
 
         coinAnimation = (Animation) new Animation(0.1f, animationFrames);
-
     }
 
     @Override
@@ -95,22 +112,24 @@ public class MapInformationOverlay extends ApplicationAdapter {
         if(state instanceof MultiplayerGameState){
             batch.setProjectionMatrix(cam.combined);
             batch.begin();
+            for (int n = 0; n < ((MultiplayerGameState) state).getActivePlayer().getLives(); n++){
+                batch.draw((TextureRegion) heartAnimation.getKeyFrame(stateTime, true), 430+n*40, 18,
+                        HEART_WIDTH, HEART_HEIGHT);
+            }
 
             //show the player information
             int offset = 1;
             for(Player player : ((MultiplayerGameState) state).getPlayers()){
-                font.draw(batch, "Joueur " + offset + ": "
-                        + player.toString(), 200, 150 + offset * 50);
+                font.draw(batch, player.toString(), 200, 150 + offset * 50);
                 offset += 1;
+                for (int n = 0; n < player.getLives(); n++){
+                    batch.draw((TextureRegion) heartAnimation.getKeyFrame(stateTime, true), 350+n*40, 70 + offset * 50,
+                            HEART_WIDTH, HEART_HEIGHT);
+                }
+
             }
             font.draw(batch, "Votre salle: " + ((MultiplayerGameState) state).getRoomName(), 200, 100);
-
-            //font.draw(batch, "2 VIES" + "\nEquipe 1, Room 1, id 6", 200, 100);
-            //font.draw(batch, "2 VIES" + "\nEquipe 1, Room 1, id 6", 200, 150);
-            //font.draw(batch, "Votre profil: " + (((MultiplayerGameState) state).getActivePlayer().toString()), 200,150);
-
-            font.draw(batch, "Vies restants: " + (((MultiplayerGameState) state)
-                    .getActivePlayer().getLives()), 200,50);
+            font.draw(batch, "Vies restants: ", 200,50);
             batch.end();
         }
 

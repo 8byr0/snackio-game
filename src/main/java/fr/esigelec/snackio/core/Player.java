@@ -237,7 +237,6 @@ public class Player implements IRMIExecutablePlayer {
 
     @Override
     public String toString() {
-        return  "name=" + name +
-                ", lives=" + lives;
+        return  name + ": ";
     }
 }
