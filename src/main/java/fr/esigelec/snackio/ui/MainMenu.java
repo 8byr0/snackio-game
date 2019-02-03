@@ -52,141 +52,10 @@ public class MainMenu  implements Initializable {
     public  Animation animationViewLeft,animationViewRight;
     public TranslateTransition characterLeftEnter,characterRightEnter,characterLeftTranslateTransition,characterRightTranslateTransition,multiTranslateTransition,soloTranslateTransition;
 
-    public void transition() {
-        TranslateTransition transitionMultiButton = new TranslateTransition();
-        transitionMultiButton.setDuration(Duration.millis(1000));
-        transitionMultiButton.setToY(50);
-        transitionMultiButton.setAutoReverse(true);
-        transitionMultiButton.setCycleCount(10);
-        transitionMultiButton.setNode(openMultiMenuButton);
-        transitionMultiButton.play();
-    }
-    public void setCharacterAnimation(){
-        IMAGE = new Image("sprites/golden_knight.png");
-        imageViewLeft.setOpacity(0);
-        imageViewRight.setOpacity(0);
-
-        imageViewLeft.setImage(IMAGE);
-        imageViewRight.setImage(IMAGE);
-
-        imageViewLeft.setViewport(new Rectangle2D(OFFSET_X, OFFSET_Y, WIDTH, HEIGHT));
-        imageViewRight.setViewport(new Rectangle2D(OFFSET_X, OFFSET_Y, WIDTH, HEIGHT));
-
-        animationViewLeft = new SpriteAnimation(imageViewLeft, Duration.millis(500), COUNT, COLUMNS, OFFSET_X, OFFSET_Y, WIDTH, HEIGHT);
-        animationViewRight = new SpriteAnimation(imageViewRight, Duration.millis(500), COUNT, COLUMNS, OFFSET_X, OFFSET_Y, WIDTH, HEIGHT);
-
-        animationViewLeft.setCycleCount(Animation.INDEFINITE);
-        animationViewRight.setCycleCount(Animation.INDEFINITE);
-
-        characterLeftTranslateTransition = new TranslateTransition();
-        characterRightTranslateTransition = new TranslateTransition();
-        characterLeftTranslateTransition.setByX(600);
-        characterRightTranslateTransition.setByX(-600);
-        characterLeftTranslateTransition.setDuration(Duration.millis(5000));
-        characterRightTranslateTransition.setDuration(Duration.millis(5000));
-        characterLeftTranslateTransition.setAutoReverse(true);
-        characterRightTranslateTransition.setAutoReverse(true);
-        characterLeftTranslateTransition.setNode(imageViewLeft);
-        characterRightTranslateTransition.setNode(imageViewRight);
-
-        characterLeftEnter = new TranslateTransition();
-        characterLeftEnter.setByX(openMultiMenuButton.getLayoutX());
-        characterLeftEnter.setDuration(Duration.millis(2000));
-        characterLeftEnter.setAutoReverse(true);
-        characterLeftEnter.setNode(imageViewLeft);
-
-        characterRightEnter = new TranslateTransition();
-        characterRightEnter.setByX(openSoloMenuButton.getLayoutX()+openSoloMenuButton.getPrefWidth()-700);
-        characterRightEnter.setDuration(Duration.millis(2000));
-        characterRightEnter.setAutoReverse(true);
-        characterRightEnter.setNode(imageViewRight);
-
-        multiTranslateTransition = new TranslateTransition();
-        //the transition will set to be auto reversed by setting this to true
-        multiTranslateTransition.setAutoReverse(true);
-        //setting the duration for the Translate transition
-        multiTranslateTransition.setDuration(Duration.millis(5000));
-        //shifting the X coordinate of the centre of the circle by 400
-        multiTranslateTransition.setByX(600);
-        multiTranslateTransition.setNode(openMultiMenuButton);
-
-        soloTranslateTransition = new TranslateTransition();
-        soloTranslateTransition.setByX(-600);
-        soloTranslateTransition.setDuration(Duration.millis(5000));
-        soloTranslateTransition.setCycleCount(500);
-        soloTranslateTransition.setAutoReverse(true);
-        soloTranslateTransition.setNode(openSoloMenuButton);
-
-
-    }
-
-    public void setAnimationOn(){
-        openMultiMenuButton.setDisable(true);
-        openMultiMenuButton.setStyle("-fx-opacity: 0.6");
-        imageViewLeft.setOpacity(1);
-        imageViewRight.setOpacity(1);
-        characterLeftEnter.play();
-        characterRightEnter.play();
-        animationViewLeft.play();
-        animationViewRight.play();
-        Timeline startTimeline = new Timeline(new KeyFrame(
-                Duration.millis(2200),
-                ae -> {
-                    characterLeftEnter.stop();
-                    characterRightEnter.stop();
-                    characterLeftTranslateTransition.play();
-                    characterRightTranslateTransition.play();
-                    multiTranslateTransition.play();
-                    soloTranslateTransition.play();
-
-                }));
-        startTimeline.play();
-        Timeline timeline = new Timeline(new KeyFrame(
-                Duration.millis(7200),
-                ae -> {
-                    animationViewLeft.stop();
-                    characterLeftTranslateTransition.stop();
-                    characterRightTranslateTransition.stop();
-                    multiTranslateTransition.stop();
-                    soloTranslateTransition.stop();
-                    imageViewLeft.setOpacity(0);
-                }));
-        timeline.play();
-    }
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        System.out.println("ivr="+imageViewRight.getX()+" anc=");
-        setCharacterAnimation();
-        System.out.println("x open multi "+openMultiMenuButton.getLayoutX());
-        Timer timer2 = new Timer(true);
-        Timer timer = new Timer(true);
-        TimerTask timerTask0 = new TimerTask() {@Override public void run() {
-            openMultiMenuButton.setTranslateX(1);
-            openMultiMenuButton.setStyle("-fx-opacity: 1");
-
-        }};
-        //timer.scheduleAtFixedRate(timerTask0, 0, 5000);
-        openMultiMenuButton.setOnMouseEntered(event -> {
-            if(!openMultiMenuButton.isDisable()) {
-                openMultiMenuButton.setTranslateX(1);
-                openMultiMenuButton.setStyle("-fx-opacity: 1");
-            }
-        });
-
-        openMultiMenuButton.setOnMouseExited(event -> {
-            if(!openMultiMenuButton.isDisable()) {
-                openMultiMenuButton.setTranslateX(0);
-                openMultiMenuButton.setStyle("-fx-opacity: 0.6");
-            }
-        });
-        openSoloMenuButton.setOnMouseEntered(event -> {
-            openSoloMenuButton.setTranslateX(1);
-            openSoloMenuButton.setStyle("-fx-opacity: 1");
-        });
-        openSoloMenuButton.setOnMouseExited(event -> {
-            openSoloMenuButton.setTranslateX(0);
-            openSoloMenuButton.setStyle("-fx-opacity: 0.6");
-        });
+        setAnimation();
+        setButtonAnimations();
         openMultiMenuButton.setOnAction(this::openMultiMenu);
         openSoloMenuButton.setOnAction(this::openSoloMenu);
     }
@@ -226,41 +95,138 @@ public class MainMenu  implements Initializable {
 
     }
 
-    private void completeTask() {
-        try {
-            //assuming it takes 20 secs to complete the task
-            transition();
-            Thread.sleep(5000);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
-    }
 
     public void openMultiMenu(ActionEvent actionEvent) {
         setAnimationOn();
-        Timeline getOut = new Timeline(new KeyFrame(Duration.millis(7200), ae -> { MenuController.getInstance(stage).openMenu(MenuController.Menus.MULTI_MENU); }));
+        Timeline getOut = new Timeline(new KeyFrame(Duration.millis(4400),
+                ae -> MenuController.getInstance(stage).openMenu(MenuController.Menus.MULTI_MENU)));
         getOut.play();
     }
-    public void setButtonTransition(){
-        FadeTransition ft = new FadeTransition(Duration.millis(5000), openMultiMenuButton);
-        FadeTransition ft2 = new FadeTransition(Duration.millis(5000), openSoloMenuButton);
-        ft.setFromValue(1.0);
-        ft2.setFromValue(1.0);
-        ft.setToValue(0);
-        ft2.setToValue(0);
-        ft.setAutoReverse(false);
-        ft2.setAutoReverse(false);
-        ft.play();
-        ft2.play();
-        Timeline timeline2 = new Timeline(new KeyFrame(
-                Duration.millis(5000),
+
+    public void setButtonAnimations(){
+        openMultiMenuButton.setOnMouseEntered(event -> {
+            if(!openMultiMenuButton.isDisable()) {
+                openMultiMenuButton.setTranslateX(1);
+                openMultiMenuButton.setStyle("-fx-opacity: 1");
+            }
+        });
+
+        openMultiMenuButton.setOnMouseExited(event -> {
+            if(!openMultiMenuButton.isDisable()) {
+                openMultiMenuButton.setTranslateX(0);
+                openMultiMenuButton.setStyle("-fx-opacity: 0.6");
+            }
+        });
+        openSoloMenuButton.setOnMouseEntered(event -> {
+            if(!openSoloMenuButton.isDisable()) {
+                openSoloMenuButton.setTranslateX(1);
+                openSoloMenuButton.setStyle("-fx-opacity: 1");
+            }
+        });
+        openSoloMenuButton.setOnMouseExited(event -> {
+            if(!openSoloMenuButton.isDisable()) {
+                openSoloMenuButton.setTranslateX(0);
+                openSoloMenuButton.setStyle("-fx-opacity: 0.6");
+            }
+        });
+    }
+
+    public void setAnimation(){
+        IMAGE = new Image("sprites/golden_knight.png");
+        imageViewLeft.setOpacity(0);
+        imageViewRight.setOpacity(0);
+
+        imageViewLeft.setImage(IMAGE);
+        imageViewRight.setImage(IMAGE);
+
+        imageViewLeft.setViewport(new Rectangle2D(OFFSET_X, OFFSET_Y, WIDTH, HEIGHT));
+        imageViewRight.setViewport(new Rectangle2D(OFFSET_X, OFFSET_Y, WIDTH, HEIGHT));
+
+        animationViewLeft = new SpriteAnimation(imageViewLeft, Duration.millis(500), COUNT, COLUMNS, OFFSET_X, OFFSET_Y, WIDTH, HEIGHT);
+        animationViewRight = new SpriteAnimation(imageViewRight, Duration.millis(500), COUNT, COLUMNS, OFFSET_X, OFFSET_Y, WIDTH, HEIGHT);
+
+        animationViewLeft.setCycleCount(Animation.INDEFINITE);
+        animationViewRight.setCycleCount(Animation.INDEFINITE);
+
+        characterLeftTranslateTransition = new TranslateTransition();
+        characterRightTranslateTransition = new TranslateTransition();
+        characterLeftTranslateTransition.setByX(600);
+        characterRightTranslateTransition.setByX(-600);
+        characterLeftTranslateTransition.setDuration(Duration.millis(3000));
+        characterRightTranslateTransition.setDuration(Duration.millis(3000));
+        characterLeftTranslateTransition.setAutoReverse(true);
+        characterRightTranslateTransition.setAutoReverse(true);
+        characterLeftTranslateTransition.setNode(imageViewLeft);
+        characterRightTranslateTransition.setNode(imageViewRight);
+
+        characterLeftEnter = new TranslateTransition();
+        characterLeftEnter.setByX(openMultiMenuButton.getLayoutX());
+        characterLeftEnter.setDuration(Duration.millis(2000));
+        characterLeftEnter.setAutoReverse(true);
+        characterLeftEnter.setNode(imageViewLeft);
+
+        characterRightEnter = new TranslateTransition();
+        characterRightEnter.setByX(openSoloMenuButton.getLayoutX()+openSoloMenuButton.getPrefWidth()-700);
+        characterRightEnter.setDuration(Duration.millis(2000));
+        characterRightEnter.setAutoReverse(true);
+        characterRightEnter.setNode(imageViewRight);
+
+        multiTranslateTransition = new TranslateTransition();
+        //the transition will set to be auto reversed by setting this to true
+        multiTranslateTransition.setAutoReverse(true);
+        //setting the duration for the Translate transition
+        multiTranslateTransition.setDuration(Duration.millis(3000));
+        //shifting the X coordinate of the centre of the circle by 400
+        multiTranslateTransition.setByX(600);
+        multiTranslateTransition.setNode(openMultiMenuButton);
+
+        soloTranslateTransition = new TranslateTransition();
+        soloTranslateTransition.setByX(-600);
+        soloTranslateTransition.setDuration(Duration.millis(3000));
+        soloTranslateTransition.setAutoReverse(true);
+        soloTranslateTransition.setNode(openSoloMenuButton);
+
+
+    }
+
+    public void setAnimationOn(){
+        openMultiMenuButton.setDisable(true);
+        openMultiMenuButton.setStyle("-fx-opacity: 0.6");
+        imageViewLeft.setOpacity(1);
+        imageViewRight.setOpacity(1);
+        characterLeftEnter.play();
+        characterRightEnter.play();
+        animationViewLeft.play();
+        animationViewRight.play();
+
+        /*the characters coming from the left and the right must come near to the buttons before its all move.
+        This  timer:
+         wait the end of the first animations (characterLeftEnter & characterRightEnter) and stop them.
+         Start the other animation.
+         */
+        Timeline startTimeline = new Timeline(new KeyFrame(
+                Duration.millis(2100),
                 ae -> {
-                    ft.stop();
-                    ft2.stop();
+                    characterLeftEnter.stop();
+                    characterRightEnter.stop();
+                    characterLeftTranslateTransition.play();
+                    characterRightTranslateTransition.play();
+                    multiTranslateTransition.play();
+                    soloTranslateTransition.play();
+
                 }));
-        timeline2.play();
-
-
-        System.out.println("avant");
+        startTimeline.play();
+        //Animations Stop timer
+        Timeline timeline = new Timeline(new KeyFrame(
+                Duration.millis(5200),
+                ae -> {
+                    animationViewLeft.stop();
+                    characterLeftTranslateTransition.stop();
+                    characterRightTranslateTransition.stop();
+                    multiTranslateTransition.stop();
+                    soloTranslateTransition.stop();
+                    imageViewLeft.setOpacity(0);
+                }));
+        timeline.play();
     }
 }
