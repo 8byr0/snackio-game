@@ -14,6 +14,7 @@ import java.net.URL;
 import java.util.ResourceBundle;
 
 public class MultiMenu implements Initializable {
+    private static final double MIN_OPACITY = 0,MAX_OPACITY=0.6;
     @FXML
     private Button openJoinMenuButton;
 
@@ -26,25 +27,45 @@ public class MultiMenu implements Initializable {
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        openJoinMenuButton.setStyle("-fx-opacity: 0");
-        openHostMenuButton.setStyle("-fx-opacity: 0");
-        introAnimation();
+        animation(MIN_OPACITY,MAX_OPACITY,"intro");
         Snippet.setPreviousLocation(MenuController.Menus.MAIN_MENU);
         openJoinMenuButton.setOnAction(this::openJoinMenu);
         openHostMenuButton.setOnAction(this::openHostMenu);
 
     }
-    public void introAnimation(){
+
+    public void openJoinMenu(ActionEvent actionEvent) {
+        animation(MAX_OPACITY,MIN_OPACITY,"outro");
+        timeline = new Timeline(new KeyFrame(
+                Duration.millis(1000),
+                ae -> {
+                    MenuController.getInstance(stage).openMenu(MenuController.Menus.JOIN_ROOM_MENU);
+                }));
+        timeline.play();
+    }
+
+    public void openHostMenu(ActionEvent actionEvent) {
+        animation(MAX_OPACITY,MIN_OPACITY,"outro");
+        timeline = new Timeline(new KeyFrame(
+                Duration.millis(1000),
+                ae -> {
+                    MenuController.getInstance(stage).openMenu(MenuController.Menus.SERVER_CONFIG_MENU);
+                }));
+        timeline.play();
+    }
+
+    public void animation(double startValue,double endValue,String animationState){
+        openJoinMenuButton.setStyle("-fx-opacity:"+startValue);
+        openHostMenuButton.setStyle("-fx-opacity:"+startValue);
         openHostMenuButton.setDisable(true);
         openJoinMenuButton.setDisable(true);
         openJoinMenuButtonAnimation = new FadeTransition(Duration.millis(1000), openJoinMenuButton);
         openHostMenuButtonAnimation = new FadeTransition(Duration.millis(1000), openHostMenuButton);
+        openJoinMenuButtonAnimation.setFromValue(startValue);
+        openHostMenuButtonAnimation.setFromValue(startValue);
 
-        openJoinMenuButtonAnimation.setFromValue(0);
-        openHostMenuButtonAnimation.setFromValue(0);
-
-        openJoinMenuButtonAnimation.setToValue(0.6);
-        openHostMenuButtonAnimation.setToValue(0.6);
+        openJoinMenuButtonAnimation.setToValue(endValue);
+        openHostMenuButtonAnimation.setToValue(endValue);
 
         openJoinMenuButtonAnimation.setAutoReverse(true);
         openHostMenuButtonAnimation.setAutoReverse(true);
@@ -58,18 +79,34 @@ public class MultiMenu implements Initializable {
         openJoinMenuButtonAnimation.play();
         openHostMenuButtonAnimation.play();
 
-        timeline = new Timeline(new KeyFrame(
-                Duration.millis(1000),
-                ae -> {
-                    openJoinMenuButtonAnimation.stop();
-                    openHostMenuButtonAnimation.stop();
-                    openJoinMenuButton.setStyle("-fx-opacity: 0.6");
-                    openHostMenuButton.setStyle("-fx-opacity: 0.6");
-                    openHostMenuButton.setDisable(false);
-                    openJoinMenuButton.setDisable(false);
-                    setButtonAnimation();
-                }));
-        timeline.play();
+
+        if(animationState=="intro"){
+            timeline = new Timeline(new KeyFrame(
+                    Duration.millis(1000),
+                    ae -> {
+                        openJoinMenuButtonAnimation.stop();
+                        openHostMenuButtonAnimation.stop();
+                        openJoinMenuButton.setStyle("-fx-opacity:"+endValue);
+                        openHostMenuButton.setStyle("-fx-opacity:"+endValue);
+                        openHostMenuButton.setDisable(false);
+                        openJoinMenuButton.setDisable(false);
+                        setButtonAnimation();
+                    }));
+            timeline.play();
+        }
+        if(animationState=="outro"){
+            timeline = new Timeline(new KeyFrame(
+                    Duration.millis(1000),
+                    ae -> {
+                        openJoinMenuButtonAnimation.stop();
+                        openHostMenuButtonAnimation.stop();
+                        openJoinMenuButton.setStyle("-fx-opacity:"+endValue);
+                        openHostMenuButton.setStyle("-fx-opacity:"+endValue);
+                        setButtonAnimation();
+                    }));
+            timeline.play();
+        }
+
     }
     public void setButtonAnimation(){
         openJoinMenuButton.setOnMouseEntered(event -> {
@@ -90,13 +127,5 @@ public class MultiMenu implements Initializable {
         });
     }
 
-    public void openJoinMenu(ActionEvent actionEvent) {
-        MenuController.getInstance(stage).openMenu(MenuController.Menus.JOIN_ROOM_MENU);
 
-    }
-
-
-    public void openHostMenu(ActionEvent actionEvent) {
-        MenuController.getInstance(stage).openMenu(MenuController.Menus.SERVER_CONFIG_MENU);
-    }
 }

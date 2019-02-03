@@ -16,19 +16,19 @@
          </AnchorPane>
          <AnchorPane fx:id="multi_part1" minHeight="0.0" minWidth="0.0" prefHeight="100.0" prefWidth="160.0" styleClass="Anc" stylesheets="@../CSS/menus.css">
             <children>
-               <Button fx:id="openJoinMenuButton" layoutX="240.0" layoutY="77.0" mnemonicParsing="false" prefHeight="58.0" prefWidth="222.0" style="-fx-opacity: 0;" styleClass="Button" stylesheets="@../CSS/menus.css" text="JOIN" textFill="WHITE">
+               <Button fx:id="openJoinMenuButton" layoutX="200.0" layoutY="50.0" mnemonicParsing="false" prefHeight="90.0" prefWidth="300.0" style="-fx-opacity: 0;" styleClass="Button" stylesheets="@../CSS/menus.css" text="JOIN" textFill="WHITE">
                   <graphic>
                      <ImageView fitHeight="33.0" fitWidth="33.0" pickOnBounds="true" preserveRatio="true" />
                   </graphic>
                   <font>
-                     <Font size="15.0" />
+                     <Font size="30.0" />
                   </font></Button>
-               <Button fx:id="openHostMenuButton" layoutX="240.0" layoutY="192.0" mnemonicParsing="false" prefHeight="58.0" prefWidth="222.0" style="-fx-opacity: 0;" styleClass="Button" stylesheets="@../CSS/menus.css" text="HOST" textFill="WHITE">
+               <Button fx:id="openHostMenuButton" layoutX="200.0" layoutY="180.0" mnemonicParsing="false" prefHeight="90.0" prefWidth="300.0" style="-fx-opacity: 0;" styleClass="Button" stylesheets="@../CSS/menus.css" text="HOST" textFill="WHITE">
                   <graphic>
                      <ImageView fitHeight="31.0" fitWidth="33.0" pickOnBounds="true" preserveRatio="true" />
                   </graphic>
                   <font>
-                     <Font size="15.0" />
+                     <Font size="30.0" />
                   </font>
                </Button>
             </children>

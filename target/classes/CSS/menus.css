@@ -9,13 +9,28 @@
 }
 .Anc{
     -fx-background-color: black;
-    -fx-opacity: 0.8;
+    -fx-opacity: 0.9;
 }
 .choice{
     -fx-opacity: 0.5;
 }
+.ButtonSub
+{
+    -fx-background-color: white;
+    -fx-background-position: center;
+    -fx-arc-height: 0;
+    -fx-arc-width: 0;
+    -fx-background-radius: 0;
+    -fx-opacity: 0.6;
+    -fx-text-fill: black;
+    -fx-pref-height: 50;
+    -fx-max-height: 50;
+    -fx-pref-width: 130;
+
+}
 .Button
  {
+
      -fx-background-color: white;
      -fx-background-position: center;
      -fx-arc-height: 0;
@@ -23,6 +38,8 @@
      -fx-background-radius: 0;
      -fx-opacity: 0.6;
      -fx-text-fill: black;
+    -fx-pref-height: 90;
+    -fx-pref-width: 300;
 
  }
 .MenuButton

@@ -18,31 +18,31 @@
          <AnchorPane fx:id="re" minHeight="0.0" minWidth="0.0" prefHeight="100.0" prefWidth="160.0" styleClass="Anc" stylesheets="@../CSS/menus.css">
              <children>
                  
-               <Button fx:id="openMultiMenuButton" layoutX="240.0" layoutY="192.0" mnemonicParsing="false" prefHeight="58.0" prefWidth="222.0" styleClass="Button" stylesheets="@../CSS/menus.css" text="MULTI">
+               <Button fx:id="openMultiMenuButton" layoutX="200.0" layoutY="180.0" mnemonicParsing="false" prefHeight="90.0" prefWidth="300.0" styleClass="Button" stylesheets="@../CSS/menus.css" text="MULTI">
                   <graphic>
-                     <ImageView fitHeight="48.0" fitWidth="79.0" pickOnBounds="true" preserveRatio="true">
+                     <ImageView fitHeight="80" fitWidth="80" pickOnBounds="true" preserveRatio="true">
                         <image>
                            <Image url="@../img/multi.png" />
                         </image>
                      </ImageView>
                   </graphic>
                   <font>
-                     <Font size="15.0" />
+                     <Font size="30.0" />
                   </font>
                </Button>
-               <Button fx:id="openSoloMenuButton" layoutX="240.0" layoutY="77.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" prefHeight="58.0" prefWidth="222.0" styleClass="Button" stylesheets="@../CSS/menus.css" text="SOLO">
+               <Button fx:id="openSoloMenuButton" layoutX="200.0" layoutY="50.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" prefHeight="90.0" prefWidth="300.0" styleClass="Button" stylesheets="@../CSS/menus.css" text="SOLO">
                   <graphic>
-                     <ImageView fitHeight="48.0" fitWidth="79.0" pickOnBounds="true" preserveRatio="true">
+                     <ImageView fitHeight="80" fitWidth="80" pickOnBounds="true" preserveRatio="true">
                         <image>
                            <Image url="@../img/solo.png" />
                         </image>
                      </ImageView>
                   </graphic>
                   <font>
-                     <Font size="15.0" />
+                     <Font size="30.0" />
                   </font></Button>
-               <ImageView fx:id="imageViewLeft" fitHeight="50.0" fitWidth="50.0" pickOnBounds="true" preserveRatio="true" x="-50.0" y="196.0" />
-               <ImageView fx:id="imageViewRight" fitHeight="50.0" fitWidth="50.0" pickOnBounds="true" preserveRatio="true" x="700.0" y="81.0" />
+               <ImageView fx:id="imageViewLeft" fitHeight="75.0" fitWidth="75.0" pickOnBounds="true" preserveRatio="true" x="-75.0" y="188.0" />
+               <ImageView fx:id="imageViewRight" fitHeight="75.0" fitWidth="75.0" pickOnBounds="true" preserveRatio="true" x="700.0" y="58.0" />
             </children>
          </AnchorPane>
       </items>

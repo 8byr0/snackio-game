@@ -4,27 +4,27 @@
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
 
-<AnchorPane prefHeight="42.0" prefWidth="149.0" styleClass="Anc" stylesheets="@../CSS/menus.css" xmlns="http://javafx.com/javafx/8.0.172-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="fr.esigelec.snackio.ui.CharacterSnippet">
+<AnchorPane prefHeight="104.0" prefWidth="423.0" styleClass="Anc" stylesheets="@../CSS/menus.css" xmlns="http://javafx.com/javafx/8.0.172-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="fr.esigelec.snackio.ui.CharacterSnippet">
    <children>
-      <ImageView fx:id="aze" fitHeight="45.0" fitWidth="45.0" layoutX="53.0" pickOnBounds="true" preserveRatio="true">
+      <ImageView fx:id="aze" fitHeight="73.0" fitWidth="92.0" layoutX="175.0" layoutY="16.0" pickOnBounds="true" preserveRatio="true">
          <image>
             <Image url="@../img/2.png" />
          </image></ImageView>
-      <ImageView fx:id="left" fitHeight="19.0" fitWidth="18.0" layoutX="35.0" layoutY="14.0" opacity="0.8" pickOnBounds="true" preserveRatio="true">
+      <ImageView fx:id="left" fitHeight="19.0" fitWidth="18.0" layoutX="135.0" layoutY="43.0" opacity="0.8" pickOnBounds="true" preserveRatio="true">
          <image>
             <Image url="@../img/left.png" />
          </image>
       </ImageView>
-      <ImageView fx:id="right" fitHeight="18.0" fitWidth="18.0" layoutX="98.0" layoutY="14.0" opacity="0.8" pickOnBounds="true" preserveRatio="true">
+      <ImageView fx:id="right" fitHeight="18.0" fitWidth="18.0" layoutX="268.0" layoutY="44.0" opacity="0.8" pickOnBounds="true" preserveRatio="true">
          <image>
             <Image url="@../img/right.png" />
          </image>
       </ImageView>
-      <ImageView fitHeight="35.0" fitWidth="35.0" layoutY="5.0" pickOnBounds="true" preserveRatio="true">
+      <ImageView fitHeight="35.0" fitWidth="35.0" layoutX="18.0" layoutY="35.0" pickOnBounds="true" preserveRatio="true">
          <image>
             <Image url="@../img/1.png" />
          </image></ImageView>
-      <ImageView fitHeight="35.0" fitWidth="35.0" layoutX="116.0" layoutY="5.0" pickOnBounds="true" preserveRatio="true">
+      <ImageView fitHeight="35.0" fitWidth="35.0" layoutX="374.0" layoutY="35.0" pickOnBounds="true" preserveRatio="true">
          <image>
             <Image url="@../img/3.png" />
          </image></ImageView>
