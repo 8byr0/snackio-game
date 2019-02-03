@@ -24,22 +24,6 @@ public class Snippet implements Initializable {
     @FXML
     private Button settingsButton;
 
-
-    @FXML
-    void entered(MouseDragEvent event) {
-        System.out.println("entered");
-    }
-
-    @FXML
-    void exited(MouseDragEvent event) {
-        System.out.println("exited");
-    }
-
-    @FXML
-    void testiny(MouseDragEvent event) {
-        System.out.println("testiny");
-    }
-
     private Stage stage;
 
     public static void setPreviousLocation(MenuController.Menus previous) {

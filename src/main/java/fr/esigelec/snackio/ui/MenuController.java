@@ -70,9 +70,9 @@ public class MenuController {
 
         assert root != null;
         Scene scn = new Scene(root, 700, 500);
-
         scn.getStylesheets().add(getClass().getResource("/CSS/menus.css").toExternalForm());
         primaryStage.setScene(scn);
+        primaryStage.setResizable(false);
         primaryStage.show();
     }
 }
