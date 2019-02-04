@@ -7,39 +7,42 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane fx:id="mainAnchorPane" prefHeight="400.0" prefWidth="600.0" styleClass="background" stylesheets="@../CSS/menus.css" xmlns="http://javafx.com/javafx/8.0.172-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="fr.esigelec.snackio.ui.MainMenu">
+<AnchorPane fx:id="mainAnchorPane" prefHeight="500.0" prefWidth="700.0" styleClass="background" stylesheets="@../CSS/menus.css" xmlns="http://javafx.com/javafx/8.0.172-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="fr.esigelec.snackio.ui.MainMenu">
    <SplitPane dividerPositions="0.35" orientation="VERTICAL" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
       <items>
-         <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="100.0" prefWidth="160.0" >
-            <children>
-               <fx:include fx:id="snippet" source="snippet.fxml" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0"/>
-            </children>
-         </AnchorPane>
          <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="100.0" prefWidth="160.0">
             <children>
-               <Button fx:id="openSoloMenuButton" layoutY="34.0" mnemonicParsing="false" prefHeight="53.0" prefWidth="154.0" styleClass="Button" stylesheets="@../CSS/menus.css" text="SOLO" textFill="WHITE" AnchorPane.leftAnchor="244.4" AnchorPane.rightAnchor="244.4" >
+               <fx:include fx:id="snippet" source="snippet.fxml" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
+            </children>
+         </AnchorPane>
+         <AnchorPane fx:id="re" minHeight="0.0" minWidth="0.0" prefHeight="100.0" prefWidth="160.0" styleClass="Anc" stylesheets="@../CSS/menus.css">
+            <children>
+
+               <Button fx:id="openMultiMenuButton" layoutX="200.0" layoutY="180.0" mnemonicParsing="false" prefHeight="90.0" prefWidth="300.0" styleClass="Button" stylesheets="@../CSS/menus.css" text="MULTI">
                   <graphic>
-                     <ImageView fitHeight="48.0" fitWidth="79.0" pickOnBounds="true" preserveRatio="true" >
+                     <ImageView fitHeight="80" fitWidth="80" pickOnBounds="true" preserveRatio="true">
+                        <image>
+                           <Image url="@../img/multi.png" />
+                        </image>
+                     </ImageView>
+                  </graphic>
+                  <font>
+                     <Font size="30.0" />
+                  </font>
+               </Button>
+               <Button fx:id="openSoloMenuButton" layoutX="200.0" layoutY="50.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" prefHeight="90.0" prefWidth="300.0" styleClass="Button" stylesheets="@../CSS/menus.css" text="SOLO">
+                  <graphic>
+                     <ImageView fitHeight="80" fitWidth="80" pickOnBounds="true" preserveRatio="true">
                         <image>
                            <Image url="@../img/solo.png" />
                         </image>
                      </ImageView>
                   </graphic>
                   <font>
-                     <Font size="15.0" />
+                     <Font size="30.0" />
                   </font></Button>
-               <Button fx:id="openMultiMenuButton"  layoutY="99.0" mnemonicParsing="false" prefHeight="53.0" prefWidth="154.0" styleClass="Button" stylesheets="@../CSS/menus.css" text="MULTI" textFill="WHITE" AnchorPane.leftAnchor="244.4" AnchorPane.rightAnchor="244.4" >
-                  <graphic>
-                     <ImageView fitHeight="48.0" fitWidth="79.0" pickOnBounds="true" preserveRatio="true">
-                        <image>
-                           <Image  url="@../img/multi.png" />
-                        </image>
-                     </ImageView>
-                  </graphic>
-                  <font>
-                     <Font size="15.0" />
-                  </font>
-               </Button>
+               <ImageView fx:id="imageViewLeft" fitHeight="75.0" fitWidth="75.0" pickOnBounds="true" preserveRatio="true" x="-75.0" y="188.0" />
+               <ImageView fx:id="imageViewRight" fitHeight="75.0" fitWidth="75.0" pickOnBounds="true" preserveRatio="true" x="700.0" y="58.0" />
             </children>
          </AnchorPane>
       </items>

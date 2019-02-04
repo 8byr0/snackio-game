@@ -1,18 +1,43 @@
 package fr.esigelec.snackio.ui;
 import fr.esigelec.snackio.game.character.motion.KeyboardController;
 import fr.esigelec.snackio.networking.client.SnackioNetClient;
+import javafx.animation.KeyFrame;
+import javafx.animation.KeyValue;
+import javafx.animation.Timeline;
+import javafx.scene.control.TextArea;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyEvent;
 import java.awt.*;
+import java.util.ArrayList;
 import java.util.LinkedHashMap;
+import java.util.List;
 import java.util.Map;
 import com.badlogic.gdx.Input;
 import javafx.fxml.FXML;
 import javafx.scene.control.TextField;
+import javafx.util.Duration;
+
 
 
 public class ControllerConfig {
-    @FXML public TextField rig_button_textfield,left_button_textfield,right_button_textfield,up_button_textfield,down_button_textfield;
+    @FXML private TextField left_button_textfield,right_button_textfield,up_button_textfield,down_button_textfield;
+    @FXML private ImageView upImageView;
+    @FXML private ImageView downImageView;
 
+
+    public void getUpBottonTimeline(){
+        KeyFrame kf1 = new KeyFrame(Duration.seconds(1), new KeyValue(upImageView.opacityProperty(), 0));
+        KeyFrame kf2 = new KeyFrame(Duration.seconds(1), new KeyValue(upImageView.opacityProperty(), 1));
+        Timeline uptimelineOn = new Timeline(kf1,kf2);
+        uptimelineOn.setCycleCount(1);
+        kf1 = new KeyFrame(Duration.seconds(1), new KeyValue(downImageView.opacityProperty(), 0));
+        kf2 = new KeyFrame(Duration.seconds(1), new KeyValue(downImageView.opacityProperty(), 1));
+        Timeline downtimelineOn = new Timeline(kf1,kf2);
+        downtimelineOn = new Timeline(kf1,kf2);
+        downtimelineOn.setCycleCount(1);
+        //downtimelineOn.setAutoReverse(true);
+    }
     public void initialize() {
         left_button_textfield.setOnKeyPressed(this::leftConfig);
         right_button_textfield.setOnKeyPressed(this::rightConfig);
@@ -26,10 +51,6 @@ public class ControllerConfig {
         down_button_textfield.setEditable(false);
         up_button_textfield.setEditable(false);
         left_button_textfield.setEditable(false);
-
-
-
-
     }
 
     public Map initHashMap() {
