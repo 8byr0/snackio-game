@@ -5,6 +5,7 @@ import fr.esigelec.snackio.core.exceptions.NoCharacterSetException;
 import fr.esigelec.snackio.core.exceptions.UnhandledControllerException;
 import fr.esigelec.snackio.game.SnackioGame;
 import fr.esigelec.snackio.game.map.MapFactory;
+import fr.esigelec.snackio.game.pois.Bomb;
 import fr.esigelec.snackio.game.pois.Coin;
 import fr.esigelec.snackio.game.state.CoinQuestGameState;
 
@@ -26,7 +27,9 @@ public class SoloGameEngine extends AbstractGameEngine {
 
             // Add the first coin
             Coin firstCoin = new Coin();
+            Bomb bomb = new Bomb();
             this.game.addPointOfInterest(firstCoin);
+            this.game.addPointOfInterest(bomb);
 
             this.game.addPoiTriggeredListener((poi, triggeringPlayer) -> {
                 if (((CoinQuestGameState) gameState).getFetchedCoins() < ((CoinQuestGameState) gameState).getCoinsToFetch() - 1) {

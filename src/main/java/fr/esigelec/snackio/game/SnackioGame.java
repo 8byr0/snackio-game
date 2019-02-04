@@ -5,6 +5,10 @@ import com.badlogic.gdx.backends.lwjgl3.Lwjgl3ApplicationConfiguration;
 import fr.esigelec.snackio.core.exceptions.GameCannotStartException;
 import fr.esigelec.snackio.core.exceptions.NoCharacterSetException;
 import fr.esigelec.snackio.core.exceptions.UnhandledControllerException;
+import fr.esigelec.snackio.game.pois.Bomb;
+import fr.esigelec.snackio.game.pois.bonuses.Cookie;
+import fr.esigelec.snackio.game.pois.maluses.Freeze;
+import fr.esigelec.snackio.game.pois.maluses.Paralysis;
 import fr.esigelec.snackio.game.state.AbstractGameState;
 import fr.esigelec.snackio.game.state.CoinQuestGameState;
 import fr.esigelec.snackio.core.Player;
@@ -41,11 +45,16 @@ public class SnackioGame {
     private ArrayList<PoiTriggeredListener> poiTriggeredListeners = new ArrayList<>();
     private AbstractGameState gameState;
 
+
+    public int lives = 3;
     /**
      * Singleton implementation
      *
      * @return existing instance or a new one if not exists
      */
+
+
+
     public static SnackioGame getInstance() {
         if (null == instance) {
             instance = new SnackioGame();
@@ -64,6 +73,15 @@ public class SnackioGame {
 
         PointOfInterest speedMalus = new SpeedMalus();
         addPointOfInterest(speedMalus);
+
+        PointOfInterest Paralysis = new Paralysis();
+        addPointOfInterest(Paralysis);
+
+        PointOfInterest Freeze = new Freeze();
+        addPointOfInterest(Freeze);
+
+        PointOfInterest Cookie = new Cookie();
+        addPointOfInterest(Cookie);
     }
 
     /**
@@ -91,6 +109,29 @@ public class SnackioGame {
         gameRenderer.removePointOfInterest(coin);
         this.triggerPoiListeners(coin, null);
     }
+
+    public void freezeTouched(Freeze freeze, Character character) {
+        System.out.println("You're frozen!");
+        gameRenderer.removePointOfInterest(freeze);
+    }
+
+    public void bombTouched(Bomb bomb, Character character) {
+        System.out.println("You lost one life!");
+        gameRenderer.removePointOfInterest(bomb);
+        lives--;
+        System.out.println("lives = " + lives);
+    }
+
+
+    public void cookieFound(Cookie cookie, Character character) {
+        System.out.println("You get an extra life!");
+        gameRenderer.removePointOfInterest(cookie);
+        lives++;
+        System.out.println("lives = " + lives);
+    }
+
+
+
 
     /**
      * Add a point of interest to the game
@@ -192,5 +233,9 @@ public class SnackioGame {
 
     public void setGameState(CoinQuestGameState gameState) {
         this.gameState = gameState;
+    }
+
+    public int getLives() {
+        return lives;
     }
 }

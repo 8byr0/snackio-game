@@ -17,7 +17,7 @@ import java.awt.event.ActionListener;
 public class SpeedMalus extends PointOfInterest {
 
     public SpeedMalus(){
-        super("poi/speed_bonus.png");
+        super("poi/speeddown.jpg");
     }
 
     @Override

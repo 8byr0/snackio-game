@@ -13,6 +13,8 @@ import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.maps.MapLayer;
 import fr.esigelec.snackio.core.GameMode;
 import fr.esigelec.snackio.core.Player;
+import fr.esigelec.snackio.Snackio;
+import fr.esigelec.snackio.game.SnackioGame;
 import fr.esigelec.snackio.game.state.AbstractGameState;
 import fr.esigelec.snackio.game.state.CoinQuestGameState;
 import fr.esigelec.snackio.game.state.MultiplayerGameState;
@@ -21,8 +23,8 @@ import fr.esigelec.snackio.game.state.MultiplayerGameState;
 public class MapInformationOverlay extends ApplicationAdapter {
     private static final int COIN_WIDTH = 32;
     private static final int COIN_HEIGHT = 32;
-    private static final int HEART_WIDTH = 32;
-    private static final int HEART_HEIGHT = 32;
+    private static final int HEART_WIDTH = 50;
+    private static final int HEART_HEIGHT = 50;
     private float stateTime = 0f;
 
     // PLAYER INFO
@@ -36,6 +38,8 @@ public class MapInformationOverlay extends ApplicationAdapter {
     OrthographicCamera cam;
     private ShapeRenderer shapeRenderer;
     private TextureRegion[] animationFrames;
+    private Texture heart;
+    private TextureRegion heartRegion;
     private Animation coinAnimation;
 
     private TextureRegion[] animationFramesHeart;
@@ -50,6 +54,8 @@ public class MapInformationOverlay extends ApplicationAdapter {
 
     @Override
     public void create() {
+        heart = new Texture(Gdx.files.internal("poi/heart.png"));
+        heartRegion = new TextureRegion(heart,0,0,HEART_WIDTH,HEART_HEIGHT);
         shapeRenderer = new ShapeRenderer();
 
         cam = new OrthographicCamera();
@@ -132,6 +138,21 @@ public class MapInformationOverlay extends ApplicationAdapter {
                     Gdx.graphics.getWidth()-450, Gdx.graphics.getHeight()-80);
             font.draw(batch, "Vies restants: ", Gdx.graphics.getWidth()-400,50);
             batch.end();
+        shapeRenderer.setProjectionMatrix(cam.combined);
+        shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
+        shapeRenderer.setColor(Color.YELLOW);
+        shapeRenderer.rect(80, 80, 100, 10);
+        shapeRenderer.end();
+
+
+        batch.setProjectionMatrix(cam.combined);
+        batch.begin();
+        batch.draw(heartRegion,70,400,HEART_WIDTH,HEART_HEIGHT);
+        if (state.getGameMode() == GameMode.COINS_QUEST) {
+            batch.draw(getCurrentFrame(stateTime), 82, 85, COIN_WIDTH, COIN_HEIGHT);
+
+            font.draw(batch, ((CoinQuestGameState) state).getFetchedCoins() + "/" + ((CoinQuestGameState) state).getCoinsToFetch(), 120, 115);
+            font.draw(batch, "X "+ SnackioGame.getInstance().getLives() , 130, 440);
         }
 
 
