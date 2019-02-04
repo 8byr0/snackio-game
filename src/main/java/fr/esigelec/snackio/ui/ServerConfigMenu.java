@@ -137,9 +137,16 @@ public class ServerConfigMenu implements Initializable {
         });
 
 
-
-
-
+        //characterGroup.getProperties().addListener();
+        submit.setOnMouseEntered(event -> {
+            submit.setTranslateX(1);
+            submit.setStyle("-fx-opacity: 1");
+        });
+        submit.setOnMouseExited(event -> {
+            submit.setTranslateX(0);
+            submit.setStyle("-fx-opacity: 0.6");
+        });
+// Introduction
         submit.setOnAction(this::submitServer);
     }
 

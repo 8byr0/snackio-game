@@ -22,8 +22,8 @@
             <children>
                <GridPane fx:id="grid" layoutX="21.0" layoutY="48.0" prefHeight="257.0" prefWidth="527.0" AnchorPane.leftAnchor="21.0">
                  <columnConstraints>
-                   <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" maxWidth="241.66665649414062" minWidth="10.0" prefWidth="92.0" />
-                   <ColumnConstraints fx:id="mapsFitLimit" halignment="CENTER" hgrow="SOMETIMES" maxWidth="487.3333485921223" minWidth="10.0" prefWidth="435.0" />
+                   <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" maxWidth="241.66665649414062" minWidth="10.0" prefWidth="132.0" />
+                   <ColumnConstraints fx:id="mapsFitLimit" halignment="CENTER" hgrow="SOMETIMES" maxWidth="487.3333485921223" minWidth="10.0" prefWidth="395.0" />
                      <ColumnConstraints maxWidth="0.0" minWidth="0.0" prefWidth="0.0" />
                  </columnConstraints>
                  <rowConstraints>
@@ -50,14 +50,14 @@
                   <font>
                      <Font size="18.0" />
                   </font></Label>
-                <TextField fx:id="serverName" layoutX="492.0" layoutY="9.0" maxWidth="186.0" prefHeight="25.0" prefWidth="183.0" />
-                <Label layoutX="357.0" layoutY="9.0" prefHeight="25.0" prefWidth="118.0" text="Server Name">
+                <TextField fx:id="serverName" layoutX="501.0" layoutY="10.0" maxWidth="186.0" prefHeight="25.0" prefWidth="183.0" />
+                <Label layoutX="365.0" layoutY="9.0" prefHeight="25.0" prefWidth="118.0" text="Server Name">
                   <font>
                      <Font size="18.0" />
                   </font></Label>
-                <Button fx:id="submit" layoutX="561.0" layoutY="264.0" mnemonicParsing="false" styleClass="ButtonSub" stylesheets="@../CSS/menus.css" text="create Server" textFill="WHITE">
+                <Button fx:id="submit" layoutX="584.0" layoutY="277.0" mnemonicParsing="false" prefHeight="40.0" prefWidth="109.0" styleClass="ButtonSub" stylesheets="@../CSS/menus.css" text="create Server" textFill="WHITE">
                   <font>
-                     <Font size="18.0" />
+                     <Font size="13.0" />
                   </font></Button>
 
             </children></AnchorPane>

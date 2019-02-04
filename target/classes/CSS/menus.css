@@ -24,8 +24,8 @@
     -fx-opacity: 0.6;
     -fx-text-fill: black;
     -fx-pref-height: 50;
-    -fx-max-height: 50;
-    -fx-pref-width: 130;
+    -fx-max-height: 30;
+    -fx-pref-width: 100;
 
 }
 .Button
@@ -60,3 +60,4 @@
 .s {
     -fx-background-color: black;
 }
+

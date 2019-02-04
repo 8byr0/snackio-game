@@ -25,6 +25,7 @@ import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.BackgroundFill;
 import javafx.scene.media.AudioClip;
+import javafx.scene.shape.Rectangle;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 import org.lwjgl.system.CallbackI;
@@ -38,8 +39,15 @@ import java.util.TimerTask;
 
 public class MainMenu  implements Initializable {
     @FXML
+    private AnchorPane introScene,mainAnchorPane;
+    @FXML
+    private Rectangle up_shape,down_shape;
+    @FXML
     private Button openSoloMenuButton;
     private Music leftStepSound;
+
+    @FXML
+    private ImageView coin;
     @FXML
     private Button openMultiMenuButton;
     private Stage stage;
@@ -52,12 +60,14 @@ public class MainMenu  implements Initializable {
     public int OFFSET_Y =  195;
     public int WIDTH    = 64;
     public int HEIGHT   = 64;
-    @FXML public ImageView imageViewLeft,imageViewRight;
-    public  Animation animationViewLeft,animationViewRight;
-    public TranslateTransition characterLeftEnter,characterRightEnter,characterLeftTranslateTransition,characterRightTranslateTransition,multiTranslateTransition,soloTranslateTransition;
+    @FXML public ImageView imageViewLeft,imageViewRight,imageViewIntro;
+    public  Animation animationViewLeft,animationViewRight,animationViewIntro;
+    public TranslateTransition characterLeftEnter,characterIntroEnter,characterRightEnter,characterLeftTranslateTransition,characterRightTranslateTransition,multiTranslateTransition,soloTranslateTransition;
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        setAnimation();
+        //intro();
+        mainAnchorPane.getChildren().remove(introScene);
+        outro();
         setButtonAnimations();
         openMultiMenuButton.setOnAction(this::openMultiMenu);
         openSoloMenuButton.setOnAction(this::openSoloMenu);
@@ -79,8 +89,9 @@ public class MainMenu  implements Initializable {
                         // Instantiate Network game engine to control gameplay
                         AbstractGameEngine engine = new SoloGameEngine(game, myPlayer, MapFactory.MapType.DESERT_CASTLE, 5);
                         // Instantiate a NetClient to exchange with client
-
+                        //MenuController.getStage().close();
                         engine.startGame();
+                        //MenuController.getInstance(stage).openMenu(MenuController.Menus.MULTI_MENU);
 
                     } catch (NoCharacterSetException e) {
                         Log.error(e.getMessage(), e);
@@ -135,8 +146,110 @@ public class MainMenu  implements Initializable {
         });
     }
 
-    public void setAnimation(){
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    public void intro(){
+
         IMAGE = new Image("sprites/inspector.png");
+        imageViewIntro.setImage(IMAGE);
+        imageViewIntro.setViewport(new Rectangle2D(OFFSET_X, OFFSET_Y, WIDTH, HEIGHT));
+        FadeTransition up = new FadeTransition(Duration.millis(1000), coin);
+        up.setFromValue(0);
+        up.setToValue(1);
+        up.setAutoReverse(true);
+        up.setCycleCount(500);
+        up.setDuration(Duration.INDEFINITE);
+        animationViewIntro =  new SpriteAnimation(imageViewIntro, Duration.millis(500), COUNT, COLUMNS, OFFSET_X, OFFSET_Y, WIDTH, HEIGHT);
+
+
+        animationViewIntro.setCycleCount(Animation.INDEFINITE);
+        characterIntroEnter = new TranslateTransition();
+        characterIntroEnter.setByX(coin.getLayoutX()+imageViewIntro.getFitWidth()-10);
+        characterIntroEnter.setDuration(Duration.millis(4000));
+        characterIntroEnter.setNode(imageViewIntro);
+        characterIntroEnter.setAutoReverse(true);
+        imageViewIntro.setOpacity(1);
+        characterIntroEnter.play();
+        animationViewIntro.play();
+        Timeline startTimeline = new Timeline(new KeyFrame(
+                Duration.millis(4000),
+                ae -> {
+                    characterIntroEnter.stop();
+                    animationViewIntro.stop();
+                    characterIntroEnter.setByY(coin.getFitHeight()+imageViewIntro.getY()-700);
+                    characterIntroEnter.setByX(0);
+                    animationViewIntro =  new SpriteAnimation(imageViewIntro, Duration.millis(500), COUNT, COLUMNS, OFFSET_X, 0, WIDTH, HEIGHT);
+                    animationViewIntro.setCycleCount(Animation.INDEFINITE);
+                }));
+        startTimeline.play();
+        Timeline coinAppear = new Timeline(new KeyFrame(
+                Duration.millis(7000),
+                ae -> up.play()
+                ));
+        coinAppear.play();
+        ////rajouter le gars qui se retourne dans tous les sens
+
+        Timeline timeline = new Timeline(new KeyFrame(
+                Duration.millis(8000),
+                ae -> {
+                    characterIntroEnter.play();
+                    animationViewIntro.play();
+
+                }));
+        timeline.play();
+        FadeTransition shape = new FadeTransition(Duration.millis(3000), up_shape);
+        Timeline coinDesappear = new Timeline(new KeyFrame(
+                Duration.millis(11500),
+                ae -> {
+                    up.stop();
+                    coin.setVisible(false);
+                    characterIntroEnter.stop();
+                    characterIntroEnter.setByY(-coin.getFitHeight()-150);
+                    characterIntroEnter.play();
+
+                    shape.setFromValue(1);
+                    shape.setToValue(0);
+                    shape.play();
+
+
+                }));
+        coinDesappear.play();
+        Timeline timeline2 = new Timeline(new KeyFrame(
+                Duration.millis(15000),
+                ae -> {
+                    shape.stop();
+                    characterIntroEnter.stop();
+                    animationViewIntro.stop();
+                    imageViewIntro.setVisible(false);
+                    shape.setNode(down_shape);
+                    shape.play();
+                }));
+        timeline2.play();
+        Timeline timeline3 = new Timeline(new KeyFrame(
+                Duration.millis(17000),
+                ae -> {
+                    shape.stop();
+                    mainAnchorPane.getChildren().remove(introScene);
+                    outro();
+                }));
+        timeline3.play();
+
+    }
+
+    public void outro(){
+        IMAGE = new Image("sprites/bald_man.png");
         imageViewLeft.setOpacity(0);
         imageViewRight.setOpacity(0);
 
@@ -196,8 +309,8 @@ public class MainMenu  implements Initializable {
         openMultiMenuButton.setDisable(true);
         openSoloMenuButton.setDisable(true);
         openMultiMenuButton.setStyle("-fx-opacity: 0.6");
-        imageViewLeft.setOpacity(2);
-        imageViewRight.setOpacity(2);
+        imageViewLeft.setOpacity(1);
+        imageViewRight.setOpacity(1);
         characterLeftEnter.play();
         characterRightEnter.play();
         animationViewLeft.play();

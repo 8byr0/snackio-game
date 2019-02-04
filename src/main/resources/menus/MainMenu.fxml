@@ -5,6 +5,7 @@
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.shape.Rectangle?>
 <?import javafx.scene.text.Font?>
 
 <AnchorPane fx:id="mainAnchorPane" prefHeight="500.0" prefWidth="700.0" styleClass="background" stylesheets="@../CSS/menus.css" xmlns="http://javafx.com/javafx/8.0.172-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="fr.esigelec.snackio.ui.MainMenu">
@@ -47,4 +48,15 @@
          </AnchorPane>
       </items>
    </SplitPane>
+   <AnchorPane fx:id="introScene" prefHeight="500.0" prefWidth="714.0">
+      <children>
+         <Rectangle fx:id="down_shape" arcHeight="5.0" arcWidth="5.0" height="375.0" layoutY="126.0" mouseTransparent="true" stroke="BLACK" strokeType="INSIDE" width="714.0" />
+         <Rectangle fx:id="up_shape" arcHeight="5.0" arcWidth="5.0" height="127.0" stroke="BLACK" strokeType="INSIDE" width="714.0" />
+         <ImageView fx:id="coin" fitHeight="42.0" fitWidth="42.0" layoutX="422.0" layoutY="70.0" pickOnBounds="true" preserveRatio="true" style="-fx-opacity: 0;">
+            <image>
+               <Image url="@../poi/coin/coin01.png" />
+            </image></ImageView>
+         <ImageView fx:id="imageViewIntro" fitHeight="75.0" fitWidth="70.0" layoutX="-122.0" pickOnBounds="true" preserveRatio="true" x="50.0" y="350.0" />
+      </children>
+   </AnchorPane>
 </AnchorPane>

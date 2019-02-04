@@ -19,6 +19,11 @@ public class MenuController {
         SERVER_CONFIG_MENU,
         JOIN_ROOM_MENU
     }
+    public static Stage stage;
+
+    public static Stage getStage(){
+        return stage;
+    }
 
     private static MenuController instance;
 
@@ -73,6 +78,8 @@ public class MenuController {
 
         scn.getStylesheets().add(getClass().getResource("/CSS/menus.css").toExternalForm());
         primaryStage.setScene(scn);
+        primaryStage.setResizable(false);
+        stage=primaryStage;
         primaryStage.show();
     }
 }
