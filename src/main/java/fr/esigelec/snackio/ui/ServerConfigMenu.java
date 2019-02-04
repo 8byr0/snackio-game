@@ -14,6 +14,7 @@ import fr.esigelec.snackio.networking.client.SnackioNetClient;
 import fr.esigelec.snackio.networking.server.SnackioNetServer;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
+import javafx.css.Style;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -21,10 +22,8 @@ import javafx.scene.control.*;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
 import javafx.scene.image.ImageView;
-import javafx.scene.layout.ColumnConstraints;
-import javafx.scene.layout.GridPane;
-import javafx.scene.layout.HBox;
-import javafx.scene.layout.Priority;
+import javafx.scene.layout.*;
+import javafx.scene.text.Text;
 
 import java.io.IOException;
 import java.net.InetAddress;
@@ -34,8 +33,12 @@ import java.util.List;
 
 public class ServerConfigMenu implements Initializable {
 
+     private static final int SQUARE_SIDE = 67;
     @FXML
     private TextField playerName;
+
+    @FXML
+    private ColumnConstraints mapsFitLimit,characterFitLimit;
 
     @FXML
     private Button submit;
@@ -43,6 +46,7 @@ public class ServerConfigMenu implements Initializable {
     private ToggleGroup mapGroup = new ToggleGroup();
 
     private ToggleGroup characterGroup = new ToggleGroup();
+    private ToggleButton perChoice,mapChoice;
 
     @FXML
     private GridPane grid;
@@ -54,18 +58,20 @@ public class ServerConfigMenu implements Initializable {
     public void initialize(URL location, ResourceBundle resources) {
         Snippet.setPreviousLocation(MenuController.Menus.MULTI_MENU);
         List<Enum> somethingList = Arrays.asList(CharacterFactory.CharacterType.values());
-        //map.getItems().setAll(MapFactory.MapType.values());
-        //character.getItems().setAll(CharacterFactory.CharacterType.values());
         HBox characterBox = new HBox();
+        characterBox.setSpacing(5);
         for (Enum character: somethingList){
             ToggleButton rbCha = new ToggleButton();
 
             ImageView imgCha= new ImageView("sprites/menu_"+character.toString()+".png");
-            imgCha.setFitHeight(40);
-            imgCha.setFitWidth(40);
+            imgCha.setFitHeight(SQUARE_SIDE);
+            imgCha.setFitWidth(SQUARE_SIDE);
             rbCha.setGraphic(imgCha);
             rbCha.setId(character.toString());
             rbCha.setToggleGroup(characterGroup);
+            rbCha.setStyle("-fx-background-color: white");
+            rbCha.setStyle("-fx-arc-width: 0");
+            rbCha.setStyle("-fx-arc-height: 0");
             characterBox.getChildren().add(rbCha);
         }
         grid.add(characterBox,1,3);
@@ -73,8 +79,13 @@ public class ServerConfigMenu implements Initializable {
             public void changed(ObservableValue<? extends Toggle> ov, Toggle old_toggle, Toggle new_toggle) {
                 // Has selection.
                 if (characterGroup.getSelectedToggle() != null) {
-                    ToggleButton choice = (ToggleButton) characterGroup.getSelectedToggle();
-                    System.out.println("Character: " + choice.getId());
+                    if(perChoice!= null){
+                        perChoice.setStyle("-fx-border-color: white");
+                    }
+                     perChoice = (ToggleButton) characterGroup.getSelectedToggle();
+                    System.out.println("color="+perChoice.getStyle());
+                    ((ToggleButton) characterGroup.getSelectedToggle()).setStyle("-fx-background-color: turquoise");
+                    System.out.println("Character: " + perChoice.getId());
                 }
             }
         });
@@ -84,24 +95,33 @@ public class ServerConfigMenu implements Initializable {
 
         List<Enum> mapList = Arrays.asList(MapFactory.MapType.values());
         HBox mapBox = new HBox();
+        HBox mapNameBox= new HBox();
         for (Enum map: mapList){
             ToggleButton rbMap = new ToggleButton();
+            Text name= new Text();
             ImageView imgMap= new ImageView("maps/"+map.toString()+".png");
-            imgMap.setFitWidth(40);
-            imgMap.setFitHeight(40);
+            imgMap.setFitWidth(SQUARE_SIDE);
+            imgMap.setFitHeight(SQUARE_SIDE);
             rbMap.setId(map.toString());
+            name.setText(map.toString());
             rbMap.setGraphic(imgMap);
             rbMap.setToggleGroup(mapGroup);
             mapBox.getChildren().add(rbMap);
+            mapNameBox.getChildren().add(name);
         }
         grid.add(mapBox,1,1);
+        grid.add(mapNameBox,1,2);
 
         mapGroup.selectedToggleProperty().addListener(new ChangeListener<Toggle>() {
             public void changed(ObservableValue<? extends Toggle> ov, Toggle old_toggle, Toggle new_toggle) {
                 // Has selection.
                 if (mapGroup.getSelectedToggle() != null) {
-                    ToggleButton choice = (ToggleButton) mapGroup.getSelectedToggle();
-                    System.out.println("Map: " + choice.getId());
+                    if(mapChoice!= null){
+                        mapChoice.setStyle("-fx-border-color: white");
+                    }
+                    mapChoice = (ToggleButton) mapGroup.getSelectedToggle();
+                    ((ToggleButton) mapGroup.getSelectedToggle()).setStyle("-fx-background-color: turquoise");
+                    System.out.println("Map: " + mapChoice.getId());
                 }
             }
         });
