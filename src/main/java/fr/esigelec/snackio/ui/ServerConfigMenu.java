@@ -194,7 +194,7 @@ public class ServerConfigMenu implements Initializable {
             }
         }
         else {
-            Label notCompleted = new Label("information not completed!!");
+            Label notCompleted = new Label("Not completed!!");
             notCompleted.setTextFill(Color.web("#0076a3"));
             grid.add(notCompleted, 0, 4);
         }
