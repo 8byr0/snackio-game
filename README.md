@@ -1,96 +1,85 @@
-# snackio
+# Les différentes instances du joueur 
 
-Snackio is a multiplayer RPG platform game.
+## Couche de données (Player) 
+Player est une classe locale qui contient toutes les méta-données du joueur.
+Lors d'une partie en multi, il y a autant d'instances de Player que de joueurs connectés à la partie.
 
-# Repository rules
-## Data flow
-All the features developed must be related to an opened issue on gitlab. Refer to https://gitlab.com/bYr0/snackio/boards to see existing issues. 
-The tool used to organize data flow is git-flow. To install it and learn more about the way it works, refer to this document : https://danielkummer.github.io/git-flow-cheatsheet/
+## Couche graphique (Character) 
+Character est une classe locale qui gère le rendu du joueur:
+- Interactions avec la map
+- Position
+Lors d'une partie en multi, il y a autant d'instances de Character que de joueurs connectés à la partie.
 
-## First time init
-On the first time you clone this repository, you need to run
-```sh
-git flow init
-```
-This will initialize git flow locally. This is mandatory.
+## Couche réseau (NetPlayer) 
+La classe NetPlayer est une classe dont les instances ne se trouvent que sur le serveur. Elle est disponible en RMI (Remote Method Invocation) depuis tous les clients.
 
-## Commit
-The way we commit to branch is inspired by Karma runner's rules.
-A commit has to be written like this:
-```sh
-git commit -m "<type>: description of your commit"
-```
-Where `<type>` can be one of the following: 
-```
-feat (new feature)
-fix (bug fix)
-docs (changes to documentation)
-style (formatting, missing semi colons, etc; no code change)
-refactor (refactoring production code)
-test (adding missing tests, refactoring tests; no production code change)
-```
-A few examples:
-```sh
-git commit -m "feat: Add a placeholder to user field"
-git commit -m "fix: myFunction throws JavaNullPointerException"
-git commit -m "docs: Add the documentation of MyClass method"
-git commit -m "style: Add missing semicolon in myFunction"
-```
-
-## Creating a new feature
-```sh
-git checkout develop # Switch to develop branch
-git pull # get last updates
-git flow feature start 123 # Start a new feature development (123 is an exemple an would be the one for issue #123 in gitlab board)
-git push --set-upstream origin feature/123 # Push your branch to remote repository
-```
-What these commands will basically do is create a new branch `feature/123` on which you'll be able to push all your code without disturbing other running developments.
-
-## Releasing a feature
-Once your dev is ready and you're sure it works properly, you must rebase your branch on develop (e.g. place your work on the top of develop). To do so:
-```sh
-git checkout develop # Switch to develop branch
-git pull # Pull last updates that have been made since your dev started
-git checkout feature/XXX # switch to your feature branch (replace XXX with your own issue number)
-git rebase develop # Rebase your work on top of develop
-```
-The last step may show you conflicts, you'll have to resolve them before pushing.
-Once done, just run
-```sh
-git push --force
-```
-
-Now that your feature is pushed and up to date, go to https://gitlab.com/bYr0/snackio/merge_requests/new and create a merge request. You'll have to specify a source branch (`feature/XXX`) and a destination branch (`develop`). If everything went well, notify `hugues.bureau@groupe-esigelec.org`, who is in charge of merging features to develop.
-
-# Code rules
-## Language
-All the code must be written in english.
-
-## Variables
-Variables must be lowerCamelCase
+# Contrôle de position
+## Contrôleur clavier (KeyboardController)
+Le choix du contrôleur se fait en passant une des valeurs d'enum de `iMotionController`
 ```java
-int myLongString = 0;
+myPlayer.setMotionController(IMotionController.KEYBOARD);
+
 ```
-Do not use short variables like `a`, `varAbc`... All the content must be readable without comments !
-
-## Functions / Methods
-Functions must be lowerCamelCase
+La gestion du clavier est gérée dans la méthode `execute()`.
 ```java
-public int multiplyTwoVariables(int firstVariable, int secondVariable) {
-    return firstVariable + secondVariable;
-}
-``` 
-Do not use short functions like `a`, `doSmth`... All the content must be readable without comments !
-
-Don't forget to properly write javadoc
-```java
-/**
- * Returns the result of a multiplication.
- * @param firstVariable the first variable to multiply
- * @param secondVariable the second variable to multiply
- */
-public int multiplyTwoVariables(int firstVariable, int secondVariable) {
-    return firstVariable * secondVariable;
+@Override
+public void execute(Character character) {
+    if (Gdx.input.isKeyPressed(Input.Keys.LEFT)) {
+        character.setDirection(Direction.WEST);
+        // ...
+    }
+    if (Gdx.input.isKeyPressed(Input.Keys.RIGHT)) {
+        character.setDirection(Direction.EAST);
+        // ...
+    }
+    if (Gdx.input.isKeyPressed(Input.Keys.DOWN)) {
+        character.setDirection(Direction.SOUTH);
+        // ...
+    }
+    if (Gdx.input.isKeyPressed(Input.Keys.UP)) {
+        character.setDirection(Direction.NORTH);
+        // ...
+    }
 }
 ```
-When you write a function, make it as simple as possible, avoid functions with more than 40 lines.
+
+## Implémenter un nouveau contrôleur
+Les contrôleurs doivent implémenter l'interface `iCharacterController` et donc définir une méthode `void execute(Character character)` qui sera appellée à chaque frame.
+L'objet character correspond au joueur à rendre.
+
+# Rendering 
+## Gestion du rendu (GameRenderer) 
+La classe GameRenderer va afficher à chaque frame tous les objets graphiques en appelant leurs méthodes `render()`. ATTENTION, il faut au préalable que les-dits objets aient été créés via un appel à leur méthode `create()`.
+L'ordre dans lequel sotn rendus les objets est le suivant :
+1. Déplacement de la caméra
+2. Rendu des characters
+3. Rendu de la map
+4. Rendu des points d'intérêts
+5. Rendu de l'overlay
+
+ 
+
+# Le Gameplay 
+
+## État de la partie (AbstractGameState) 
+L'état de la partie (joueurs connectés, objectifs, temps...) est contenu dans une instance de classe héritée de AbstractGameState. 
+### Solo
+En solo ce GameState est local.
+### Multi
+En multi, le GameState en envoyé par le serveur au moment de la connexion du client.
+
+## Coin quest en solo (SoloGameEngine) 
+
+## Coin quest en multi (NetworkGameEngine) 
+
+ 
+
+# Les points d’intérêt 
+
+## Modèle abstrait statique (AbstractPointOfInterest)
+
+## Modèle abstrait dynamique (AnimatedPointOfInterest) 
+
+## Bonus de vitesse 
+## Malus de vitesse
+
