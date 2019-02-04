@@ -27,6 +27,8 @@ public class MapInformationOverlay extends ApplicationAdapter {
 
     private static final int COIN_WIDTH = 32;
     private static final int COIN_HEIGHT = 32;
+    private static final int HEART_WIDTH = 50;
+    private static final int HEART_HEIGHT = 50;
     private float stateTime = 0f;
     private Texture texture;
 
@@ -153,6 +155,7 @@ public class MapInformationOverlay extends ApplicationAdapter {
 
         batch.setProjectionMatrix(cam.combined);
         batch.begin();
+        batch.draw(heartRegion,70,400,HEART_WIDTH,HEART_HEIGHT);
         if (state.getGameMode() == GameMode.COINS_QUEST) {
             batch.draw(getCurrentFrame(stateTime), 82, 85, COIN_WIDTH, COIN_HEIGHT);
             batch.draw(texture, 70, Gdx.graphics.getHeight()-85, HEART_WIDTH, HEART_HEIGHT);

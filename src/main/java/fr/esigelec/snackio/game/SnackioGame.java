@@ -6,7 +6,10 @@ import fr.esigelec.snackio.core.exceptions.GameCannotStartException;
 import fr.esigelec.snackio.core.exceptions.NoCharacterSetException;
 import fr.esigelec.snackio.core.exceptions.UnhandledControllerException;
 import fr.esigelec.snackio.game.pois.Bomb;
+<<<<<<< HEAD
 import fr.esigelec.snackio.game.pois.*;
+=======
+>>>>>>> feat: implement pois
 import fr.esigelec.snackio.game.pois.bonuses.Cookie;
 import fr.esigelec.snackio.game.pois.maluses.Freeze;
 import fr.esigelec.snackio.game.pois.maluses.Paralysis;
@@ -44,11 +47,16 @@ public class SnackioGame {
     private AbstractGameState gameState;
     public int lives = 3;
 
+
+    public int lives = 3;
     /**
      * Singleton implementation
      *
      * @return existing instance or a new one if not exists
      */
+
+
+
     public static SnackioGame getInstance() {
         if (null == instance) {
             instance = new SnackioGame();
@@ -104,6 +112,11 @@ public class SnackioGame {
         this.triggerPoiListeners(coin, null);
     }
 
+    public void freezeTouched(Freeze freeze, Character character) {
+        System.out.println("You're frozen!");
+        gameRenderer.removePointOfInterest(freeze);
+    }
+
     public void bombTouched(Bomb bomb, Character character) {
         System.out.println("You lost one life!");
         gameRenderer.removePointOfInterest(bomb);
@@ -113,10 +126,6 @@ public class SnackioGame {
 
     }
 
-    public void freezeTouched(Freeze freeze, Character character) {
-        System.out.println("You're frozen!");
-        gameRenderer.removePointOfInterest(freeze);
-    }
 
     public void cookieFound(Cookie cookie, Character character) {
         System.out.println("You get an extra life!");
@@ -129,7 +138,9 @@ public class SnackioGame {
 
     public void getRandomItem(RandomItem randomItem, Character character) {
         gameRenderer.removePointOfInterest(randomItem);
+    
     }
+
 
 
     /**
