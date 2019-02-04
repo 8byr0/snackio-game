@@ -23,6 +23,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.*;
+import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
 
 import java.io.IOException;
@@ -33,9 +34,12 @@ import java.util.List;
 
 public class ServerConfigMenu implements Initializable {
 
-     private static final int SQUARE_SIDE = 67;
+    private static final int SQUARE_SIDE = 67;
     @FXML
     private TextField playerName;
+
+    @FXML
+    private TextField serverName;
 
     @FXML
     private ColumnConstraints mapsFitLimit,characterFitLimit;
@@ -57,6 +61,10 @@ public class ServerConfigMenu implements Initializable {
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         Snippet.setPreviousLocation(MenuController.Menus.MULTI_MENU);
+
+
+
+        //        //show all the choices of the characters
         List<Enum> somethingList = Arrays.asList(CharacterFactory.CharacterType.values());
         HBox characterBox = new HBox();
         characterBox.setSpacing(5);
@@ -93,6 +101,8 @@ public class ServerConfigMenu implements Initializable {
 
 
 
+
+        //           //show all the choices of the maps
         List<Enum> mapList = Arrays.asList(MapFactory.MapType.values());
         HBox mapBox = new HBox();
         HBox mapNameBox= new HBox();
@@ -126,13 +136,16 @@ public class ServerConfigMenu implements Initializable {
             }
         });
 
-        //characterGroup.getProperties().addListener();
+
+
+
+
         submit.setOnAction(this::submitServer);
     }
 
     public void submitServer(ActionEvent actionEvent) {
         if(mapGroup.getSelectedToggle() != null && characterGroup.getSelectedToggle() != null
-                && !playerName.getText().isEmpty()){
+                && !playerName.getText().isEmpty() && !serverName.getText().isEmpty()){
             try {
                 try {
                     try {
@@ -179,6 +192,11 @@ public class ServerConfigMenu implements Initializable {
                     UnhandledCharacterTypeException e) {
                 Log.error(e.getMessage(), e);
             }
+        }
+        else {
+            Label notCompleted = new Label("information not completed!!");
+            notCompleted.setTextFill(Color.web("#0076a3"));
+            grid.add(notCompleted, 0, 4);
         }
     }
 }
