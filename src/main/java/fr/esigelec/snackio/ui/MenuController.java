@@ -5,6 +5,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
+import javafx.stage.StageStyle;
 
 import java.io.IOException;
 import java.net.URL;
@@ -37,6 +38,8 @@ public class MenuController {
 
     private MenuController(Stage primaryStage) {
         this.primaryStage = primaryStage;
+        this.primaryStage.setResizable(false);
+        this.primaryStage.initStyle(StageStyle.UNDECORATED);
         this.primaryStage.setTitle("snackio");
     }
 
@@ -84,8 +87,9 @@ public class MenuController {
 
         scn.getStylesheets().add(getClass().getResource("/CSS/menus.css").toExternalForm());
         primaryStage.setScene(scn);
-        primaryStage.setResizable(false);
+
         stage=primaryStage;
+
         primaryStage.show();
     }
 }

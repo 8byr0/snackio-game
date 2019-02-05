@@ -36,11 +36,9 @@ import java.util.List;
 import java.util.ResourceBundle;
 
 public class SoloConfigMenu implements Initializable {
-    private static final int SQUARE_SIDE = 67;
+    private static final int SQUARE_SIDE = 70;
     @FXML
     private Button join;
-    @FXML
-    private TextField playerName;
 
     private ToggleGroup characterGroup = new ToggleGroup();
     private ToggleGroup mapGroup = new ToggleGroup();
@@ -66,19 +64,21 @@ public class SoloConfigMenu implements Initializable {
         showImageMap();
         animation(1,0);
         join.setOnMouseEntered(event -> {
-            join.setTranslateX(1);
-            join.setStyle("-fx-opacity: 1");
+            if(mapGroup.getSelectedToggle() !=null && characterGroup.getSelectedToggle() != null) {
+                join.setTranslateX(1);
+                join.setStyle("-fx-opacity: 1");
+                join.setOnAction(this::connection);
+            }
         });
         join.setOnMouseExited(event -> {
             join.setStyle("-fx-opacity: 0.6");
             join.setTranslateX(0);
         });
-        join.setOnAction(this::connection);
 
     }
 
     public void connection(ActionEvent actionEvent) {
-        if(!playerName.getText().isEmpty() && mapGroup.getSelectedToggle() !=null && characterGroup.getSelectedToggle() != null){
+        if(mapGroup.getSelectedToggle() !=null && characterGroup.getSelectedToggle() != null){
             startGameSolo();
         }
     }
@@ -96,9 +96,7 @@ public class SoloConfigMenu implements Initializable {
             rbCha.setGraphic(imgCha);
             rbCha.setId(character.toString());
             rbCha.setToggleGroup(characterGroup);
-            rbCha.setStyle("-fx-background-color: white");
-            rbCha.setStyle("-fx-arc-width: 0");
-            rbCha.setStyle("-fx-arc-height: 0");
+            rbCha.setStyle("-fx-background-color: gray");
             characterBox.getChildren().add(rbCha);
         }
         grid.add(characterBox,1,1);
@@ -107,10 +105,10 @@ public class SoloConfigMenu implements Initializable {
                 // Has selection.
                 if (characterGroup.getSelectedToggle() != null) {
                     if(perChoice!= null){
-                        perChoice.setStyle("-fx-border-color: white");
+                        perChoice.setStyle("-fx-background-color: gray");
                     }
                     perChoice = (ToggleButton) characterGroup.getSelectedToggle();
-                    ((ToggleButton) characterGroup.getSelectedToggle()).setStyle("-fx-background-color: turquoise");
+                    ((ToggleButton) characterGroup.getSelectedToggle()).setStyle("-fx-background-color: white;");
                 }
             }
         });
@@ -126,6 +124,7 @@ public class SoloConfigMenu implements Initializable {
             ImageView imgMap= new ImageView("maps/"+map.toString()+".png");
             imgMap.setFitWidth(SQUARE_SIDE);
             imgMap.setFitHeight(SQUARE_SIDE);
+            rbMap.setStyle("-fx-background-color: gray");
             rbMap.setId(map.toString());
             name.setText(map.toString());
             rbMap.setGraphic(imgMap);
@@ -140,10 +139,10 @@ public class SoloConfigMenu implements Initializable {
                 // Has selection.
                 if (mapGroup.getSelectedToggle() != null) {
                     if(mapChoice!= null){
-                        mapChoice.setStyle("-fx-border-color: white");
+                        mapChoice.setStyle("-fx-border-color: gray");
                     }
                     mapChoice = (ToggleButton) mapGroup.getSelectedToggle();
-                    ((ToggleButton) mapGroup.getSelectedToggle()).setStyle("-fx-background-color: turquoise");
+                    ((ToggleButton) mapGroup.getSelectedToggle()).setStyle("-fx-background-color: white");
                 }
             }
         });
@@ -160,7 +159,7 @@ public class SoloConfigMenu implements Initializable {
                     ToggleButton rbMap = (ToggleButton) mapGroup.getSelectedToggle();
 
 
-                    myPlayer = new Player(playerName.getText(), CharacterFactory.CharacterType.valueOf(String.valueOf(rbCha.getId())));
+                    myPlayer = new Player("", CharacterFactory.CharacterType.valueOf(String.valueOf(rbCha.getId())));
 
                     myPlayer.getCharacter().setPosition(100,900);
 

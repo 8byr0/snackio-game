@@ -150,7 +150,7 @@ public class MainMenu  implements Initializable {
         characterIntroImageView.setViewport(new Rectangle2D(OFFSET_X, OFFSET_Y, WIDTH, HEIGHT));
         flashBack=true;
 
-        coinToss =  new SpriteAnimation(coin, Duration.millis(200), COUNT, 9, OFFSET_X, OFFSET_Y, WIDTH, HEIGHT);
+        coinToss =  new SpriteAnimation(coin, Duration.millis(500), COUNT, 9, OFFSET_X, OFFSET_Y, WIDTH, HEIGHT);
         coinToss.setCycleCount(Animation.INDEFINITE);
         coinToss.play();
         coinBaitToss =  new SpriteAnimation(coinBait, Duration.millis(300), COUNT, 9, OFFSET_X, OFFSET_Y, WIDTH, HEIGHT);
@@ -164,7 +164,13 @@ public class MainMenu  implements Initializable {
         bait.setCycleCount(500);
         bait.setDuration(Duration.INDEFINITE);
         bait.play();
-
+        //ANIMATION 3 : COIN APPEAR ON THE SCENE
+        FadeTransition coinAppear = new FadeTransition(Duration.millis(500), coin);
+        coinAppear.setFromValue(0);
+        coinAppear.setToValue(1);
+        coinAppear.setAutoReverse(true);
+        coinAppear.setCycleCount(500);
+        coinAppear.setDuration(Duration.INDEFINITE);
         //ANIMATION 1: CHARACTER ENTER THE SCENE (Character Move from left to right)
 
         characterIntroMove = new TranslateTransition();
@@ -208,19 +214,12 @@ public class MainMenu  implements Initializable {
                 }));
         characterStopWalking.play();
 
-        //ANIMATION 3 : COIN APPEAR ON THE SCENE
-        FadeTransition coinAppear = new FadeTransition(Duration.millis(500), coin);
-        coinAppear.setFromValue(0);
-        coinAppear.setToValue(1);
-        coinAppear.setAutoReverse(true);
-        coinAppear.setCycleCount(500);
-        coinAppear.setDuration(Duration.INDEFINITE);
+
 
         Timeline coinAppearSignal = new Timeline(new KeyFrame(
                 Duration.millis(3000),
                 ae -> {
                     characterIntroTurn.play();
-                    characterIntroWalk.stop();
                     characterIntroWalk =  new SpriteAnimation(characterIntroImageView, Duration.millis(500), COUNT, COLUMNS, OFFSET_X, 0, WIDTH, HEIGHT);
                     characterIntroWalk.setCycleCount(Animation.INDEFINITE);
                     coinAppear.play();
@@ -233,6 +232,8 @@ public class MainMenu  implements Initializable {
                 Duration.millis(3500),
                 ae -> {
                     //SETTING  ANIMATION 2: the character go up to save the coin (Character Move from down to up)
+                    coinAppear.stop();
+                    coin.setStyle("-fx-opacity: 1;");
                     characterIntroTurn.stop();
                     characterIntroMove.setByY(coin.getFitHeight()+characterIntroImageView.getY()-700);
                     characterIntroMove.setByX(0);
@@ -240,7 +241,7 @@ public class MainMenu  implements Initializable {
                     characterIntroMove.play();
                 }));
         goUpCharacterMoveSignal.play();
-        FadeTransition removeCurtain = new FadeTransition(Duration.millis(1500), upCurtain);
+        FadeTransition removeCurtain = new FadeTransition(Duration.millis(1000), upCurtain);
         Timeline endCharacterMoveSignal = new Timeline(new KeyFrame(
                 Duration.millis(5000),
                 ae -> {
@@ -248,7 +249,7 @@ public class MainMenu  implements Initializable {
                     removeCurtain.setFromValue(1);
                     removeCurtain.setToValue(0);
                     removeCurtain.play();
-                    coinAppear.stop();
+
                     coin.setVisible(false);
                     characterIntroMove.setDuration(Duration.millis(2000));
                     characterIntroMove.setByY(-coin.getFitHeight()-150);
@@ -262,6 +263,7 @@ public class MainMenu  implements Initializable {
                 ae -> {
                     removeCurtain.stop();
                     removeCurtain.setDuration(Duration.millis(1500));
+
                     removeCurtain.setNode(downCurtain);
                     removeCurtain.play();
                     coinToss.stop();
@@ -299,8 +301,8 @@ public class MainMenu  implements Initializable {
         characterRightTranslateTransition = new TranslateTransition();
         characterLeftTranslateTransition.setByX(800);
         characterRightTranslateTransition.setByX(-800);
-        characterLeftTranslateTransition.setDuration(Duration.millis(2000));
-        characterRightTranslateTransition.setDuration(Duration.millis(2000));
+        characterLeftTranslateTransition.setDuration(Duration.millis(1500));
+        characterRightTranslateTransition.setDuration(Duration.millis(1500));
         characterLeftTranslateTransition.setAutoReverse(true);
         characterRightTranslateTransition.setAutoReverse(true);
         characterLeftTranslateTransition.setNode(imageViewLeft);
@@ -322,14 +324,14 @@ public class MainMenu  implements Initializable {
         //the transition will set to be auto reversed by setting this to true
         multiTranslateTransition.setAutoReverse(true);
         //setting the duration for the Translate transition
-        multiTranslateTransition.setDuration(Duration.millis(2000));
+        multiTranslateTransition.setDuration(Duration.millis(1500));
         //shifting the X coordinate of the centre of the circle by 400
         multiTranslateTransition.setByX(800);
         multiTranslateTransition.setNode(openMultiMenuButton);
 
         soloTranslateTransition = new TranslateTransition();
         soloTranslateTransition.setByX(-800);
-        soloTranslateTransition.setDuration(Duration.millis(2000));
+        soloTranslateTransition.setDuration(Duration.millis(1500));
         soloTranslateTransition.setAutoReverse(true);
         soloTranslateTransition.setNode(openSoloMenuButton);
 
@@ -339,6 +341,7 @@ public class MainMenu  implements Initializable {
         openMultiMenuButton.setDisable(true);
         openSoloMenuButton.setDisable(true);
         openMultiMenuButton.setStyle("-fx-opacity: 0.6");
+        openSoloMenuButton.setStyle("-fx-opacity: 0.6");
         imageViewLeft.setOpacity(1);
         imageViewRight.setOpacity(1);
         characterLeftEnter.play();
