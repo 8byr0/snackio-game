@@ -12,6 +12,9 @@ import fr.esigelec.snackio.game.character.CharacterFactory;
 import fr.esigelec.snackio.game.map.MapFactory;
 import fr.esigelec.snackio.networking.client.SnackioNetClient;
 import fr.esigelec.snackio.networking.server.SnackioNetServer;
+import javafx.animation.FadeTransition;
+import javafx.animation.KeyFrame;
+import javafx.animation.Timeline;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
@@ -24,6 +27,7 @@ import javafx.scene.image.ImageView;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
+import javafx.util.Duration;
 
 import java.io.IOException;
 import java.net.InetAddress;
@@ -50,19 +54,19 @@ public class ServerConfigMenu implements Initializable {
     private ToggleGroup characterGroup = new ToggleGroup();
     private ToggleButton perChoice,mapChoice;
 
+
+    private FadeTransition hideAnchor;
+    @FXML
+    private AnchorPane anchor,mainAnchorPane;
     @FXML
     private GridPane grid;
 
-    public ServerConfigMenu() {
-
-    }
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         Snippet.setPreviousLocation(MenuController.Menus.MULTI_MENU);
-
         showImageMap();
         showImageCharacter();
-
+        animation(1,0);
         submit.setOnMouseEntered(event -> {
             submit.setTranslateX(1);
             submit.setStyle("-fx-opacity: 1");
@@ -202,6 +206,33 @@ public class ServerConfigMenu implements Initializable {
             notCompleted.setTextFill(Color.web("#0076a3"));
             grid.add(notCompleted, 0, 4);
         }
+    }
+
+    public void animation(double startValue,double endValue){
+        anchor.setStyle("-fx-opacity:"+startValue);
+        anchor.setDisable(true);
+        hideAnchor = new FadeTransition(Duration.millis(1000), anchor);
+        hideAnchor.setFromValue(startValue);
+
+        hideAnchor.setToValue(endValue);
+
+        hideAnchor.setAutoReverse(true);
+
+        hideAnchor.setCycleCount(500);
+
+        hideAnchor.setDuration(Duration.INDEFINITE);
+
+        hideAnchor.play();
+
+        Timeline timeline = new Timeline(new KeyFrame(
+                Duration.millis(1000),
+                ae -> {
+                    hideAnchor.stop();
+                    mainAnchorPane.getChildren().remove(anchor);
+                }));
+        timeline.play();
+
+
     }
 }
 

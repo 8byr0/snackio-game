@@ -10,7 +10,7 @@
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane prefHeight="500.0" prefWidth="700.0" xmlns="http://javafx.com/javafx/8.0.172-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="fr.esigelec.snackio.ui.SoloConfigMenu">
+<AnchorPane fx:id="mainAnchorPane" prefHeight="500.0" prefWidth="700.0" styleClass="background" stylesheets="@../CSS/menus.css" xmlns="http://javafx.com/javafx/8.0.172-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="fr.esigelec.snackio.ui.SoloConfigMenu">
     <SplitPane dividerPositions="0.35" orientation="VERTICAL" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
 
     <items>
@@ -19,7 +19,7 @@
                 <fx:include fx:id="snippet" source="snippet.fxml" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
             </children>
         </AnchorPane>
-        <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="100.0" prefWidth="160.0" styleClass="Anc" stylesheets="@../CSS/menus.css">
+        <AnchorPane  minHeight="0.0" minWidth="0.0" prefHeight="100.0" prefWidth="160.0" styleClass="Anc" stylesheets="@../CSS/menus.css">
             <children>
 
             </children>
@@ -55,4 +55,5 @@
         </AnchorPane>
     </items>
 </SplitPane>
+   <AnchorPane fx:id="anchor" styleClass="Anc" stylesheets="@../CSS/menus.css" layoutY="179.0" prefHeight="321.0" prefWidth="700.0" />
 </AnchorPane>

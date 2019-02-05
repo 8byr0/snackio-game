@@ -7,6 +7,7 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.stage.Stage;
+import javafx.stage.Modality;
 
 import java.net.URL;
 import java.util.ResourceBundle;
@@ -53,6 +54,7 @@ public class Snippet implements Initializable {
     }
 
     public void backPrevious(ActionEvent actionEvent) {
+
         MenuController.getInstance(stage).openMenu(previousLocation);
     }
 
@@ -65,6 +67,7 @@ public class Snippet implements Initializable {
             stage.setTitle("Controller settings");
             stage.setScene(new Scene(root1));
             settingsButton.setDisable(true);
+            stage.initModality(Modality.APPLICATION_MODAL );
             stage.showAndWait();
             settingsButton.setDisable(false);
         } catch(Exception e) {

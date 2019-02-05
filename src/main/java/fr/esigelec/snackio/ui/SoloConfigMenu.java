@@ -13,6 +13,9 @@ import fr.esigelec.snackio.game.SnackioGame;
 import fr.esigelec.snackio.game.character.CharacterFactory;
 import fr.esigelec.snackio.game.map.MapFactory;
 import fr.esigelec.snackio.networking.client.SnackioNetClient;
+import javafx.animation.FadeTransition;
+import javafx.animation.KeyFrame;
+import javafx.animation.Timeline;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
@@ -20,9 +23,11 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
 import javafx.scene.image.ImageView;
+import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.text.Text;
+import javafx.util.Duration;
 
 import java.net.InetAddress;
 import java.net.URL;
@@ -41,8 +46,14 @@ public class SoloConfigMenu implements Initializable {
     private ToggleGroup mapGroup = new ToggleGroup();
 
     private Player myPlayer;
+    private Timeline timeline;
+
+    @FXML
+    private AnchorPane anchor,mainAnchorPane;
 
     private ToggleButton perChoice,mapChoice;
+
+    private FadeTransition showAnchor;
 
     @FXML
     private GridPane grid;
@@ -53,6 +64,7 @@ public class SoloConfigMenu implements Initializable {
         Snippet.setPreviousLocation(MenuController.Menus.MAIN_MENU);
         showImageCharacter();
         showImageMap();
+        animation(1,0);
         join.setOnMouseEntered(event -> {
             join.setTranslateX(1);
             join.setStyle("-fx-opacity: 1");
@@ -153,10 +165,8 @@ public class SoloConfigMenu implements Initializable {
                     myPlayer.getCharacter().setPosition(100,900);
 
                     AbstractGameEngine engine = new SoloGameEngine(game, myPlayer, MapFactory.MapType.valueOf(String.valueOf(rbMap.getId())), 5);
-
+                    //MenuController.getStage().initModality(APPLICATION_MODAL);
                     engine.startGame();
-
-                    join.setDisable(false);
                     } catch (GameCannotStartException e) {
                         Log.error(e.getMessage(), e);
                     }
@@ -171,5 +181,32 @@ public class SoloConfigMenu implements Initializable {
                 UnhandledCharacterTypeException e) {
             Log.error(e.getMessage(), e);
         }
+    }
+
+    public void animation(double startValue,double endValue){
+       anchor.setStyle("-fx-opacity:"+startValue);
+        anchor.setDisable(true);
+        showAnchor = new FadeTransition(Duration.millis(1000), anchor);
+        showAnchor.setFromValue(startValue);
+
+        showAnchor.setToValue(endValue);
+
+        showAnchor.setAutoReverse(true);
+
+        showAnchor.setCycleCount(500);
+
+        showAnchor.setDuration(Duration.INDEFINITE);
+
+        showAnchor.play();
+
+            timeline = new Timeline(new KeyFrame(
+                    Duration.millis(1000),
+                    ae -> {
+                        showAnchor.stop();
+                        mainAnchorPane.getChildren().remove(anchor);
+                    }));
+            timeline.play();
+
+
     }
 }

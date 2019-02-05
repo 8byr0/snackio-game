@@ -68,16 +68,12 @@ public class MainMenu  implements Initializable {
     public TranslateTransition characterLeftEnter,characterIntroMove,characterRightEnter,characterLeftTranslateTransition,characterRightTranslateTransition,multiTranslateTransition,soloTranslateTransition;
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        mainAnchorPane.getChildren().remove(introScene);
-        outro();
-        /*
         if(!flashBack){
             intro();
         }else{
             mainAnchorPane.getChildren().remove(introScene);
             outro();
         }
-        */
         setButtonAnimations();
         openMultiMenuButton.setOnAction(this::openMultiMenu);
         openSoloMenuButton.setOnAction(this::openSoloMenu);
