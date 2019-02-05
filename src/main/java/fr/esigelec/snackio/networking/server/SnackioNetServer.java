@@ -54,7 +54,7 @@ public class SnackioNetServer {
      *
      * @throws IOException When the server cannot bind given udpPort
      */
-    private SnackioNetServer() throws IOException {
+    public SnackioNetServer() throws IOException {
 
         server = new Server() {
             protected Connection newConnection() {

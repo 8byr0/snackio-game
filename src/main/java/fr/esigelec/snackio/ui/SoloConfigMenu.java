@@ -2,7 +2,6 @@ package fr.esigelec.snackio.ui;
 
 import com.esotericsoftware.minlog.Log;
 import fr.esigelec.snackio.core.AbstractGameEngine;
-import fr.esigelec.snackio.core.NetworkGameEngine;
 import fr.esigelec.snackio.core.Player;
 import fr.esigelec.snackio.core.SoloGameEngine;
 import fr.esigelec.snackio.core.exceptions.GameCannotStartException;
@@ -12,7 +11,8 @@ import fr.esigelec.snackio.core.exceptions.UnhandledControllerException;
 import fr.esigelec.snackio.game.SnackioGame;
 import fr.esigelec.snackio.game.character.CharacterFactory;
 import fr.esigelec.snackio.game.map.MapFactory;
-import fr.esigelec.snackio.networking.client.SnackioNetClient;
+import fr.esigelec.snackio.ui.customToggles.CharacterPicker;
+import fr.esigelec.snackio.ui.customToggles.MapPicker;
 import javafx.animation.FadeTransition;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
@@ -29,7 +29,6 @@ import javafx.scene.layout.HBox;
 import javafx.scene.text.Text;
 import javafx.util.Duration;
 
-import java.net.InetAddress;
 import java.net.URL;
 import java.util.Arrays;
 import java.util.List;
@@ -40,16 +39,16 @@ public class SoloConfigMenu implements Initializable {
     @FXML
     private Button join;
 
-    private ToggleGroup characterGroup = new ToggleGroup();
-    private ToggleGroup mapGroup = new ToggleGroup();
+    private CharacterPicker characterSelector = new CharacterPicker();
+    private MapPicker mapSelector = new MapPicker();
 
     private Player myPlayer;
     private Timeline timeline;
 
     @FXML
-    private AnchorPane anchor,mainAnchorPane;
+    private AnchorPane anchor, mainAnchorPane;
 
-    private ToggleButton perChoice,mapChoice;
+    private ToggleButton perChoice, mapChoice;
 
     private FadeTransition showAnchor;
 
@@ -62,7 +61,7 @@ public class SoloConfigMenu implements Initializable {
         Snippet.setPreviousLocation(MenuController.Menus.MAIN_MENU);
         showImageCharacter();
         showImageMap();
-        animation(1,0);
+        animation(1, 0);
         join.setOnMouseEntered(event -> {
             if(mapGroup.getSelectedToggle() !=null && characterGroup.getSelectedToggle() != null) {
                 join.setTranslateX(1);
@@ -78,112 +77,44 @@ public class SoloConfigMenu implements Initializable {
     }
 
     public void connection(ActionEvent actionEvent) {
-        if(mapGroup.getSelectedToggle() !=null && characterGroup.getSelectedToggle() != null){
+        if (!playerName.getText().isEmpty() && mapSelector.getSelectedToggle() != null && characterSelector.getSelectedToggle() != null) {
             startGameSolo();
         }
     }
 
-    public void showImageCharacter(){
+    public void showImageCharacter() {
         //        //show all the choices of the characters
-        List<Enum> somethingList = Arrays.asList(CharacterFactory.CharacterType.values());
-        HBox characterBox = new HBox();
-        characterBox.setSpacing(5);
-        for (Enum character: somethingList){
-            ToggleButton rbCha = new ToggleButton();
-            ImageView imgCha= new ImageView("sprites/menu_"+character.toString()+".png");
-            imgCha.setFitHeight(SQUARE_SIDE);
-            imgCha.setFitWidth(SQUARE_SIDE);
-            rbCha.setGraphic(imgCha);
-            rbCha.setId(character.toString());
-            rbCha.setToggleGroup(characterGroup);
-            rbCha.setStyle("-fx-background-color: gray");
-            characterBox.getChildren().add(rbCha);
-        }
-        grid.add(characterBox,1,1);
-        characterGroup.selectedToggleProperty().addListener(new ChangeListener<Toggle>() {
-            public void changed(ObservableValue<? extends Toggle> ov, Toggle old_toggle, Toggle new_toggle) {
-                // Has selection.
-                if (characterGroup.getSelectedToggle() != null) {
-                    if(perChoice!= null){
-                        perChoice.setStyle("-fx-background-color: gray");
-                    }
-                    perChoice = (ToggleButton) characterGroup.getSelectedToggle();
-                    ((ToggleButton) characterGroup.getSelectedToggle()).setStyle("-fx-background-color: white;");
-                }
-            }
-        });
-    }
-    public void showImageMap(){
-        //           //show all the choices of the maps
-        List<Enum> mapList = Arrays.asList(MapFactory.MapType.values());
-        HBox mapBox = new HBox();
-        HBox mapNameBox= new HBox();
-        for (Enum map: mapList){
-            ToggleButton rbMap = new ToggleButton();
-            Text name= new Text();
-            ImageView imgMap= new ImageView("maps/"+map.toString()+".png");
-            imgMap.setFitWidth(SQUARE_SIDE);
-            imgMap.setFitHeight(SQUARE_SIDE);
-            rbMap.setStyle("-fx-background-color: gray");
-            rbMap.setId(map.toString());
-            name.setText(map.toString());
-            rbMap.setGraphic(imgMap);
-            rbMap.setToggleGroup(mapGroup);
-            mapBox.getChildren().add(rbMap);
-            mapNameBox.getChildren().add(name);
-        }
-        grid.add(mapBox,1,2);
 
-        mapGroup.selectedToggleProperty().addListener(new ChangeListener<Toggle>() {
-            public void changed(ObservableValue<? extends Toggle> ov, Toggle old_toggle, Toggle new_toggle) {
-                // Has selection.
-                if (mapGroup.getSelectedToggle() != null) {
-                    if(mapChoice!= null){
-                        mapChoice.setStyle("-fx-border-color: gray");
-                    }
-                    mapChoice = (ToggleButton) mapGroup.getSelectedToggle();
-                    ((ToggleButton) mapGroup.getSelectedToggle()).setStyle("-fx-background-color: white");
-                }
-            }
-        });
+        grid.add(characterSelector, 1, 1);
+
     }
 
-    public void startGameSolo () {
+    private void showImageMap() {
+        grid.add(mapSelector, 1, 2);
+    }
+
+    private void startGameSolo() {
         try {
-            try {
-                try {
-                    try {
-                    SnackioGame game = SnackioGame.getInstance();
+            SnackioGame game = SnackioGame.getInstance();
 
-                    ToggleButton rbCha = (ToggleButton) characterGroup.getSelectedToggle();
-                    ToggleButton rbMap = (ToggleButton) mapGroup.getSelectedToggle();
+            ToggleButton rbCha = characterSelector.getSelectedToggle();
+            ToggleButton rbMap = mapSelector.getSelectedToggle();
 
 
-                    myPlayer = new Player("", CharacterFactory.CharacterType.valueOf(String.valueOf(rbCha.getId())));
+            myPlayer = new Player(playerName.getText(), CharacterFactory.CharacterType.valueOf(String.valueOf(rbCha.getId())));
 
-                    myPlayer.getCharacter().setPosition(100,900);
+            myPlayer.getCharacter().setPosition(100, 900);
 
-                    AbstractGameEngine engine = new SoloGameEngine(game, myPlayer, MapFactory.MapType.valueOf(String.valueOf(rbMap.getId())), 5);
-                    //MenuController.getStage().initModality(APPLICATION_MODAL);
-                    engine.startGame();
-                    } catch (GameCannotStartException e) {
-                        Log.error(e.getMessage(), e);
-                    }
-                } catch (NoCharacterSetException e) {
-                    Log.error(e.getMessage(), e);
-                }
-
-            } catch (UnhandledControllerException e) {
-                Log.error(e.getMessage(), e);
-            }
-        } catch (
-                UnhandledCharacterTypeException e) {
+            AbstractGameEngine engine = new SoloGameEngine(game, myPlayer, MapFactory.MapType.valueOf(String.valueOf(rbMap.getId())), 5);
+            //MenuController.getStage().initModality(APPLICATION_MODAL);
+            engine.startGame();
+        } catch (GameCannotStartException | UnhandledCharacterTypeException | UnhandledControllerException | NoCharacterSetException e) {
             Log.error(e.getMessage(), e);
         }
     }
 
-    public void animation(double startValue,double endValue){
-       anchor.setStyle("-fx-opacity:"+startValue);
+    public void animation(double startValue, double endValue) {
+        anchor.setStyle("-fx-opacity:" + startValue);
         anchor.setDisable(true);
         showAnchor = new FadeTransition(Duration.millis(1000), anchor);
         showAnchor.setFromValue(startValue);
@@ -198,13 +129,13 @@ public class SoloConfigMenu implements Initializable {
 
         showAnchor.play();
 
-            timeline = new Timeline(new KeyFrame(
-                    Duration.millis(1000),
-                    ae -> {
-                        showAnchor.stop();
-                        mainAnchorPane.getChildren().remove(anchor);
-                    }));
-            timeline.play();
+        timeline = new Timeline(new KeyFrame(
+                Duration.millis(1000),
+                ae -> {
+                    showAnchor.stop();
+                    mainAnchorPane.getChildren().remove(anchor);
+                }));
+        timeline.play();
 
 
     }
