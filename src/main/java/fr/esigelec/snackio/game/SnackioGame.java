@@ -6,6 +6,7 @@ import fr.esigelec.snackio.core.exceptions.GameCannotStartException;
 import fr.esigelec.snackio.core.exceptions.NoCharacterSetException;
 import fr.esigelec.snackio.core.exceptions.UnhandledControllerException;
 import fr.esigelec.snackio.game.pois.Bomb;
+import fr.esigelec.snackio.game.pois.*;
 import fr.esigelec.snackio.game.pois.bonuses.Cookie;
 import fr.esigelec.snackio.game.pois.maluses.Freeze;
 import fr.esigelec.snackio.game.pois.maluses.Paralysis;
@@ -16,10 +17,7 @@ import fr.esigelec.snackio.game.character.Character;
 import fr.esigelec.snackio.game.character.motion.IMotionController;
 import fr.esigelec.snackio.game.map.Map;
 import fr.esigelec.snackio.game.map.MapFactory;
-import fr.esigelec.snackio.game.pois.Coin;
-import fr.esigelec.snackio.game.pois.PointOfInterest;
 import fr.esigelec.snackio.game.pois.bonuses.SpeedBonus;
-import fr.esigelec.snackio.game.pois.iPoi;
 import fr.esigelec.snackio.game.pois.listeners.PoiTriggeredListener;
 import fr.esigelec.snackio.game.pois.maluses.SpeedMalus;
 
@@ -44,6 +42,7 @@ public class SnackioGame {
 
     private ArrayList<PoiTriggeredListener> poiTriggeredListeners = new ArrayList<>();
     private AbstractGameState gameState;
+    public int lives = 3;
 
 
     public int lives = 3;
@@ -120,16 +119,27 @@ public class SnackioGame {
         gameRenderer.removePointOfInterest(bomb);
         lives--;
         System.out.println("lives = " + lives);
+    
+
     }
 
+    public void freezeTouched(Freeze freeze, Character character) {
+        System.out.println("You're frozen!");
+        gameRenderer.removePointOfInterest(freeze);
+    }
 
     public void cookieFound(Cookie cookie, Character character) {
         System.out.println("You get an extra life!");
         gameRenderer.removePointOfInterest(cookie);
         lives++;
         System.out.println("lives = " + lives);
+    
+
     }
 
+    public void getRandomItem(RandomItem randomItem, Character character) {
+        gameRenderer.removePointOfInterest(randomItem);
+    }
 
 
 

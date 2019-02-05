@@ -21,11 +21,16 @@ import fr.esigelec.snackio.game.state.MultiplayerGameState;
 
 
 public class MapInformationOverlay extends ApplicationAdapter {
+
+    private static final int HEART_WIDTH = 50;
+    private static final int HEART_HEIGHT = 50;
+
     private static final int COIN_WIDTH = 32;
     private static final int COIN_HEIGHT = 32;
     private static final int HEART_WIDTH = 50;
     private static final int HEART_HEIGHT = 50;
     private float stateTime = 0f;
+    private Texture texture;
 
     // PLAYER INFO
 
@@ -83,6 +88,9 @@ public class MapInformationOverlay extends ApplicationAdapter {
             animationFrames[itr - 1] = new TextureRegion(new Texture(Gdx.files.internal("poi/coin/coin0"
                     + Integer.toString(itr) + ".png")));
         }
+
+        texture = new Texture(Gdx.files.internal("poi/heart.png"));
+
 
         coinAnimation = (Animation) new Animation(0.1f, animationFrames);
     }
@@ -150,9 +158,10 @@ public class MapInformationOverlay extends ApplicationAdapter {
         batch.draw(heartRegion,70,400,HEART_WIDTH,HEART_HEIGHT);
         if (state.getGameMode() == GameMode.COINS_QUEST) {
             batch.draw(getCurrentFrame(stateTime), 82, 85, COIN_WIDTH, COIN_HEIGHT);
+            batch.draw(texture, 70, Gdx.graphics.getHeight()-85, HEART_WIDTH, HEART_HEIGHT);
 
             font.draw(batch, ((CoinQuestGameState) state).getFetchedCoins() + "/" + ((CoinQuestGameState) state).getCoinsToFetch(), 120, 115);
-            font.draw(batch, "X "+ SnackioGame.getInstance().getLives() , 130, 440);
+            font.draw(batch,"X " + SnackioGame.getInstance().lives,125,Gdx.graphics.getHeight()-50);
         }
 
 
