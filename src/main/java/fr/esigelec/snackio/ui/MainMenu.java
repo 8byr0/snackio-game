@@ -4,6 +4,7 @@ import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.backends.lwjgl3.audio.Wav;
 import com.esotericsoftware.minlog.Log;
+import fr.esigelec.snackio.Snackio;
 import fr.esigelec.snackio.core.AbstractGameEngine;
 import fr.esigelec.snackio.core.Player;
 import fr.esigelec.snackio.core.SoloGameEngine;
@@ -41,13 +42,15 @@ public class MainMenu  implements Initializable {
     @FXML
     private AnchorPane introScene,mainAnchorPane;
     @FXML
-    private Rectangle up_shape,down_shape;
+    private Rectangle upCurtain,downCurtain;
     @FXML
     private Button openSoloMenuButton;
     private Music leftStepSound;
 
+    private static  boolean flashBack;
+
     @FXML
-    private ImageView coin;
+    private ImageView coin,coinBait;
     @FXML
     private Button openMultiMenuButton;
     private Stage stage;
@@ -60,63 +63,77 @@ public class MainMenu  implements Initializable {
     public int OFFSET_Y =  195;
     public int WIDTH    = 64;
     public int HEIGHT   = 64;
-    @FXML public ImageView imageViewLeft,imageViewRight,imageViewIntro;
-    public  Animation animationViewLeft,animationViewRight,animationViewIntro;
-    public TranslateTransition characterLeftEnter,characterIntroEnter,characterRightEnter,characterLeftTranslateTransition,characterRightTranslateTransition,multiTranslateTransition,soloTranslateTransition;
+    @FXML public ImageView imageViewLeft,imageViewRight,characterIntroImageView;
+    public  Animation animationViewLeft,animationViewRight,characterIntroWalk,characterIntroTurn;
+    public TranslateTransition characterLeftEnter,characterIntroMove,characterRightEnter,characterLeftTranslateTransition,characterRightTranslateTransition,multiTranslateTransition,soloTranslateTransition;
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        //intro();
-        mainAnchorPane.getChildren().remove(introScene);
-        outro();
+        if(!flashBack){
+            intro();
+        }else{
+            mainAnchorPane.getChildren().remove(introScene);
+            outro();
+        }
         setButtonAnimations();
         openMultiMenuButton.setOnAction(this::openMultiMenu);
         openSoloMenuButton.setOnAction(this::openSoloMenu);
     }
 
     public void openSoloMenu(ActionEvent actionEvent) {
-        //transition();
-        try {
-            try {
-                try {
+        setOutroOn();
+        Timeline startGame = new Timeline(new KeyFrame(Duration.millis(3200),
+                ae ->{
                     try {
-                        SnackioGame game = SnackioGame.getInstance();
+                        try {
+                            try {
+                                try {
+                                    SnackioGame game = SnackioGame.getInstance();
 
-                        // Create the local player
-                        Player myPlayer = new Player("Bob", CharacterFactory.CharacterType.INSPECTOR);
-                        myPlayer.getCharacter().setPosition(100,900);
+                                    // Create the local player
+                                    Player myPlayer = new Player("Bob", CharacterFactory.CharacterType.INSPECTOR);
+                                    myPlayer.getCharacter().setPosition(100, 900);
 
-                        /////////////// NETWORK CONTROL
-                        // Instantiate Network game engine to control gameplay
-                        AbstractGameEngine engine = new SoloGameEngine(game, myPlayer, MapFactory.MapType.DESERT_CASTLE, 5);
-                        // Instantiate a NetClient to exchange with client
-                        //MenuController.getStage().close();
-                        engine.startGame();
-                        //MenuController.getInstance(stage).openMenu(MenuController.Menus.MULTI_MENU);
+                                    /////////////// NETWORK CONTROL
+                                    // Instantiate Network game engine to control gameplay
+                                    AbstractGameEngine engine = new SoloGameEngine(game, myPlayer, MapFactory.MapType.DESERT_CASTLE, 5);
+                                    // Instantiate a NetClient to exchange with client
+                                    MenuController.getStage().close();
+                                    engine.startGame();
+                                    String[] difficultWords = new String[10];
+                                    difficultWords[0]="you";
+                                    Snackio.main(difficultWords);
+                                    //MenuController.getInstance(stage).openMenu(MenuController.Menus.MULTI_MENU);
 
-                    } catch (NoCharacterSetException e) {
+                                } catch (NoCharacterSetException e) {
+                                    Log.error(e.getMessage(), e);
+                                }
+                            } catch (GameCannotStartException e) {
+                                Log.error(e.getMessage(), e);
+                            }
+                        } catch (UnhandledControllerException e) {
+                            Log.error(e.getMessage(), e);
+                        }
+                    } catch (
+                            UnhandledCharacterTypeException e) {
                         Log.error(e.getMessage(), e);
                     }
-                } catch (GameCannotStartException e) {
-                    Log.error(e.getMessage(), e);
-                }
-            } catch (UnhandledControllerException e) {
-                Log.error(e.getMessage(), e);
-            }
-        } catch (
-                UnhandledCharacterTypeException e) {
-            Log.error(e.getMessage(), e);
-        }
+                }));
+        startGame.play();
 
     }
 
 
     public void openMultiMenu(ActionEvent actionEvent) {
-        setAnimationOn();
-        Timeline getOut = new Timeline(new KeyFrame(Duration.millis(4400),
+        setOutroOn();
+        Timeline getOut = new Timeline(new KeyFrame(Duration.millis(3200),
                 ae -> MenuController.getInstance(stage).openMenu(MenuController.Menus.MULTI_MENU)
         ));
         getOut.play();
     }
+
+
+
+
 
     public void setButtonAnimations(){
         openMultiMenuButton.setOnMouseEntered(event -> {
@@ -159,93 +176,133 @@ public class MainMenu  implements Initializable {
 
 
 
-
+    /*Here Is the Intro.
+    Explaination: One of the game character enter in the screen and search a coin. When the coin appear, he go through it
+    and then the game name and the menu appear.
+     */
     public void intro(){
-
         IMAGE = new Image("sprites/inspector.png");
-        imageViewIntro.setImage(IMAGE);
-        imageViewIntro.setViewport(new Rectangle2D(OFFSET_X, OFFSET_Y, WIDTH, HEIGHT));
-        FadeTransition up = new FadeTransition(Duration.millis(1000), coin);
-        up.setFromValue(0);
-        up.setToValue(1);
-        up.setAutoReverse(true);
-        up.setCycleCount(500);
-        up.setDuration(Duration.INDEFINITE);
-        animationViewIntro =  new SpriteAnimation(imageViewIntro, Duration.millis(500), COUNT, COLUMNS, OFFSET_X, OFFSET_Y, WIDTH, HEIGHT);
+        characterIntroImageView.setImage(IMAGE);
+        characterIntroImageView.setViewport(new Rectangle2D(OFFSET_X, OFFSET_Y, WIDTH, HEIGHT));
+        flashBack=true;
 
+        FadeTransition bait = new FadeTransition(Duration.millis(500), coinBait);
+        bait.setFromValue(0);
+        bait.setToValue(1);
+        bait.setAutoReverse(true);
+        bait.setCycleCount(500);
+        bait.setDuration(Duration.INDEFINITE);
+        bait.play();
 
-        animationViewIntro.setCycleCount(Animation.INDEFINITE);
-        characterIntroEnter = new TranslateTransition();
-        characterIntroEnter.setByX(coin.getLayoutX()+imageViewIntro.getFitWidth()-10);
-        characterIntroEnter.setDuration(Duration.millis(4000));
-        characterIntroEnter.setNode(imageViewIntro);
-        characterIntroEnter.setAutoReverse(true);
-        imageViewIntro.setOpacity(1);
-        characterIntroEnter.play();
-        animationViewIntro.play();
-        Timeline startTimeline = new Timeline(new KeyFrame(
-                Duration.millis(4000),
-                ae -> {
-                    characterIntroEnter.stop();
-                    animationViewIntro.stop();
-                    characterIntroEnter.setByY(coin.getFitHeight()+imageViewIntro.getY()-700);
-                    characterIntroEnter.setByX(0);
-                    animationViewIntro =  new SpriteAnimation(imageViewIntro, Duration.millis(500), COUNT, COLUMNS, OFFSET_X, 0, WIDTH, HEIGHT);
-                    animationViewIntro.setCycleCount(Animation.INDEFINITE);
+        //ANIMATION 1: CHARACTER ENTER THE SCENE (Character Move from left to right)
+
+        characterIntroMove = new TranslateTransition();
+        characterIntroMove.setByX(coin.getLayoutX()+characterIntroImageView.getFitWidth()-10);
+        characterIntroMove.setDuration(Duration.millis(1500));
+        characterIntroMove.setNode(characterIntroImageView);
+        characterIntroMove.setAutoReverse(true);
+
+        //We make the man walk
+
+        characterIntroWalk =  new SpriteAnimation(characterIntroImageView, Duration.millis(500), COUNT, COLUMNS, OFFSET_X, OFFSET_Y, WIDTH, HEIGHT);
+        characterIntroWalk.setCycleCount(Animation.INDEFINITE);
+        characterIntroTurn = new SpriteAnimation(characterIntroImageView, Duration.millis(700), 4, 5, OFFSET_X, OFFSET_Y, WIDTH, HEIGHT);
+        characterIntroTurn.setCycleCount(Animation.INDEFINITE);
+        Timeline startCharacterMoveSignal = new Timeline(new KeyFrame(
+                Duration.millis(1000),
+                ae ->{
+
+                    characterIntroMove.play();
+                    characterIntroWalk.play();
                 }));
-        startTimeline.play();
-        Timeline coinAppear = new Timeline(new KeyFrame(
-                Duration.millis(7000),
-                ae -> up.play()
-                ));
-        coinAppear.play();
-        ////rajouter le gars qui se retourne dans tous les sens
 
-        Timeline timeline = new Timeline(new KeyFrame(
-                Duration.millis(8000),
-                ae -> {
-                    characterIntroEnter.play();
-                    animationViewIntro.play();
+        startCharacterMoveSignal.play();
 
+        //
+        Timeline stopBait = new Timeline(new KeyFrame(
+                Duration.millis(2000),
+                ae ->{
+                    bait.stop();
+                    coinBait.setVisible(false);
                 }));
-        timeline.play();
-        FadeTransition shape = new FadeTransition(Duration.millis(3000), up_shape);
-        Timeline coinDesappear = new Timeline(new KeyFrame(
-                Duration.millis(11500),
+        stopBait.play();
+        //ANIMATION 2 : WE MAKE HIM STOP WALKING
+        Timeline characterStopWalking = new Timeline(new KeyFrame(
+                Duration.millis(2600),
+                ae ->{
+
+                    characterIntroWalk.stop();
+                    characterIntroTurn.play();
+                }));
+        characterStopWalking.play();
+
+        //ANIMATION 3 : COIN APPEAR ON THE SCENE
+        FadeTransition coinAppear = new FadeTransition(Duration.millis(500), coin);
+        coinAppear.setFromValue(0);
+        coinAppear.setToValue(1);
+        coinAppear.setAutoReverse(true);
+        coinAppear.setCycleCount(500);
+        coinAppear.setDuration(Duration.INDEFINITE);
+
+        Timeline coinAppearSignal = new Timeline(new KeyFrame(
+                Duration.millis(3000),
                 ae -> {
-                    up.stop();
+                    characterIntroTurn.play();
+                    characterIntroWalk.stop();
+                    characterIntroWalk =  new SpriteAnimation(characterIntroImageView, Duration.millis(500), COUNT, COLUMNS, OFFSET_X, 0, WIDTH, HEIGHT);
+                    characterIntroWalk.setCycleCount(Animation.INDEFINITE);
+                    coinAppear.play();
+                }));
+
+        coinAppearSignal.play();
+
+        //ANIMATION 4: THE CHARACTER GO UP AND SAVE THE COIN
+        Timeline goUpCharacterMoveSignal = new Timeline(new KeyFrame(
+                Duration.millis(3500),
+                ae -> {
+                    //SETTING  ANIMATION 2: the character go up to save the coin (Character Move from down to up)
+                    characterIntroTurn.stop();
+                    characterIntroMove.setByY(coin.getFitHeight()+characterIntroImageView.getY()-700);
+                    characterIntroMove.setByX(0);
+                    characterIntroWalk.play();
+                    characterIntroMove.play();
+                }));
+        goUpCharacterMoveSignal.play();
+        FadeTransition removeCurtain = new FadeTransition(Duration.millis(1500), upCurtain);
+        Timeline endCharacterMoveSignal = new Timeline(new KeyFrame(
+                Duration.millis(5000),
+                ae -> {
+                    characterIntroMove.stop();
+                    removeCurtain.setFromValue(1);
+                    removeCurtain.setToValue(0);
+                    removeCurtain.play();
+                    coinAppear.stop();
                     coin.setVisible(false);
-                    characterIntroEnter.stop();
-                    characterIntroEnter.setByY(-coin.getFitHeight()-150);
-                    characterIntroEnter.play();
-
-                    shape.setFromValue(1);
-                    shape.setToValue(0);
-                    shape.play();
-
-
+                    characterIntroMove.setDuration(Duration.millis(2000));
+                    characterIntroMove.setByY(-coin.getFitHeight()-150);
+                    characterIntroMove.play();
                 }));
-        coinDesappear.play();
-        Timeline timeline2 = new Timeline(new KeyFrame(
-                Duration.millis(15000),
+        endCharacterMoveSignal.play();
+
+
+        Timeline endAnimation = new Timeline(new KeyFrame(
+                Duration.millis(6000),
                 ae -> {
-                    shape.stop();
-                    characterIntroEnter.stop();
-                    animationViewIntro.stop();
-                    imageViewIntro.setVisible(false);
-                    shape.setNode(down_shape);
-                    shape.play();
-                }));
-        timeline2.play();
-        Timeline timeline3 = new Timeline(new KeyFrame(
-                Duration.millis(17000),
-                ae -> {
-                    shape.stop();
-                    mainAnchorPane.getChildren().remove(introScene);
-                    outro();
-                }));
-        timeline3.play();
+                    removeCurtain.stop();
+                    removeCurtain.setDuration(Duration.millis(1500));
+                    removeCurtain.setNode(downCurtain);
+                    removeCurtain.play();
 
+                }));
+       endAnimation.play();
+
+       Timeline accessMainMenu= new Timeline(new KeyFrame(
+               Duration.millis(8000),
+               ae -> {
+                   mainAnchorPane.getChildren().remove(introScene);
+                   outro();
+               }));
+       accessMainMenu.play();
     }
 
     public void outro(){
@@ -269,8 +326,8 @@ public class MainMenu  implements Initializable {
         characterRightTranslateTransition = new TranslateTransition();
         characterLeftTranslateTransition.setByX(800);
         characterRightTranslateTransition.setByX(-800);
-        characterLeftTranslateTransition.setDuration(Duration.millis(3000));
-        characterRightTranslateTransition.setDuration(Duration.millis(3000));
+        characterLeftTranslateTransition.setDuration(Duration.millis(2000));
+        characterRightTranslateTransition.setDuration(Duration.millis(2000));
         characterLeftTranslateTransition.setAutoReverse(true);
         characterRightTranslateTransition.setAutoReverse(true);
         characterLeftTranslateTransition.setNode(imageViewLeft);
@@ -278,13 +335,13 @@ public class MainMenu  implements Initializable {
 
         characterLeftEnter = new TranslateTransition();
         characterLeftEnter.setByX(openMultiMenuButton.getLayoutX());
-        characterLeftEnter.setDuration(Duration.millis(2000));
+        characterLeftEnter.setDuration(Duration.millis(1000));
         characterLeftEnter.setAutoReverse(true);
         characterLeftEnter.setNode(imageViewLeft);
 
         characterRightEnter = new TranslateTransition();
         characterRightEnter.setByX(openSoloMenuButton.getLayoutX()+openSoloMenuButton.getPrefWidth()-700);
-        characterRightEnter.setDuration(Duration.millis(2000));
+        characterRightEnter.setDuration(Duration.millis(1000));
         characterRightEnter.setAutoReverse(true);
         characterRightEnter.setNode(imageViewRight);
 
@@ -292,20 +349,20 @@ public class MainMenu  implements Initializable {
         //the transition will set to be auto reversed by setting this to true
         multiTranslateTransition.setAutoReverse(true);
         //setting the duration for the Translate transition
-        multiTranslateTransition.setDuration(Duration.millis(3000));
+        multiTranslateTransition.setDuration(Duration.millis(2000));
         //shifting the X coordinate of the centre of the circle by 400
         multiTranslateTransition.setByX(800);
         multiTranslateTransition.setNode(openMultiMenuButton);
 
         soloTranslateTransition = new TranslateTransition();
         soloTranslateTransition.setByX(-800);
-        soloTranslateTransition.setDuration(Duration.millis(3000));
+        soloTranslateTransition.setDuration(Duration.millis(2000));
         soloTranslateTransition.setAutoReverse(true);
         soloTranslateTransition.setNode(openSoloMenuButton);
 
     }
 
-    public void setAnimationOn(){
+    public void setOutroOn(){
         openMultiMenuButton.setDisable(true);
         openSoloMenuButton.setDisable(true);
         openMultiMenuButton.setStyle("-fx-opacity: 0.6");
@@ -321,7 +378,7 @@ public class MainMenu  implements Initializable {
          Start the other animation.
          */
         Timeline startTimeline = new Timeline(new KeyFrame(
-                Duration.millis(2100),
+                Duration.millis(1100),
                 ae -> {
                     characterLeftEnter.stop();
                     characterRightEnter.stop();
@@ -334,7 +391,7 @@ public class MainMenu  implements Initializable {
         startTimeline.play();
         //Animations Stop timer
         Timeline timeline = new Timeline(new KeyFrame(
-                Duration.millis(5200),
+                Duration.millis(3200),
                 ae -> {
                     animationViewLeft.stop();
                     characterLeftTranslateTransition.stop();

@@ -35,10 +35,19 @@ public class SpriteAnimation extends Transition{
 
     protected void interpolate(double k) {
         final int index = Math.min((int) Math.floor(k * count), count - 1);
-        if (index != lastIndex) {
+        if (index != lastIndex && columns==10) {
             final int x = (index % columns) * width  + offsetX;
+            //System.out.println("x="+x+"offsetx="+offsetX+"i%c="+index%columns);
             imageView.setViewport(new Rectangle2D(x, offsetY, width, height));
             lastIndex = index;
+        }
+        if (index != lastIndex && columns==5) {
+            if (index%columns==1 || index%columns==3) {
+                final int y = (index % columns) * width + offsetX;
+                System.out.println("y=" + y + "offsetx=" + offsetY + " i%c=" + index % columns + " width=" + width);
+                imageView.setViewport(new Rectangle2D(offsetX, y, width, height));
+                lastIndex = index;
+            }
         }
     }
 }
