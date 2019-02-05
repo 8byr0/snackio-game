@@ -16,7 +16,7 @@ public class SpeedBonus extends PointOfInterest {
      * SpeedBonus constructor
      */
     public SpeedBonus(){
-        super("poi/speed_bonus.png");
+        super("poi/speedup.png");
     }
 
     @Override

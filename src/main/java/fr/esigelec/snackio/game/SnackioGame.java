@@ -5,6 +5,11 @@ import com.badlogic.gdx.backends.lwjgl3.Lwjgl3ApplicationConfiguration;
 import fr.esigelec.snackio.core.exceptions.GameCannotStartException;
 import fr.esigelec.snackio.core.exceptions.NoCharacterSetException;
 import fr.esigelec.snackio.core.exceptions.UnhandledControllerException;
+import fr.esigelec.snackio.game.pois.Bomb;
+import fr.esigelec.snackio.game.pois.*;
+import fr.esigelec.snackio.game.pois.bonuses.Cookie;
+import fr.esigelec.snackio.game.pois.maluses.Freeze;
+import fr.esigelec.snackio.game.pois.maluses.Paralysis;
 import fr.esigelec.snackio.game.state.AbstractGameState;
 import fr.esigelec.snackio.game.state.CoinQuestGameState;
 import fr.esigelec.snackio.core.Player;
@@ -12,10 +17,7 @@ import fr.esigelec.snackio.game.character.Character;
 import fr.esigelec.snackio.game.character.motion.IMotionController;
 import fr.esigelec.snackio.game.map.Map;
 import fr.esigelec.snackio.game.map.MapFactory;
-import fr.esigelec.snackio.game.pois.Coin;
-import fr.esigelec.snackio.game.pois.PointOfInterest;
 import fr.esigelec.snackio.game.pois.bonuses.SpeedBonus;
-import fr.esigelec.snackio.game.pois.iPoi;
 import fr.esigelec.snackio.game.pois.listeners.PoiTriggeredListener;
 import fr.esigelec.snackio.game.pois.maluses.SpeedMalus;
 
@@ -40,6 +42,7 @@ public class SnackioGame {
 
     private ArrayList<PoiTriggeredListener> poiTriggeredListeners = new ArrayList<>();
     private AbstractGameState gameState;
+    public int lives = 3;
 
     /**
      * Singleton implementation
@@ -64,6 +67,15 @@ public class SnackioGame {
 
         PointOfInterest speedMalus = new SpeedMalus();
         addPointOfInterest(speedMalus);
+
+        PointOfInterest Paralysis = new Paralysis();
+        addPointOfInterest(Paralysis);
+
+        PointOfInterest Freeze = new Freeze();
+        addPointOfInterest(Freeze);
+
+        PointOfInterest Cookie = new Cookie();
+        addPointOfInterest(Cookie);
     }
 
     /**
@@ -91,6 +103,35 @@ public class SnackioGame {
         gameRenderer.removePointOfInterest(coin);
         this.triggerPoiListeners(coin, null);
     }
+
+    public void bombTouched(Bomb bomb, Character character) {
+        System.out.println("You lost one life!");
+        gameRenderer.removePointOfInterest(bomb);
+        lives--;
+        System.out.println("lives = " + lives);
+
+
+    }
+
+    public void freezeTouched(Freeze freeze, Character character) {
+        System.out.println("You're frozen!");
+        gameRenderer.removePointOfInterest(freeze);
+    }
+
+    public void cookieFound(Cookie cookie, Character character) {
+        System.out.println("You get an extra life!");
+        gameRenderer.removePointOfInterest(cookie);
+        lives++;
+        System.out.println("lives = " + lives);
+
+
+    }
+
+    public void getRandomItem(RandomItem randomItem, Character character) {
+        gameRenderer.removePointOfInterest(randomItem);
+
+    }
+
 
     /**
      * Add a point of interest to the game
@@ -176,12 +217,12 @@ public class SnackioGame {
         this.playersHashmap.remove(playerID);
     }
 
-    public void addPoiTriggeredListener(PoiTriggeredListener listener){
+    public void addPoiTriggeredListener(PoiTriggeredListener listener) {
         this.poiTriggeredListeners.add(listener);
     }
 
-    private void triggerPoiListeners(iPoi poi, Player player){
-        for(PoiTriggeredListener listener: poiTriggeredListeners){
+    private void triggerPoiListeners(iPoi poi, Player player) {
+        for (PoiTriggeredListener listener : poiTriggeredListeners) {
             listener.poiTriggered(poi, player);
         }
     }
@@ -192,5 +233,9 @@ public class SnackioGame {
 
     public void setGameState(CoinQuestGameState gameState) {
         this.gameState = gameState;
+    }
+
+    public int getLives() {
+        return lives;
     }
 }
