@@ -11,6 +11,7 @@ import fr.esigelec.snackio.game.SnackioGame;
 import fr.esigelec.snackio.game.character.CharacterFactory;
 import fr.esigelec.snackio.game.map.MapFactory;
 import fr.esigelec.snackio.networking.client.SnackioNetClient;
+import fr.esigelec.snackio.ui.customButtons.AnimatedButton;
 import fr.esigelec.snackio.ui.customToggles.CharacterPicker;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -28,31 +29,26 @@ import java.util.List;
 import java.util.ResourceBundle;
 
 public class JoinRoomMenu implements Initializable {
-    private static final int SQUARE_SIDE = 67;
     @FXML
     private SplitPane alfa;
     @FXML
     private AnchorPane mainAnchorPane;
     @FXML
-    private Button join;
+    private AnimatedButton joinServerButton;
     @FXML
     private TextField playerName;
     @FXML
-    private Button refresh;
-
-    private CharacterPicker characterSelector = new CharacterPicker();
-
-    //    private ToggleGroup characterGroup = new ToggleGroup();
-
+    private AnimatedButton refreshServersListButton;
     @FXML
     private ChoiceBox server_box;
-
-    private ToggleButton perChoice;
-
     @FXML
     private GridPane grid;
 
+    private CharacterPicker characterSelector = new CharacterPicker();
 
+    /**
+     * Default constructor
+     */
     public JoinRoomMenu() {
     }
 
@@ -63,28 +59,8 @@ public class JoinRoomMenu implements Initializable {
         server("getInformation");
         renderCharacterSelector();
 
-        join.setOnMouseEntered(event -> {
-            if(!playerName.getText().isEmpty() && !server_box.getSelectionModel().isEmpty() && characterGroup.getSelectedToggle() != null) {
-                join.setTranslateX(1);
-                join.setStyle("-fx-opacity: 1");
-                join.setOnAction(this::connection);
-            }
-        });
-        join.setOnMouseExited(event -> {
-            join.setStyle("-fx-opacity: 0.6");
-            join.setTranslateX(0);
-        });
-
-        refresh.setOnMouseEntered(event -> {
-            refresh.setTranslateX(1);
-            refresh.setStyle("-fx-opacity: 1");
-        });
-        refresh.setOnMouseExited(event -> {
-            refresh.setStyle("-fx-opacity: 0.6");
-            refresh.setTranslateX(0);
-        });
-
-        refresh.setOnAction(this::refreshInfoServer);
+        refreshServersListButton.setOnAction(this::refreshServersList);
+        joinServerButton.setOnAction(this::connection);
 
     }
 
@@ -94,7 +70,7 @@ public class JoinRoomMenu implements Initializable {
         }
     }
 
-    private void refreshInfoServer(ActionEvent actionEvent) {
+    private void refreshServersList(ActionEvent actionEvent) {
         server("getInformation");
     }
 
@@ -110,6 +86,7 @@ public class JoinRoomMenu implements Initializable {
             if (info == "getConnection") {
                 myPlayer = new Player(playerName.getText(), characterSelector.getSelectedCharacter());
             }
+
             // TODO fetch map from server
             AbstractGameEngine engine = new NetworkGameEngine(game, myPlayer, MapFactory.MapType.DESERT_CASTLE);
 
@@ -117,7 +94,7 @@ public class JoinRoomMenu implements Initializable {
             List<InetAddress> servers = cli.getAvailableServers();
 
             if (servers.size() > 0) {
-                join.setDisable(false);
+                joinServerButton.setDisable(false);
                 //Pour se connecter au server
                 if (info == "getConnection") {
                     System.out.println("connection");
@@ -129,7 +106,7 @@ public class JoinRoomMenu implements Initializable {
                     server_box.getItems().setAll(servers);
                 }
             } else {
-                join.setDisable(true);
+                joinServerButton.setDisable(true);
                 System.out.println("Aucun server");
                 server_box.getItems().clear();
             }
