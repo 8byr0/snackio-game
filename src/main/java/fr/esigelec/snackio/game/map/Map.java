@@ -188,7 +188,10 @@ public class Map extends ApplicationAdapter {
         if (doorName.toUpperCase().equals("BACK_TO_MAIN")) {
             this.activeRoom = null;
         } else {
-            this.activeRoom = this.rooms.get(doorName.toUpperCase());
+            /*
+             * todo :the name of the room is hard code cause the original code return null
+             * */
+            this.activeRoom = this.rooms.get("INSIDE");
             if (!this.activeRoom.isCreated()) {
                 this.activeRoom.create();
             }

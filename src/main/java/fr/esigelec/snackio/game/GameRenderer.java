@@ -470,11 +470,32 @@ public class GameRenderer extends ApplicationAdapter {
     /**
      * Get a random position on the game's map (in a given room) for a given object projection
      * This position is ensured to be free(i.e. not an obstacle or trigger)
+     * This position is provided by fletching the position of an object "spawns".
      *
      * @param projection the projection of the object on the map
      * @return a Position on the map
      */
     private Position getRandomPosition(Map room, Rectangle projection) {
+        float mapMaxSpawn = room.getMap().getLayers().get("spawns").getObjects().getCount();
+        int tempRandomObj = generateRandomInRange(0, mapMaxSpawn);
+
+        RectangleMapObject test = (RectangleMapObject) room.getMap().getLayers().get("spawns").getObjects().get(tempRandomObj);
+
+
+        int tempRandomX = (int)test.getRectangle().getX();
+        int tempRandomY = (int)test.getRectangle().getY();
+        Position tempRandom = new Position(tempRandomX, tempRandomY);
+        return tempRandom;
+    }
+    /**
+     * Function not in use, it was remplaced by the function above, with the same name
+     * Get a random position on the game's map (in a given room) for a given object projection
+     * This position is ensured to be free(i.e. not an obstacle or trigger)
+     *
+     * @param projection the projection of the object on the map
+     * @return a Position on the map
+     */
+    /*private Position getRandomPosition(Map room, Rectangle projection) {
         float mapWidth = room.getMapWidthInPixels();
         float mapHeight = room.getMapWidthInPixels();
 
@@ -486,9 +507,10 @@ public class GameRenderer extends ApplicationAdapter {
                 (null != isCharacterCollidingMapObject(room.getMap().getLayers().get("obstacles").getObjects(), projection)))) {
             tempRandom.x = generateRandomInRange(0, mapWidth);
             tempRandom.y = generateRandomInRange(0, mapHeight);
+            System.out.println("ceci est le random position  " + room.getName());
         }
         return tempRandom;
-    }
+    }*/
 
     /**
      * Get a random value in a given range
