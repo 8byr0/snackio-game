@@ -4,11 +4,15 @@ import com.esotericsoftware.kryo.Kryo;
 import com.esotericsoftware.kryonet.EndPoint;
 import com.esotericsoftware.kryonet.rmi.ObjectSpace;
 import fr.esigelec.snackio.core.AbstractGameEngine;
+import fr.esigelec.snackio.core.GameMode;
 import fr.esigelec.snackio.core.IGameEngine;
+import fr.esigelec.snackio.game.map.MapFactory;
 import fr.esigelec.snackio.game.pois.Bomb;
 import fr.esigelec.snackio.game.pois.bonuses.Cookie;
 import fr.esigelec.snackio.game.pois.maluses.Freeze;
 import fr.esigelec.snackio.game.pois.maluses.Paralysis;
+import fr.esigelec.snackio.game.state.AbstractGameState;
+import fr.esigelec.snackio.game.state.MultiplayerGameState;
 import fr.esigelec.snackio.networking.models.INetPlayer;
 import fr.esigelec.snackio.core.Player;
 import fr.esigelec.snackio.game.character.Character;
@@ -50,6 +54,9 @@ public class NetworkConfig {
         kryo.register(INetPlayer.class);
         kryo.register(Player.class);
         kryo.register(AbstractGameEngine.class);
+        kryo.register(MultiplayerGameState.class);
+        kryo.register(MapFactory.MapType.class);
+        kryo.register(AbstractGameState.class);
         kryo.register(IGameEngine.class);
         kryo.register(Position.class);
         kryo.register(Character.class);
@@ -67,6 +74,7 @@ public class NetworkConfig {
         kryo.register(Character.StepSound.class);
         kryo.register(KeyboardController.class);
         kryo.register(NetworkController.class);
+        kryo.register(GameMode.class);
 
         // GDX
         kryo.register(com.badlogic.gdx.graphics.Color.class);

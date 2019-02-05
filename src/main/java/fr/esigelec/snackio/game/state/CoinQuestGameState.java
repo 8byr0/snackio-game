@@ -60,4 +60,9 @@ public class CoinQuestGameState extends AbstractGameState {
     public void incrementFetchedPoints() {
         this.fetchedCoins += 1;
     }
+
+    @Override
+    public String getName() {
+        return "";
+    }
 }

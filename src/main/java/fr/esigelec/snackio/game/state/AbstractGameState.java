@@ -10,18 +10,23 @@ public abstract class AbstractGameState {
     protected MapFactory.MapType mapType;
     protected GameMode mode;
 
+    public AbstractGameState() {
+    }
+
     /**
      * Class Constructor
+     *
      * @param type The map type
      * @param mode the chosen Game Mode
      */
-    AbstractGameState(MapFactory.MapType type, GameMode mode){
+    AbstractGameState(MapFactory.MapType type, GameMode mode) {
         this.mapType = type;
         this.mode = mode;
     }
 
     /**
      * Get the type of map in use
+     *
      * @return MapType the type of the map
      */
     public MapFactory.MapType getMapType() {
@@ -30,6 +35,7 @@ public abstract class AbstractGameState {
 
     /**
      * Set the map type to use
+     *
      * @param mapType the map type
      */
     public void setMapType(MapFactory.MapType mapType) {
@@ -38,6 +44,7 @@ public abstract class AbstractGameState {
 
     /**
      * Get actual game mode
+     *
      * @return GameMode
      */
     public GameMode getGameMode() {
@@ -46,9 +53,12 @@ public abstract class AbstractGameState {
 
     /**
      * Set the game mode
+     *
      * @param mode mode
      */
     public void setGameMode(GameMode mode) {
         this.mode = mode;
     }
+
+    public abstract String getName();
 }

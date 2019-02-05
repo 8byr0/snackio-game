@@ -12,8 +12,12 @@ import com.esotericsoftware.kryonet.rmi.ObjectSpace;
 import com.esotericsoftware.kryonet.rmi.TimeoutException;
 import com.esotericsoftware.minlog.Log;
 import fr.esigelec.snackio.core.IGameEngine;
+import fr.esigelec.snackio.core.IGameState;
 import fr.esigelec.snackio.core.exceptions.NoCharacterSetException;
 import fr.esigelec.snackio.core.exceptions.UnhandledControllerException;
+import fr.esigelec.snackio.game.map.MapFactory;
+import fr.esigelec.snackio.game.state.AbstractGameState;
+import fr.esigelec.snackio.game.state.MultiplayerGameState;
 import fr.esigelec.snackio.networking.models.IRMIExecutablePlayer;
 import fr.esigelec.snackio.game.character.motion.Direction;
 import fr.esigelec.snackio.networking.Position;
@@ -48,19 +52,21 @@ import javax.swing.*;
 public class SnackioNetServer {
     private Server server;
     private HashMap<Integer, NetPlayer> playersHashmap = new HashMap<>();
+    private MultiplayerGameState serverState;
 
     /**
      * Default Class constructor
      *
      * @throws IOException When the server cannot bind given udpPort
      */
-    public SnackioNetServer() throws IOException {
+    public SnackioNetServer(MapFactory.MapType mapType, String serverName) throws IOException {
+        serverState = new MultiplayerGameState(mapType, serverName);
 
         server = new Server() {
             protected Connection newConnection() {
                 // Each connection represents a player and has fields
-                // to store state and methods to perform actions.
-                NetPlayer newlyCreatedPlayer = new NetPlayer();
+                // to store serverState and methods to perform actions.
+                NetPlayer newlyCreatedPlayer = new NetPlayer(serverState);
 
                 playersHashmap.put(playersHashmap.size(), newlyCreatedPlayer);
 
@@ -90,6 +96,11 @@ public class SnackioNetServer {
                 }).start();
             }
         });
+
+
+    }
+
+    public void start() throws IOException {
         server.bind(NetworkConfig.tcpPort, NetworkConfig.udpPort);
         server.start();
 
@@ -105,7 +116,6 @@ public class SnackioNetServer {
         frame.setSize(320, 200);
         frame.setLocationRelativeTo(null);
         frame.setVisible(true);
-
     }
 
     /**
@@ -126,12 +136,14 @@ public class SnackioNetServer {
         IGameEngine gameEngine;
         String name;
         IRMIExecutablePlayer localPlayer;
+        AbstractGameState serverState;
 
         /**
          * Default Class ocnstructor
          * This constructor registers this object to make it available to the Client
          */
-        NetPlayer() {
+        NetPlayer(MultiplayerGameState gameState) {
+            serverState = gameState;
             // Each connection has an ObjectSpace containing the NetPlayer.
             // This allows the other end of the connection to call methods on the NetPlayer.
             new ObjectSpace(this).register(NetworkConfig.RMI_PLAYER_ID, this);
@@ -139,6 +151,15 @@ public class SnackioNetServer {
             // Get the GameEngine on the other end of the connection.
             // This allows the server to call methods on the client.
             gameEngine = ObjectSpace.getRemoteObject(this, NetworkConfig.RMI_GAME_ENGINE_ID, IGameEngine.class);
+        }
+
+        public String getServerName() {
+            return serverState.getName();
+        }
+
+        @Override
+        public AbstractGameState getGameState() {
+            return serverState;
         }
 
         /**
@@ -223,6 +244,8 @@ public class SnackioNetServer {
      */
     public static void main(String[] args) throws IOException {
         Log.set(Log.LEVEL_DEBUG);
-        new SnackioNetServer();
+//        new SnackioNetServer();
+        SnackioNetServer srv = new SnackioNetServer(MapFactory.MapType.DESERT_CASTLE, "MY SERVER NAME");
+        srv.start();
     }
 }

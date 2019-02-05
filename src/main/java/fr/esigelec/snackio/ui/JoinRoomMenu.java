@@ -88,29 +88,29 @@ public class JoinRoomMenu implements Initializable {
             }
 
             // TODO fetch map from server
-            AbstractGameEngine engine = new NetworkGameEngine(game, myPlayer, MapFactory.MapType.DESERT_CASTLE);
+//            AbstractGameEngine engine = new NetworkGameEngine(game, myPlayer, MapFactory.MapType.DESERT_CASTLE);
 
-            SnackioNetClient cli = new SnackioNetClient(engine);
-            List<InetAddress> servers = cli.getAvailableServers();
+//            SnackioNetClient cli = new SnackioNetClient(engine);
+//            List<InetAddress> servers = cli.getAvailableServers();
 
-            if (servers.size() > 0) {
-                joinServerButton.setDisable(false);
-                //Pour se connecter au server
-                if (info == "getConnection") {
-                    System.out.println("connection");
-                    cli.connectServer(servers.get(0));
-                }
-                //Pour recupérer les différents serveurs existants dans
-                if (info == "getInformation") {
-                    System.out.println("information");
-                    server_box.getItems().setAll(servers);
-                }
-            } else {
-                joinServerButton.setDisable(true);
-                System.out.println("Aucun server");
-                server_box.getItems().clear();
-            }
-        } catch (NoCharacterSetException | UnhandledCharacterTypeException | UnhandledControllerException e) {
+//            if (servers.size() > 0) {
+//                joinServerButton.setDisable(false);
+//                //Pour se connecter au server
+//                if (info == "getConnection") {
+//                    System.out.println("connection");
+//                    cli.connectServer(servers.get(0));
+//                }
+//                //Pour recupérer les différents serveurs existants dans
+//                if (info == "getInformation") {
+//                    System.out.println("information");
+//                    server_box.getItems().setAll(servers);
+//                }
+//            } else {
+//                joinServerButton.setDisable(true);
+//                System.out.println("Aucun server");
+//                server_box.getItems().clear();
+//            }
+        } catch (UnhandledCharacterTypeException e) {
             Log.error(e.getMessage(), e);
         }
     }

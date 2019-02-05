@@ -34,7 +34,7 @@ public class ControllerConfig {
         kf1 = new KeyFrame(Duration.seconds(1), new KeyValue(downImageView.opacityProperty(), 0));
         kf2 = new KeyFrame(Duration.seconds(1), new KeyValue(downImageView.opacityProperty(), 1));
         Timeline downtimelineOn = new Timeline(kf1,kf2);
-        downtimelineOn = new Timeline(kf1,kf2);
+        downtimelineOn = new Timeline(kf1, kf2);
         downtimelineOn.setCycleCount(1);
         //downtimelineOn.setAutoReverse(true);
     }

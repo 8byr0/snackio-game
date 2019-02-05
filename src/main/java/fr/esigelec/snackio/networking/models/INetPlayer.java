@@ -1,6 +1,8 @@
 package fr.esigelec.snackio.networking.models;
 
+import fr.esigelec.snackio.core.IGameState;
 import fr.esigelec.snackio.game.character.motion.Direction;
+import fr.esigelec.snackio.game.state.AbstractGameState;
 import fr.esigelec.snackio.networking.Position;
 
 /**
@@ -32,4 +34,8 @@ public interface INetPlayer {
      * @param room new room name on the Game's map
      */
     void updatePlayerRoom(int id, String room);
+
+    String getServerName();
+
+    AbstractGameState getGameState();
 }

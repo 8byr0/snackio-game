@@ -10,10 +10,7 @@ import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
-import com.badlogic.gdx.maps.MapLayer;
-import fr.esigelec.snackio.core.GameMode;
 import fr.esigelec.snackio.core.Player;
-import fr.esigelec.snackio.Snackio;
 import fr.esigelec.snackio.game.SnackioGame;
 import fr.esigelec.snackio.game.state.AbstractGameState;
 import fr.esigelec.snackio.game.state.CoinQuestGameState;
@@ -139,7 +136,7 @@ public class MapInformationOverlay extends ApplicationAdapter {
                 }
 
             }
-            font.draw(batch, "Room: " + ((MultiplayerGameState) state).getRoomName(),
+            font.draw(batch, "Room: " + ((MultiplayerGameState) state).getServerName(),
                     Gdx.graphics.getWidth() - 450, Gdx.graphics.getHeight() - 80);
             font.draw(batch, "Remaining lives: ", Gdx.graphics.getWidth() - 400, 50);
 

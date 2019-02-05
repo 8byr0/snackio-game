@@ -24,6 +24,7 @@ import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.util.Duration;
 
+import java.io.IOException;
 import java.net.InetAddress;
 import java.net.URL;
 import java.util.*;
@@ -84,20 +85,28 @@ public class ServerConfigMenu implements Initializable {
                         characterSelector.getSelectedCharacter());
 
                 // Instantiate Network game engine to control gameplay
-                AbstractGameEngine engine = new NetworkGameEngine(game, myPlayer,
-                        mapSelector.getSelectedMap());
+//                AbstractGameEngine engine = new NetworkGameEngine(game, myPlayer,
+//                        mapSelector.getSelectedMap());
 
                 // Instantiate a NetClient to exchange with client
-                SnackioNetClient cli = new SnackioNetClient(engine);
-                NetworkGameEngine nEngine = new NetworkGameEngine(game, myPlayer,
-                        mapSelector.getSelectedMap());
-                List<InetAddress> servers = cli.getAvailableServers();
+//                SnackioNetClient cli = new SnackioNetClient(engine);
+//                NetworkGameEngine nEngine = new NetworkGameEngine(game, myPlayer,
+//                        mapSelector.getSelectedMap());
+//                List<InetAddress> servers = cli.getAvailableServers();
                 String[] difficultWords = new String[10];
                 difficultWords[0] = "you";
 
                 SnackioNetServer.main(difficultWords);
-
-                engine.startGame();
+                Thread serverThread = new Thread(()->{
+                    try {
+                        SnackioNetServer srv = new SnackioNetServer(mapSelector.getSelectedMap(), serverName.getText());
+                        srv.start();
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                });
+                serverThread.start();
+//                engine.startGame();
 
             } catch (Exception e) {
                 Log.error(e.getMessage(), e);

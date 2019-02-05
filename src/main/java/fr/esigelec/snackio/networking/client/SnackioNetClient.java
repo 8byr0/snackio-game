@@ -49,6 +49,7 @@ public class SnackioNetClient {
         // Get the Player created on the other end of the connection.
         // This allows the client to call methods on the server.
         serverPlayer = ObjectSpace.getRemoteObject(client, NetworkConfig.RMI_PLAYER_ID, INetPlayer.class);
+//        engine.setGameState(serverPlayer.getGameState())
 
         client.addListener(new Listener() {
             public void disconnected(Connection connection) {
@@ -74,52 +75,52 @@ public class SnackioNetClient {
     public void connectServer(InetAddress serverAddress) {
         IRMIExecutablePlayer localPlayer = gameEngine.getPlayer();
 
-        new Thread("Connect") {
-            public void run() {
-                try {
+        new Thread(() -> {
+            try {
 
-                    client.connect(NetworkConfig.timeout, serverAddress, NetworkConfig.tcpPort, NetworkConfig.udpPort);
+                client.connect(NetworkConfig.timeout, serverAddress, NetworkConfig.tcpPort, NetworkConfig.udpPort);
 
-                    // Server communication after connection can go here, or in Listener#connected().
-                    localPlayer.setID(client.getID());
+                // Server communication after connection can go here, or in Listener#connected().
+                localPlayer.setID(client.getID());
 
-                    serverPlayer.registerPlayer(localPlayer);
+                serverPlayer.registerPlayer(localPlayer);
 
-                    localPlayer.addMoveListener(() -> {
-                        try {
-                            serverPlayer.updatePlayerMotion(localPlayer.getID(), localPlayer.getPosition(), localPlayer.getDirection());
-                        } catch (NoCharacterSetException e) {
-                            logger.error("Attempting to perform operations on a Player whose Character is not set");
-                            e.printStackTrace();
-                        } catch (TimeoutException e) {
-                            logger.error("The server motion update request failed due to timeout");
-                        }
-                        catch (NullPointerException e){
-                            logger.error("A null pointer error occured");
-                            e.printStackTrace();
-                        }
-                    });
-                    localPlayer.addRoomChangeListener(() -> {
-                        try {
-                            serverPlayer.updatePlayerRoom(localPlayer.getID(), localPlayer.getRoom());
-                        } catch (NoCharacterSetException e) {
-                            logger.error("Attempting to perform operations on a Player whose Character is not set");
-                            e.printStackTrace();
-                        } catch (TimeoutException e) {
-                            logger.error("The server motion update request failed due to timeout");
-                        }
+                System.out.println(serverPlayer.getGameState().getName());
 
-                    });
+                localPlayer.addMoveListener(() -> {
+                    try {
+                        serverPlayer.updatePlayerMotion(localPlayer.getID(), localPlayer.getPosition(), localPlayer.getDirection());
+                    } catch (NoCharacterSetException e) {
+                        logger.error("Attempting to perform operations on a Player whose Character is not set");
+                        e.printStackTrace();
+                    } catch (TimeoutException e) {
+                        logger.error("The server motion update request failed due to timeout");
+                    }
+                    catch (NullPointerException e){
+                        logger.error("A null pointer error occured");
+                        e.printStackTrace();
+                    }
+                });
+                localPlayer.addRoomChangeListener(() -> {
+                    try {
+                        serverPlayer.updatePlayerRoom(localPlayer.getID(), localPlayer.getRoom());
+                    } catch (NoCharacterSetException e) {
+                        logger.error("Attempting to perform operations on a Player whose Character is not set");
+                        e.printStackTrace();
+                    } catch (TimeoutException e) {
+                        logger.error("The server motion update request failed due to timeout");
+                    }
 
-                } catch (IOException ex) {
-                    ex.printStackTrace();
-                    System.exit(1);
-                } catch (NoCharacterSetException e) {
-                    logger.error("Attempting to perform operations on a Player whose Character is not set");
-                    e.printStackTrace();
-                }
+                });
+
+            } catch (IOException ex) {
+                ex.printStackTrace();
+                System.exit(1);
+            } catch (NoCharacterSetException e) {
+                logger.error("Attempting to perform operations on a Player whose Character is not set");
+                e.printStackTrace();
             }
-        }.start();
+        }).start();
 
     }
 
