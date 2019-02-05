@@ -11,7 +11,6 @@ public class MapFactory {
     public enum MapType{
         DESERT_CASTLE
     }
-
     /**
      * Load a map instance
      * @param type Type of Map to instantiate

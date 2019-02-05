@@ -25,6 +25,7 @@ public class CharacterFactory {
      * @return Character newly created
      */
     public static Character getCharacter(CharacterType type) throws UnhandledCharacterTypeException {
+
         AnimatedCharacterSkin skin = null;
 
         switch(type){
