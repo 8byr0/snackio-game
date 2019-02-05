@@ -1,4 +1,5 @@
 package fr.esigelec.snackio.ui;
+
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -11,9 +12,10 @@ import javafx.stage.Modality;
 
 import java.net.URL;
 import java.util.ResourceBundle;
+
 public class Snippet implements Initializable {
-    public static MenuController.Menus previousLocation;
-    public static String sert;
+    private static MenuController.Menus previousLocation;
+    private static String sert;
     @FXML
     public Button homeButton;
 
@@ -28,54 +30,56 @@ public class Snippet implements Initializable {
 
     private Stage stage;
 
-    public static void setPreviousLocation(MenuController.Menus previous) {
+    static void setPreviousLocation(MenuController.Menus previous) {
         previousLocation = previous;
     }
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         homeButton.setDisable(false);
-        if(sert=="YES"){
+        if (sert == "YES") {
             backButton.setDisable(true);
             homeButton.setDisable(true);
-        }else if (sert=="NO"){
+        } else if (sert == "NO") {
             backButton.setDisable(false);
             homeButton.setDisable(false);
         }
         backButton.setOnAction(this::backPrevious);
-        homeButton.setOnAction(this::backtoHome);
-        settingsButton.setOnAction(this::opensettingsView);
+        homeButton.setOnAction(this::goBackHome);
+        settingsButton.setOnAction(this::openSettingsView);
         exitButton.setOnAction(this::exit);
     }
 
     public void exit(ActionEvent actionEvent){
         MenuController.getStage().close();
     }
-    public void backtoHome(ActionEvent actionEvent) {
+
+    private void goBackHome(ActionEvent actionEvent) {
         MenuController.getInstance(stage).openMenu(MenuController.Menus.MAIN_MENU);
     }
 
-    public static void back(String sel){
-        sert=sel;
+    static void back(String sel) {
+        sert = sel;
     }
 
-    public void backPrevious(ActionEvent actionEvent) {
+    private void backPrevious(ActionEvent actionEvent) {
 
         MenuController.getInstance(stage).openMenu(previousLocation);
     }
 
-    public void opensettingsView(ActionEvent actionEvent){
+    private void openSettingsView(ActionEvent actionEvent) {
+
         try {
             FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/menus/controllerConfig.fxml"));
-            Parent root1 = (Parent) fxmlLoader.load();
+            Parent root1 = fxmlLoader.load();
             Stage stage = new Stage();
             stage.setTitle("Controller settings");
             stage.setScene(new Scene(root1));
             settingsButton.setDisable(true);
-            stage.initModality(Modality.APPLICATION_MODAL );
+            stage.initModality(Modality.APPLICATION_MODAL);
             stage.showAndWait();
             settingsButton.setDisable(false);
-        } catch(Exception e) {
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }

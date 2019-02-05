@@ -4,7 +4,6 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.graphics.Camera;
 import com.badlogic.gdx.graphics.g2d.Batch;
-import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.maps.MapObject;
@@ -226,10 +225,14 @@ public class Character extends MapObject {
      * Dispose all elements created in create() method
      */
     public void dispose() {
-        batch.dispose();
-        skin.dispose();
-        leftStepSound.dispose();
-        rightStepSound.dispose();
+        try {
+            batch.dispose();
+            skin.dispose();
+            leftStepSound.dispose();
+            rightStepSound.dispose();
+        } catch (Exception err) {
+            System.out.println("An error occurred while disposing character");
+        }
     }
 
     /**
