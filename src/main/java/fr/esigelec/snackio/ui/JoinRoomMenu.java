@@ -32,7 +32,7 @@ import java.util.List;
 import java.util.ResourceBundle;
 
 public class JoinRoomMenu  implements Initializable {
-    private static final int SQUARE_SIDE = 40;
+    private static final int SQUARE_SIDE = 67;
     @FXML
     private Button join;
     @FXML
@@ -57,6 +57,24 @@ public class JoinRoomMenu  implements Initializable {
         Snippet.setPreviousLocation(MenuController.Menus.MULTI_MENU);
         server("getInformation");
         showImageCharacter();
+
+        join.setOnMouseEntered(event -> {
+            join.setTranslateX(1);
+            join.setStyle("-fx-opacity: 1");
+        });
+        join.setOnMouseExited(event -> {
+            join.setStyle("-fx-opacity: 0.6");
+            join.setTranslateX(0);
+        });
+
+        refresh.setOnMouseEntered(event -> {
+            refresh.setTranslateX(1);
+            refresh.setStyle("-fx-opacity: 1");
+        });
+        refresh.setOnMouseExited(event -> {
+            refresh.setStyle("-fx-opacity: 0.6");
+            refresh.setTranslateX(0);
+        });
 
         refresh.setOnAction(this::refreshInfoServer);
         join.setOnAction(this::connection);

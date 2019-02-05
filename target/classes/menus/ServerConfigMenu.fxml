@@ -20,18 +20,18 @@
             </AnchorPane>
             <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="100.0" prefWidth="160.0" styleClass="Anc" stylesheets="@../CSS/menus.css">
             <children>
-               <GridPane fx:id="grid" layoutX="21.0" layoutY="48.0" prefHeight="257.0" prefWidth="527.0" AnchorPane.leftAnchor="21.0">
+               <GridPane fx:id="grid" layoutX="2.0" layoutY="48.0" prefHeight="257.0" prefWidth="580.0" AnchorPane.leftAnchor="2.0">
                  <columnConstraints>
-                   <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" maxWidth="241.66665649414062" minWidth="10.0" prefWidth="132.0" />
-                   <ColumnConstraints fx:id="mapsFitLimit" halignment="CENTER" hgrow="SOMETIMES" maxWidth="487.3333485921223" minWidth="10.0" prefWidth="395.0" />
+                   <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" maxWidth="241.66665649414062" minWidth="10.0" prefWidth="136.0" />
+                   <ColumnConstraints fx:id="mapsFitLimit" halignment="CENTER" hgrow="SOMETIMES" maxWidth="487.3333485921223" minWidth="10.0" prefWidth="444.0" />
                      <ColumnConstraints maxWidth="0.0" minWidth="0.0" prefWidth="0.0" />
                  </columnConstraints>
                  <rowConstraints>
                    <RowConstraints maxHeight="23.0" minHeight="10.0" prefHeight="23.0" vgrow="SOMETIMES" />
                    <RowConstraints maxHeight="100.0" minHeight="10.0" prefHeight="86.0" vgrow="SOMETIMES" />
                    <RowConstraints maxHeight="41.0" minHeight="0.0" prefHeight="21.0" vgrow="SOMETIMES" />
-                     <RowConstraints maxHeight="100.0" minHeight="10.0" prefHeight="86.0" vgrow="SOMETIMES" />
-                     <RowConstraints maxHeight="100.0" minHeight="40.0" prefHeight="61.0" vgrow="SOMETIMES" />
+                     <RowConstraints maxHeight="100.0" minHeight="10.0" prefHeight="93.0" vgrow="SOMETIMES" />
+                     <RowConstraints maxHeight="100.0" minHeight="40.0" prefHeight="46.0" vgrow="SOMETIMES" />
                      <RowConstraints maxHeight="2.0" minHeight="0.0" prefHeight="0.0" />
                  </rowConstraints>
                   <children>
@@ -45,8 +45,8 @@
                         </font></Label>
                   </children>
                </GridPane>
-                <TextField fx:id="playerName" layoutX="153.0" layoutY="9.0" maxWidth="183.0" prefHeight="25.0" prefWidth="183.0" />
-                <Label layoutX="21.0" layoutY="9.0" prefHeight="25.0" prefWidth="118.0" text="Player Name">
+                <TextField fx:id="playerName" layoutX="140.0" layoutY="10.0" maxWidth="183.0" prefHeight="25.0" prefWidth="183.0" />
+                <Label layoutX="14.0" layoutY="8.0" prefHeight="25.0" prefWidth="118.0" text="Player Name">
                   <font>
                      <Font size="18.0" />
                   </font></Label>

@@ -50,17 +50,24 @@ public class SoloConfigMenu implements Initializable {
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        Snippet.setPreviousLocation(MenuController.Menus.MULTI_MENU);
+        Snippet.setPreviousLocation(MenuController.Menus.MAIN_MENU);
         showImageCharacter();
         showImageMap();
-
+        join.setOnMouseEntered(event -> {
+            join.setTranslateX(1);
+            join.setStyle("-fx-opacity: 1");
+        });
+        join.setOnMouseExited(event -> {
+            join.setStyle("-fx-opacity: 0.6");
+            join.setTranslateX(0);
+        });
         join.setOnAction(this::connection);
 
     }
 
     public void connection(ActionEvent actionEvent) {
         if(!playerName.getText().isEmpty() && mapGroup.getSelectedToggle() !=null && characterGroup.getSelectedToggle() != null){
-            server();
+            startGameSolo();
         }
     }
 
@@ -130,7 +137,7 @@ public class SoloConfigMenu implements Initializable {
         });
     }
 
-    public void server () {
+    public void startGameSolo () {
         try {
             try {
                 try {
@@ -139,6 +146,8 @@ public class SoloConfigMenu implements Initializable {
 
                     ToggleButton rbCha = (ToggleButton) characterGroup.getSelectedToggle();
                     ToggleButton rbMap = (ToggleButton) mapGroup.getSelectedToggle();
+
+
                     myPlayer = new Player(playerName.getText(), CharacterFactory.CharacterType.valueOf(String.valueOf(rbCha.getId())));
 
                     myPlayer.getCharacter().setPosition(100,900);

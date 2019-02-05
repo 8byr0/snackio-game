@@ -47,6 +47,10 @@ public class MenuController {
                 Snippet.back("YES");
                 pathToMenuFile = "/menus/MainMenu.fxml";
                 break;
+            case SOLO_CONFIG_MENU:
+                Snippet.back("NO");
+                pathToMenuFile = "/menus/SoloConfigMenu.fxml";
+                break;
             case MULTI_MENU:
                 Snippet.back("NO");
                 pathToMenuFile = "/menus/MultiMenu.fxml";
@@ -60,9 +64,7 @@ public class MenuController {
             case JOIN_ROOM_MENU:
                 pathToMenuFile = "/menus/JoinRoomMenu.fxml";
                 break;
-            case SOLO_CONFIG_MENU:
-                pathToMenuFile = "/menus/SoloConfigMenu.fxml";
-                break;
+
             default:
                 Log.warn("Requested menu does not exist. Cannot proceed.");
                 throw new IllegalStateException("Requested menu does not exist. Cannot proceed.");
