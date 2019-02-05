@@ -11,7 +11,7 @@
 <AnchorPane fx:id="mainAnchorPane" prefHeight="500.0" prefWidth="700.0" styleClass="background" stylesheets="@../CSS/menus.css" xmlns="http://javafx.com/javafx/8.0.172-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="fr.esigelec.snackio.ui.MainMenu">
    <SplitPane dividerPositions="0.35" orientation="VERTICAL" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
       <items>
-         <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="100.0" prefWidth="160.0">
+         <AnchorPane maxHeight="175.0" minHeight="175.0" minWidth="160.0" prefHeight="175.0" prefWidth="160.0">
             <children>
                <fx:include fx:id="snippet" source="snippet.fxml" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
             </children>
@@ -50,8 +50,8 @@
    </SplitPane>
    <AnchorPane fx:id="introScene" prefHeight="500.0" prefWidth="714.0">
       <children>
-         <Rectangle fx:id="downCurtain" arcHeight="5.0" arcWidth="5.0" height="375.0" layoutY="126.0" mouseTransparent="true" stroke="BLACK" strokeType="INSIDE" width="714.0" />
-         <Rectangle fx:id="upCurtain" arcHeight="5.0" arcWidth="5.0" height="127.0" stroke="BLACK" strokeType="INSIDE" width="714.0" />
+         <Rectangle fx:id="downCurtain" arcHeight="5.0" arcWidth="5.0" height="375.0" layoutY="127.0" mouseTransparent="true" stroke="BLACK" strokeType="INSIDE" width="698.0" AnchorPane.bottomAnchor="1.0" AnchorPane.leftAnchor="1.0" AnchorPane.rightAnchor="1.0" />
+         <Rectangle fx:id="upCurtain" arcHeight="5.0" arcWidth="5.0" height="127.0" stroke="BLACK" strokeType="INSIDE" width="698.0" AnchorPane.leftAnchor="1.0" AnchorPane.rightAnchor="1.0" AnchorPane.topAnchor="1.0" />
          <ImageView fx:id="coin" fitHeight="42.0" fitWidth="42.0" layoutX="422.0" layoutY="70.0" pickOnBounds="true" preserveRatio="true" style="-fx-opacity: 0;">
             <image>
                <Image url="@../poi/coin/coin01.png" />

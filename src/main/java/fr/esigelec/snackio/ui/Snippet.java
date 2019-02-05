@@ -21,6 +21,9 @@ public class Snippet implements Initializable {
     public Button backButton;
 
     @FXML
+    private Button exitButton;
+
+    @FXML
     private Button settingsButton;
 
     private Stage stage;
@@ -42,9 +45,12 @@ public class Snippet implements Initializable {
         backButton.setOnAction(this::backPrevious);
         homeButton.setOnAction(this::backtoHome);
         settingsButton.setOnAction(this::opensettingsView);
-
+        exitButton.setOnAction(this::exit);
     }
 
+    public void exit(ActionEvent actionEvent){
+        MenuController.getStage().close();
+    }
     public void backtoHome(ActionEvent actionEvent) {
         MenuController.getInstance(stage).openMenu(MenuController.Menus.MAIN_MENU);
     }
@@ -59,7 +65,6 @@ public class Snippet implements Initializable {
     }
 
     public void opensettingsView(ActionEvent actionEvent){
-        System.out.println("settings");
         try {
             FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/menus/controllerConfig.fxml"));
             Parent root1 = (Parent) fxmlLoader.load();

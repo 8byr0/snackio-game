@@ -68,15 +68,18 @@ public class ServerConfigMenu implements Initializable {
         showImageCharacter();
         animation(1,0);
         submit.setOnMouseEntered(event -> {
-            submit.setTranslateX(1);
-            submit.setStyle("-fx-opacity: 1");
+            if(mapGroup.getSelectedToggle() != null && characterGroup.getSelectedToggle() != null && !playerName.getText().isEmpty() && !serverName.getText().isEmpty()) {
+                submit.setOnAction(this::submitServer);
+                submit.setTranslateX(1);
+                submit.setStyle("-fx-opacity: 1");
+            }
         });
         submit.setOnMouseExited(event -> {
             submit.setStyle("-fx-opacity: 0.6");
             submit.setTranslateX(0);
         });
 // Introduction
-        submit.setOnAction(this::submitServer);
+
     }
 
     public void showImageCharacter(){
@@ -93,9 +96,7 @@ public class ServerConfigMenu implements Initializable {
             rbCha.setGraphic(imgCha);
             rbCha.setId(character.toString());
             rbCha.setToggleGroup(characterGroup);
-            rbCha.setStyle("-fx-background-color: white");
-            rbCha.setStyle("-fx-arc-width: 0");
-            rbCha.setStyle("-fx-arc-height: 0");
+            rbCha.setStyle("-fx-background-color: gray");
             characterBox.getChildren().add(rbCha);
         }
         grid.add(characterBox,1,3);
@@ -104,12 +105,10 @@ public class ServerConfigMenu implements Initializable {
                 // Has selection.
                 if (characterGroup.getSelectedToggle() != null) {
                     if(perChoice!= null){
-                        perChoice.setStyle("-fx-border-color: white");
+                        perChoice.setStyle("-fx-backgroun-color: gray");
                     }
                     perChoice = (ToggleButton) characterGroup.getSelectedToggle();
-                    System.out.println("color="+perChoice.getStyle());
-                    ((ToggleButton) characterGroup.getSelectedToggle()).setStyle("-fx-background-color: turquoise");
-                    System.out.println("Character: " + perChoice.getId());
+                    ((ToggleButton) characterGroup.getSelectedToggle()).setStyle("-fx-background-color: white");
                 }
             }
         });
@@ -129,6 +128,7 @@ public class ServerConfigMenu implements Initializable {
             rbMap.setId(map.toString());
             name.setText(map.toString());
             rbMap.setGraphic(imgMap);
+            rbMap.setStyle("-fx-background-color: gray");
             rbMap.setToggleGroup(mapGroup);
             mapBox.getChildren().add(rbMap);
             mapNameBox.getChildren().add(name);
@@ -141,11 +141,10 @@ public class ServerConfigMenu implements Initializable {
                 // Has selection.
                 if (mapGroup.getSelectedToggle() != null) {
                     if(mapChoice!= null){
-                        mapChoice.setStyle("-fx-border-color: white");
+                        mapChoice.setStyle("-fx-border-color: gray");
                     }
                     mapChoice = (ToggleButton) mapGroup.getSelectedToggle();
-                    ((ToggleButton) mapGroup.getSelectedToggle()).setStyle("-fx-background-color: turquoise");
-                    System.out.println("Map: " + mapChoice.getId());
+                    ((ToggleButton) mapGroup.getSelectedToggle()).setStyle("-fx-background-color: white");
                 }
             }
         });

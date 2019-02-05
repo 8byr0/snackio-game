@@ -240,7 +240,7 @@ public class MainMenu  implements Initializable {
                     characterIntroMove.play();
                 }));
         goUpCharacterMoveSignal.play();
-        FadeTransition removeCurtain = new FadeTransition(Duration.millis(1500), upCurtain);
+        FadeTransition removeCurtain = new FadeTransition(Duration.millis(1000), upCurtain);
         Timeline endCharacterMoveSignal = new Timeline(new KeyFrame(
                 Duration.millis(5000),
                 ae -> {
@@ -262,6 +262,7 @@ public class MainMenu  implements Initializable {
                 ae -> {
                     removeCurtain.stop();
                     removeCurtain.setDuration(Duration.millis(1500));
+
                     removeCurtain.setNode(downCurtain);
                     removeCurtain.play();
                     coinToss.stop();

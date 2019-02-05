@@ -1,6 +1,18 @@
 .background {
     -fx-background-color: white;
 }
+.split-pane{
+    -fx-border-width: 0;
+}
+.split-pane *.split-pane-divider {
+    -fx-padding: 0 0.1 0 0;
+
+}
+.snippetButton{
+    -fx-pref-width: 20;
+
+    -fx-pref-height: 20;
+}
 .sbackground {
     -fx-background-color: black;
     -fx-background-image: url("../img/snackio.jpg");

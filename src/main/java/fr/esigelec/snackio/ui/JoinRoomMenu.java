@@ -21,18 +21,24 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
 import javafx.scene.image.ImageView;
+import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.stage.Stage;
 
 import java.net.InetAddress;
 import java.net.URL;
+import java.text.Normalizer;
 import java.util.Arrays;
 import java.util.List;
 import java.util.ResourceBundle;
 
 public class JoinRoomMenu  implements Initializable {
     private static final int SQUARE_SIDE = 67;
+    @FXML
+    private SplitPane alfa;
+    @FXML
+    private AnchorPane mainAnchorPane;
     @FXML
     private Button join;
     @FXML
@@ -49,18 +55,23 @@ public class JoinRoomMenu  implements Initializable {
     @FXML
     private GridPane grid;
 
+
     public JoinRoomMenu() {
     }
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
+        alfa.setResizableWithParent(mainAnchorPane,false);
         Snippet.setPreviousLocation(MenuController.Menus.MULTI_MENU);
         server("getInformation");
         showImageCharacter();
 
         join.setOnMouseEntered(event -> {
-            join.setTranslateX(1);
-            join.setStyle("-fx-opacity: 1");
+            if(!playerName.getText().isEmpty() && !server_box.getSelectionModel().isEmpty() && characterGroup.getSelectedToggle() != null) {
+                join.setTranslateX(1);
+                join.setStyle("-fx-opacity: 1");
+                join.setOnAction(this::connection);
+            }
         });
         join.setOnMouseExited(event -> {
             join.setStyle("-fx-opacity: 0.6");
@@ -77,7 +88,6 @@ public class JoinRoomMenu  implements Initializable {
         });
 
         refresh.setOnAction(this::refreshInfoServer);
-        join.setOnAction(this::connection);
 
     }
 
@@ -104,9 +114,7 @@ public class JoinRoomMenu  implements Initializable {
             rbCha.setGraphic(imgCha);
             rbCha.setId(character.toString());
             rbCha.setToggleGroup(characterGroup);
-            rbCha.setStyle("-fx-background-color: white");
-            rbCha.setStyle("-fx-arc-width: 0");
-            rbCha.setStyle("-fx-arc-height: 0");
+            rbCha.setStyle("-fx-background-color: gray");
             characterBox.getChildren().add(rbCha);
         }
         grid.add(characterBox,1,1);
@@ -115,11 +123,11 @@ public class JoinRoomMenu  implements Initializable {
                 // Has selection.
                 if (characterGroup.getSelectedToggle() != null) {
                     if(perChoice!= null){
-                        perChoice.setStyle("-fx-border-color: white");
+                        perChoice.setStyle("-fx-background-color: gray");
                     }
                     perChoice = (ToggleButton) characterGroup.getSelectedToggle();
                     System.out.println("color="+perChoice.getStyle());
-                    ((ToggleButton) characterGroup.getSelectedToggle()).setStyle("-fx-background-color: turquoise");
+                    ((ToggleButton) characterGroup.getSelectedToggle()).setStyle("-fx-background-color: white");
                     System.out.println("Character: " + perChoice.getId());
                 }
             }

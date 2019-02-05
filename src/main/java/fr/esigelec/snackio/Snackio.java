@@ -5,6 +5,7 @@ import fr.esigelec.snackio.core.exceptions.UnhandledCharacterTypeException;
 import fr.esigelec.snackio.core.exceptions.UnhandledControllerException;
 import fr.esigelec.snackio.ui.MenuController;
 import javafx.application.Application;
+import javafx.scene.control.SplitPane;
 import javafx.stage.Stage;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -32,6 +33,7 @@ public class Snackio extends Application {
 
         logger.info("...Initialisation finished");
 
+        SplitPane ser=new SplitPane();
 
 //        // Create a Game
 //
