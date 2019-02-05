@@ -4,20 +4,14 @@ import com.esotericsoftware.minlog.Log;
 import fr.esigelec.snackio.core.AbstractGameEngine;
 import fr.esigelec.snackio.core.NetworkGameEngine;
 import fr.esigelec.snackio.core.Player;
-import fr.esigelec.snackio.core.SoloGameEngine;
-import fr.esigelec.snackio.core.exceptions.GameCannotStartException;
 import fr.esigelec.snackio.core.exceptions.NoCharacterSetException;
 import fr.esigelec.snackio.core.exceptions.UnhandledCharacterTypeException;
 import fr.esigelec.snackio.core.exceptions.UnhandledControllerException;
 import fr.esigelec.snackio.game.SnackioGame;
 import fr.esigelec.snackio.game.character.CharacterFactory;
-import fr.esigelec.snackio.game.character.texture.AnimatedCharacterSkin;
 import fr.esigelec.snackio.game.map.MapFactory;
 import fr.esigelec.snackio.networking.client.SnackioNetClient;
 import fr.esigelec.snackio.ui.customToggles.CharacterPicker;
-import fr.esigelec.snackio.ui.customToggles.MapPicker;
-import javafx.beans.value.ChangeListener;
-import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -25,8 +19,6 @@ import javafx.scene.control.*;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.GridPane;
-import javafx.scene.layout.HBox;
-import javafx.stage.Stage;
 
 import java.net.InetAddress;
 import java.net.URL;
@@ -69,7 +61,7 @@ public class JoinRoomMenu implements Initializable {
         alfa.setResizableWithParent(mainAnchorPane,false);
         Snippet.setPreviousLocation(MenuController.Menus.MULTI_MENU);
         server("getInformation");
-        showImageCharacter();
+        renderCharacterSelector();
 
         join.setOnMouseEntered(event -> {
             if(!playerName.getText().isEmpty() && !server_box.getSelectionModel().isEmpty() && characterGroup.getSelectedToggle() != null) {
@@ -96,32 +88,29 @@ public class JoinRoomMenu implements Initializable {
 
     }
 
-    public void connection(ActionEvent actionEvent) {
+    private void connection(ActionEvent actionEvent) {
         if (!playerName.getText().isEmpty() && !server_box.getSelectionModel().isEmpty() && characterSelector.getSelectedToggle() != null) {
             server("getConnection");
         }
     }
 
-    public void refreshInfoServer(ActionEvent actionEvent) {
+    private void refreshInfoServer(ActionEvent actionEvent) {
         server("getInformation");
     }
 
-    public void showImageCharacter() {
+    private void renderCharacterSelector() {
         grid.add(characterSelector, 1, 1);
     }
 
     public void server(String info) {
         try {
             SnackioGame game = SnackioGame.getInstance();
-            //        // Create the local player
-            Player myPlayer = new Player("Hugues", CharacterFactory.CharacterType.GOLDEN_KNIGHT);
+            // Create the local player
+            Player myPlayer = new Player("", CharacterFactory.CharacterType.GOLDEN_KNIGHT);
             if (info == "getConnection") {
-                ToggleButton rbCha = (ToggleButton) characterSelector.getSelectedToggle();
-                myPlayer = new Player(playerName.getText(),
-                        CharacterFactory.CharacterType.valueOf(String.valueOf(rbCha.getId())));
-
+                myPlayer = new Player(playerName.getText(), characterSelector.getSelectedCharacter());
             }
-
+            // TODO fetch map from server
             AbstractGameEngine engine = new NetworkGameEngine(game, myPlayer, MapFactory.MapType.DESERT_CASTLE);
 
             SnackioNetClient cli = new SnackioNetClient(engine);

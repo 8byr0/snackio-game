@@ -55,4 +55,8 @@ public class CharacterPicker extends HBox {
     public ToggleButton getSelectedToggle() {
         return this.chosenCharacter;
     }
+
+    public CharacterFactory.CharacterType getSelectedCharacter() {
+        return CharacterFactory.CharacterType.valueOf(String.valueOf(chosenCharacter.getId()));
+    }
 }

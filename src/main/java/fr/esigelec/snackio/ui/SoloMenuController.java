@@ -82,12 +82,12 @@ public class SoloConfigMenu implements Initializable {
             ToggleButton rbMap = mapSelector.getSelectedToggle();
 
 
-            Player myPlayer = new Player(playerName.getText(), CharacterFactory.CharacterType.valueOf(String.valueOf(rbCha.getId())));
+            Player myPlayer = new Player(playerName.getText(), characterSelector.getSelectedCharacter());
 
             // TODO give a random position instead
             myPlayer.setPosition(new Position(100, 100));
 
-            AbstractGameEngine engine = new SoloGameEngine(game, myPlayer, MapFactory.MapType.valueOf(String.valueOf(rbMap.getId())), 5);
+            AbstractGameEngine engine = new SoloGameEngine(game, myPlayer, mapSelector.getSelectedMap(), 5);
             //MenuController.getStage().initModality(APPLICATION_MODAL);
             engine.startGame();
         } catch (GameCannotStartException | UnhandledCharacterTypeException | UnhandledControllerException | NoCharacterSetException e) {

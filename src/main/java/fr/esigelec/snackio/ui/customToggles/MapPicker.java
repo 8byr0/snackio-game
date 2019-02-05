@@ -51,4 +51,8 @@ public class MapPicker extends HBox {
     public ToggleButton getSelectedToggle() {
         return this.chosenMap;
     }
+
+    public MapFactory.MapType getSelectedMap() {
+        return MapFactory.MapType.valueOf(String.valueOf(chosenMap.getId()));
+    }
 }

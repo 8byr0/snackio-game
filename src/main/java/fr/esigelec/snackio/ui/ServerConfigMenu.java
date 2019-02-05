@@ -79,19 +79,18 @@ public class ServerConfigMenu implements Initializable {
             try {
                 SnackioGame game = SnackioGame.getInstance();
                 // Create the local player
-                ToggleButton rbCha = characterSelector.getSelectedToggle();
+
                 Player myPlayer = new Player(playerName.getText(),
-                        CharacterFactory.CharacterType.valueOf(String.valueOf(rbCha.getId())));
+                        characterSelector.getSelectedCharacter());
 
                 // Instantiate Network game engine to control gameplay
-                ToggleButton rbMap = mapSelector.getSelectedToggle();
                 AbstractGameEngine engine = new NetworkGameEngine(game, myPlayer,
-                        MapFactory.MapType.valueOf(String.valueOf(rbMap.getId())));
+                        mapSelector.getSelectedMap());
 
                 // Instantiate a NetClient to exchange with client
                 SnackioNetClient cli = new SnackioNetClient(engine);
                 NetworkGameEngine nEngine = new NetworkGameEngine(game, myPlayer,
-                        MapFactory.MapType.valueOf(String.valueOf(rbMap.getId())));
+                        mapSelector.getSelectedMap());
                 List<InetAddress> servers = cli.getAvailableServers();
                 String[] difficultWords = new String[10];
                 difficultWords[0] = "you";
