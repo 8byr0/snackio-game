@@ -3,6 +3,7 @@ package fr.esigelec.snackio.core;
 import fr.esigelec.snackio.core.exceptions.GameCannotStartException;
 import fr.esigelec.snackio.core.exceptions.NoCharacterSetException;
 import fr.esigelec.snackio.core.exceptions.UnhandledControllerException;
+import fr.esigelec.snackio.game.GameRenderer;
 import fr.esigelec.snackio.game.SnackioGame;
 import fr.esigelec.snackio.game.map.MapFactory;
 import fr.esigelec.snackio.game.pois.Bomb;
@@ -14,7 +15,7 @@ import javax.swing.*;
 
 public class SoloGameEngine extends AbstractGameEngine {
     /**
-     * Default constructor
+     * Default constructor.
      *
      * @param game snackioGame that will be managed by this engine
      */

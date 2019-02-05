@@ -46,7 +46,7 @@
                   </Label>
                 </children>
             </GridPane>
-              <AnimatedButton fx:id="openJoinServerMenuButton" layoutX="585.0" layoutY="277.0" styleClass="ButtonSub" stylesheets="@../CSS/menus.css" text="Start Game" textFill="WHITE" />
+              <AnimatedButton fx:id="launchGameButton" layoutX="585.0" layoutY="277.0" styleClass="ButtonSub" stylesheets="@../CSS/menus.css" text="Start Game" textFill="WHITE" />
         </AnchorPane>
     </items>
 </SplitPane>

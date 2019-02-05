@@ -9,8 +9,6 @@ import fr.esigelec.snackio.core.exceptions.NoCharacterSetException;
 import fr.esigelec.snackio.core.exceptions.UnhandledCharacterTypeException;
 import fr.esigelec.snackio.core.exceptions.UnhandledControllerException;
 import fr.esigelec.snackio.game.SnackioGame;
-import fr.esigelec.snackio.game.character.CharacterFactory;
-import fr.esigelec.snackio.game.map.MapFactory;
 import fr.esigelec.snackio.networking.Position;
 import fr.esigelec.snackio.ui.customButtons.AnimatedButton;
 import fr.esigelec.snackio.ui.customToggles.CharacterPicker;
@@ -21,7 +19,6 @@ import javafx.animation.Timeline;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.scene.control.*;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.GridPane;
 import javafx.util.Duration;
@@ -30,10 +27,9 @@ import java.net.URL;
 import java.util.ResourceBundle;
 
 public class SoloMenuController implements Initializable {
-
     // FXML components
     @FXML
-    private AnimatedButton openJoinServerMenuButton;
+    private AnimatedButton launchGameButton;
     @FXML
     private AnchorPane anchor, mainAnchorPane;
     @FXML
@@ -54,11 +50,12 @@ public class SoloMenuController implements Initializable {
         renderMapSelectorToggle();
 
         animation(1, 0);
-        openJoinServerMenuButton.setOnAction(this::connection);
+        launchGameButton.setOnAction(this::handleLaunchGameButtonClick);
 
     }
 
-    private void connection(ActionEvent actionEvent) {
+    private void handleLaunchGameButtonClick(ActionEvent actionEvent) {
+        // We need to make sure every single
         if (mapSelector.getSelectedToggle() != null && characterSelector.getSelectedToggle() != null) {
             launchGame();
         }
@@ -72,17 +69,24 @@ public class SoloMenuController implements Initializable {
         grid.add(mapSelector, 1, 2);
     }
 
+    /**
+     * Call this method when all the required fields have been set inside the form (Map, Character...)
+     * This will launch a game.
+     */
     private void launchGame() {
         try {
+            // Instantiate game render engine
             SnackioGame game = SnackioGame.getInstance();
 
+            // Create a player
             Player myPlayer = new Player("", characterSelector.getSelectedCharacter());
 
+            // Set the player position on the map
             // TODO give a random position instead
             myPlayer.setPosition(new Position(100, 100));
 
+            // Instantiate a GameEngine to control the gameplay
             AbstractGameEngine engine = new SoloGameEngine(game, myPlayer, mapSelector.getSelectedMap(), 5);
-            //MenuController.getStage().initModality(APPLICATION_MODAL);
             engine.startGame();
         } catch (GameCannotStartException | UnhandledCharacterTypeException | UnhandledControllerException | NoCharacterSetException e) {
             Log.error(e.getMessage(), e);
