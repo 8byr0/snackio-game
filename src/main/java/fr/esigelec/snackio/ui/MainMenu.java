@@ -64,7 +64,7 @@ public class MainMenu  implements Initializable {
     public int WIDTH    = 64;
     public int HEIGHT   = 64;
     @FXML public ImageView imageViewLeft,imageViewRight,characterIntroImageView;
-    public  Animation animationViewLeft,animationViewRight,characterIntroWalk,characterIntroTurn;
+    public  Animation animationViewLeft,animationViewRight,characterIntroWalk,characterIntroTurn,coinToss,coinBaitToss;
     public TranslateTransition characterLeftEnter,characterIntroMove,characterRightEnter,characterLeftTranslateTransition,characterRightTranslateTransition,multiTranslateTransition,soloTranslateTransition;
     @Override
     public void initialize(URL location, ResourceBundle resources) {
@@ -146,10 +146,16 @@ public class MainMenu  implements Initializable {
     and then the game name and the menu appear.
      */
     public void intro(){
-        IMAGE = new Image("sprites/inspector.png");
-        characterIntroImageView.setImage(IMAGE);
+        characterIntroImageView.setImage(new Image("sprites/inspector.png"));
         characterIntroImageView.setViewport(new Rectangle2D(OFFSET_X, OFFSET_Y, WIDTH, HEIGHT));
         flashBack=true;
+
+        coinToss =  new SpriteAnimation(coin, Duration.millis(200), COUNT, 9, OFFSET_X, OFFSET_Y, WIDTH, HEIGHT);
+        coinToss.setCycleCount(Animation.INDEFINITE);
+        coinToss.play();
+        coinBaitToss =  new SpriteAnimation(coinBait, Duration.millis(300), COUNT, 9, OFFSET_X, OFFSET_Y, WIDTH, HEIGHT);
+        coinBaitToss.setCycleCount(Animation.INDEFINITE);
+        coinBaitToss.play();
 
         FadeTransition bait = new FadeTransition(Duration.millis(500), coinBait);
         bait.setFromValue(0);
@@ -188,6 +194,7 @@ public class MainMenu  implements Initializable {
                 Duration.millis(2000),
                 ae ->{
                     bait.stop();
+                    coinBaitToss.stop();
                     coinBait.setVisible(false);
                 }));
         stopBait.play();
@@ -257,6 +264,7 @@ public class MainMenu  implements Initializable {
                     removeCurtain.setDuration(Duration.millis(1500));
                     removeCurtain.setNode(downCurtain);
                     removeCurtain.play();
+                    coinToss.stop();
 
                 }));
        endAnimation.play();
