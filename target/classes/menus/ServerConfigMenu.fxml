@@ -10,6 +10,7 @@
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.text.Font?>
 
+<?import fr.esigelec.snackio.ui.customButtons.AnimatedButton?>
 <AnchorPane fx:id="mainAnchorPane" prefHeight="500.0" prefWidth="700.0" xmlns="http://javafx.com/javafx/8.0.172-ea"
             styleClass="background" stylesheets="@../CSS/menus.css" xmlns:fx="http://javafx.com/fxml/1"
             fx:controller="fr.esigelec.snackio.ui.ServerConfigMenu">
@@ -69,13 +70,13 @@
                             <Font size="18.0"/>
                         </font>
                     </Label>
-                    <Button fx:id="submit" layoutX="584.0" layoutY="277.0" mnemonicParsing="false" prefHeight="40.0"
-                            prefWidth="109.0" styleClass="ButtonSub" stylesheets="@../CSS/menus.css"
-                            text="create Server" textFill="WHITE">
+                    <AnimatedButton fx:id="createServerButton" layoutX="584.0" layoutY="277.0" mnemonicParsing="false" prefHeight="40.0"
+                                    prefWidth="109.0" styleClass="ButtonSub" stylesheets="@../CSS/menus.css"
+                                    text="create Server" textFill="WHITE">
                         <font>
                             <Font size="13.0"/>
                         </font>
-                    </Button>
+                    </AnimatedButton>
 
                 </children>
             </AnchorPane>

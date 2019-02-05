@@ -4,35 +4,26 @@ import com.esotericsoftware.minlog.Log;
 import fr.esigelec.snackio.core.AbstractGameEngine;
 import fr.esigelec.snackio.core.NetworkGameEngine;
 import fr.esigelec.snackio.core.Player;
-import fr.esigelec.snackio.core.exceptions.GameCannotStartException;
-import fr.esigelec.snackio.core.exceptions.NoCharacterSetException;
-import fr.esigelec.snackio.core.exceptions.UnhandledCharacterTypeException;
-import fr.esigelec.snackio.core.exceptions.UnhandledControllerException;
 import fr.esigelec.snackio.game.SnackioGame;
 import fr.esigelec.snackio.game.character.CharacterFactory;
 import fr.esigelec.snackio.game.map.MapFactory;
 import fr.esigelec.snackio.networking.client.SnackioNetClient;
 import fr.esigelec.snackio.networking.server.SnackioNetServer;
+import fr.esigelec.snackio.ui.customButtons.AnimatedButton;
 import fr.esigelec.snackio.ui.customToggles.CharacterPicker;
 import fr.esigelec.snackio.ui.customToggles.MapPicker;
 import javafx.animation.FadeTransition;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
-import javafx.beans.value.ChangeListener;
-import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
-import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
-import javafx.scene.image.ImageView;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
-import javafx.scene.text.Text;
 import javafx.util.Duration;
 
-import java.io.IOException;
 import java.net.InetAddress;
 import java.net.URL;
 import java.util.*;
@@ -51,7 +42,7 @@ public class ServerConfigMenu implements Initializable {
     private ColumnConstraints mapsFitLimit, characterFitLimit;
 
     @FXML
-    private Button submit;
+    private AnimatedButton createServerButton;
 
     private CharacterPicker characterSelector = new CharacterPicker();
     private MapPicker mapSelector = new MapPicker();
@@ -65,49 +56,38 @@ public class ServerConfigMenu implements Initializable {
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         Snippet.setPreviousLocation(MenuController.Menus.MULTI_MENU);
-        showImageMap();
-        showImageCharacter();
+        renderMapSelector();
+        renderCharacterSelector();
         animation(1, 0);
-        submit.setOnMouseEntered(event -> {
-            if(mapGroup.getSelectedToggle() != null && characterGroup.getSelectedToggle() != null && !playerName.getText().isEmpty() && !serverName.getText().isEmpty()) {
-                submit.setOnAction(this::submitServer);
-                submit.setTranslateX(1);
-                submit.setStyle("-fx-opacity: 1");
-            }
-        });
-        submit.setOnMouseExited(event -> {
-            submit.setStyle("-fx-opacity: 0.6");
-            submit.setTranslateX(0);
-        });
-// Introduction
 
+        // Introduction
+        createServerButton.setOnAction(this::createServer);
     }
 
-    private void showImageCharacter() {
+    private void renderCharacterSelector() {
         grid.add(characterSelector, 1, 3);
     }
 
-    private void showImageMap() {
-
+    private void renderMapSelector() {
         grid.add(mapSelector, 1, 1);
 //        grid.add(mapNameBox, 1, 2);
-
     }
 
-    public void submitServer(ActionEvent actionEvent) {
+    private void createServer(ActionEvent actionEvent) {
         if (mapSelector.getSelectedToggle() != null && characterSelector.getSelectedToggle() != null
                 && !playerName.getText().isEmpty() && !serverName.getText().isEmpty()) {
             try {
                 SnackioGame game = SnackioGame.getInstance();
                 // Create the local player
-                ToggleButton rbCha = (ToggleButton) characterSelector.getSelectedToggle();
+                ToggleButton rbCha = characterSelector.getSelectedToggle();
                 Player myPlayer = new Player(playerName.getText(),
                         CharacterFactory.CharacterType.valueOf(String.valueOf(rbCha.getId())));
 
                 // Instantiate Network game engine to control gameplay
-                ToggleButton rbMap = (ToggleButton) mapSelector.getSelectedToggle();
+                ToggleButton rbMap = mapSelector.getSelectedToggle();
                 AbstractGameEngine engine = new NetworkGameEngine(game, myPlayer,
                         MapFactory.MapType.valueOf(String.valueOf(rbMap.getId())));
+
                 // Instantiate a NetClient to exchange with client
                 SnackioNetClient cli = new SnackioNetClient(engine);
                 NetworkGameEngine nEngine = new NetworkGameEngine(game, myPlayer,

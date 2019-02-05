@@ -11,89 +11,70 @@ import fr.esigelec.snackio.core.exceptions.UnhandledControllerException;
 import fr.esigelec.snackio.game.SnackioGame;
 import fr.esigelec.snackio.game.character.CharacterFactory;
 import fr.esigelec.snackio.game.map.MapFactory;
+import fr.esigelec.snackio.networking.Position;
+import fr.esigelec.snackio.ui.customButtons.AnimatedButton;
 import fr.esigelec.snackio.ui.customToggles.CharacterPicker;
 import fr.esigelec.snackio.ui.customToggles.MapPicker;
 import javafx.animation.FadeTransition;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
-import javafx.beans.value.ChangeListener;
-import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
-import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.GridPane;
-import javafx.scene.layout.HBox;
-import javafx.scene.text.Text;
 import javafx.util.Duration;
 
 import java.net.URL;
-import java.util.Arrays;
-import java.util.List;
 import java.util.ResourceBundle;
 
 public class SoloConfigMenu implements Initializable {
-    private static final int SQUARE_SIDE = 70;
+   
+    // FXML components
     @FXML
-    private Button join;
+    private AnimatedButton openJoinServerMenuButton;
+    @FXML
+    private TextField playerName;
+    @FXML
+    private AnchorPane anchor, mainAnchorPane;
+    @FXML
+    private GridPane grid;
 
+    // Custom toggles
     private CharacterPicker characterSelector = new CharacterPicker();
     private MapPicker mapSelector = new MapPicker();
 
-    private Player myPlayer;
-    private Timeline timeline;
-
-    @FXML
-    private AnchorPane anchor, mainAnchorPane;
-
-    private ToggleButton perChoice, mapChoice;
-
+    // UI animation
     private FadeTransition showAnchor;
-
-    @FXML
-    private GridPane grid;
 
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         Snippet.setPreviousLocation(MenuController.Menus.MAIN_MENU);
-        showImageCharacter();
-        showImageMap();
+        renderCharacterSelectorToggle();
+        renderMapSelectorToggle();
+
         animation(1, 0);
-        join.setOnMouseEntered(event -> {
-            if(mapGroup.getSelectedToggle() !=null && characterGroup.getSelectedToggle() != null) {
-                join.setTranslateX(1);
-                join.setStyle("-fx-opacity: 1");
-                join.setOnAction(this::connection);
-            }
-        });
-        join.setOnMouseExited(event -> {
-            join.setStyle("-fx-opacity: 0.6");
-            join.setTranslateX(0);
-        });
+        openJoinServerMenuButton.setOnAction(this::connection);
 
     }
 
-    public void connection(ActionEvent actionEvent) {
+    private void connection(ActionEvent actionEvent) {
         if (!playerName.getText().isEmpty() && mapSelector.getSelectedToggle() != null && characterSelector.getSelectedToggle() != null) {
-            startGameSolo();
+            launchGame();
         }
     }
 
-    public void showImageCharacter() {
-        //        //show all the choices of the characters
-
+    private void renderCharacterSelectorToggle() {
         grid.add(characterSelector, 1, 1);
-
     }
 
-    private void showImageMap() {
+    private void renderMapSelectorToggle() {
         grid.add(mapSelector, 1, 2);
     }
 
-    private void startGameSolo() {
+    private void launchGame() {
         try {
             SnackioGame game = SnackioGame.getInstance();
 
@@ -101,9 +82,10 @@ public class SoloConfigMenu implements Initializable {
             ToggleButton rbMap = mapSelector.getSelectedToggle();
 
 
-            myPlayer = new Player(playerName.getText(), CharacterFactory.CharacterType.valueOf(String.valueOf(rbCha.getId())));
+            Player myPlayer = new Player(playerName.getText(), CharacterFactory.CharacterType.valueOf(String.valueOf(rbCha.getId())));
 
-            myPlayer.getCharacter().setPosition(100, 900);
+            // TODO give a random position instead
+            myPlayer.setPosition(new Position(100, 100));
 
             AbstractGameEngine engine = new SoloGameEngine(game, myPlayer, MapFactory.MapType.valueOf(String.valueOf(rbMap.getId())), 5);
             //MenuController.getStage().initModality(APPLICATION_MODAL);
@@ -129,7 +111,7 @@ public class SoloConfigMenu implements Initializable {
 
         showAnchor.play();
 
-        timeline = new Timeline(new KeyFrame(
+        Timeline timeline = new Timeline(new KeyFrame(
                 Duration.millis(1000),
                 ae -> {
                     showAnchor.stop();
