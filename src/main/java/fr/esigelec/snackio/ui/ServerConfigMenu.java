@@ -14,7 +14,6 @@ import fr.esigelec.snackio.networking.client.SnackioNetClient;
 import fr.esigelec.snackio.networking.server.SnackioNetServer;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
-import javafx.css.Style;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -48,7 +47,6 @@ public class ServerConfigMenu implements Initializable {
     private Button submit;
 
     private ToggleGroup mapGroup = new ToggleGroup();
-
     private ToggleGroup characterGroup = new ToggleGroup();
     private ToggleButton perChoice,mapChoice;
 
@@ -62,8 +60,22 @@ public class ServerConfigMenu implements Initializable {
     public void initialize(URL location, ResourceBundle resources) {
         Snippet.setPreviousLocation(MenuController.Menus.MULTI_MENU);
 
+        showImageMap();
+        showImageCharacter();
 
+        submit.setOnMouseEntered(event -> {
+            submit.setTranslateX(1);
+            submit.setStyle("-fx-opacity: 1");
+        });
+        submit.setOnMouseExited(event -> {
+            submit.setStyle("-fx-opacity: 0.6");
+            submit.setTranslateX(0);
+        });
+// Introduction
+        submit.setOnAction(this::submitServer);
+    }
 
+    public void showImageCharacter(){
         //        //show all the choices of the characters
         List<Enum> somethingList = Arrays.asList(CharacterFactory.CharacterType.values());
         HBox characterBox = new HBox();
@@ -90,19 +102,17 @@ public class ServerConfigMenu implements Initializable {
                     if(perChoice!= null){
                         perChoice.setStyle("-fx-border-color: white");
                     }
-                     perChoice = (ToggleButton) characterGroup.getSelectedToggle();
+                    perChoice = (ToggleButton) characterGroup.getSelectedToggle();
                     System.out.println("color="+perChoice.getStyle());
                     ((ToggleButton) characterGroup.getSelectedToggle()).setStyle("-fx-background-color: turquoise");
                     System.out.println("Character: " + perChoice.getId());
                 }
             }
         });
+    }
 
-
-
-
-
-        //           //show all the choices of the maps
+    public void showImageMap(){
+                //           //show all the choices of the maps
         List<Enum> mapList = Arrays.asList(MapFactory.MapType.values());
         HBox mapBox = new HBox();
         HBox mapNameBox= new HBox();
@@ -135,19 +145,6 @@ public class ServerConfigMenu implements Initializable {
                 }
             }
         });
-
-
-        //characterGroup.getProperties().addListener();
-        submit.setOnMouseEntered(event -> {
-            submit.setTranslateX(1);
-            submit.setStyle("-fx-opacity: 1");
-        });
-        submit.setOnMouseExited(event -> {
-            submit.setTranslateX(0);
-            submit.setStyle("-fx-opacity: 0.6");
-        });
-// Introduction
-        submit.setOnAction(this::submitServer);
     }
 
     public void submitServer(ActionEvent actionEvent) {
@@ -160,7 +157,7 @@ public class ServerConfigMenu implements Initializable {
                             try{
                         SnackioGame game = SnackioGame.getInstance();
                         //        // Create the local player
-                                ToggleButton rbCha = (ToggleButton) characterGroup.getSelectedToggle();
+                        ToggleButton rbCha = (ToggleButton) characterGroup.getSelectedToggle();
                         Player myPlayer = new Player(playerName.getText(),
                                 CharacterFactory.CharacterType.valueOf(String.valueOf(rbCha.getId())));
 

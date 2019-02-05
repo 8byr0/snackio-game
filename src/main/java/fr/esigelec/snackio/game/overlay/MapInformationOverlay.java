@@ -113,23 +113,24 @@ public class MapInformationOverlay extends ApplicationAdapter {
             batch.setProjectionMatrix(cam.combined);
             batch.begin();
             for (int n = 0; n < ((MultiplayerGameState) state).getActivePlayer().getLives(); n++){
-                batch.draw((TextureRegion) heartAnimation.getKeyFrame(stateTime, true), 430+n*40, 18,
+                batch.draw((TextureRegion) heartAnimation.getKeyFrame(stateTime, true), Gdx.graphics.getWidth()-160+n*40, 18,
                         HEART_WIDTH, HEART_HEIGHT);
             }
 
             //show the player information
             int offset = 1;
             for(Player player : ((MultiplayerGameState) state).getPlayers()){
-                font.draw(batch, player.toString(), 200, 150 + offset * 50);
+                font.draw(batch, player.toString(), 200, 80+offset * 50);
                 offset += 1;
                 for (int n = 0; n < player.getLives(); n++){
-                    batch.draw((TextureRegion) heartAnimation.getKeyFrame(stateTime, true), 350+n*40, 70 + offset * 50,
+                    batch.draw((TextureRegion) heartAnimation.getKeyFrame(stateTime, true), 350+n*40, offset * 50,
                             HEART_WIDTH, HEART_HEIGHT);
                 }
 
             }
-            font.draw(batch, "Votre salle: " + ((MultiplayerGameState) state).getRoomName(), 200, 100);
-            font.draw(batch, "Vies restants: ", 200,50);
+            font.draw(batch, "Votre salle: " + ((MultiplayerGameState) state).getRoomName(),
+                    Gdx.graphics.getWidth()-450, Gdx.graphics.getHeight()-80);
+            font.draw(batch, "Vies restants: ", Gdx.graphics.getWidth()-400,50);
             batch.end();
         }
 

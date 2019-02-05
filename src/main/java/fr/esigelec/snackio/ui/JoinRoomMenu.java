@@ -14,34 +14,40 @@ import fr.esigelec.snackio.game.character.CharacterFactory;
 import fr.esigelec.snackio.game.character.texture.AnimatedCharacterSkin;
 import fr.esigelec.snackio.game.map.MapFactory;
 import fr.esigelec.snackio.networking.client.SnackioNetClient;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.scene.control.Button;
-import javafx.scene.control.ChoiceBox;
-import javafx.scene.control.ComboBox;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
+import javafx.scene.image.ImageView;
+import javafx.scene.layout.GridPane;
+import javafx.scene.layout.HBox;
 import javafx.stage.Stage;
 
 import java.net.InetAddress;
 import java.net.URL;
+import java.util.Arrays;
 import java.util.List;
 import java.util.ResourceBundle;
 
 public class JoinRoomMenu  implements Initializable {
+    private static final int SQUARE_SIDE = 40;
     @FXML
     private Button join;
     @FXML
     private TextField playerName;
     @FXML
     private Button refresh;
-    @FXML
-    private ComboBox character;
+    private ToggleGroup characterGroup = new ToggleGroup();
 
     @FXML
     private ChoiceBox server_box;
-    private Stage stage;
 
+    private ToggleButton perChoice;
+
+    @FXML
+    private GridPane grid;
 
     public JoinRoomMenu() {
     }
@@ -50,21 +56,56 @@ public class JoinRoomMenu  implements Initializable {
     public void initialize(URL location, ResourceBundle resources) {
         Snippet.setPreviousLocation(MenuController.Menus.MULTI_MENU);
         server("getInformation");
-        character.getItems().setAll(CharacterFactory.CharacterType.values());
+        showImageCharacter();
+
         refresh.setOnAction(this::refreshInfoServer);
         join.setOnAction(this::connection);
 
     }
 
     public void connection(ActionEvent actionEvent) {
-        if(!playerName.getText().isEmpty() && !server_box.getSelectionModel().isEmpty() && !character.getSelectionModel().isEmpty()){
+        if(!playerName.getText().isEmpty() && !server_box.getSelectionModel().isEmpty() && characterGroup.getSelectedToggle() != null){
             server("getConnection");
         }
     }
 
     public void refreshInfoServer(ActionEvent actionEvent) {
             server("getInformation");
+    }
 
+    public void showImageCharacter(){
+        //        //show all the choices of the characters
+        List<Enum> somethingList = Arrays.asList(CharacterFactory.CharacterType.values());
+        HBox characterBox = new HBox();
+        characterBox.setSpacing(5);
+        for (Enum character: somethingList){
+            ToggleButton rbCha = new ToggleButton();
+            ImageView imgCha= new ImageView("sprites/menu_"+character.toString()+".png");
+            imgCha.setFitHeight(SQUARE_SIDE);
+            imgCha.setFitWidth(SQUARE_SIDE);
+            rbCha.setGraphic(imgCha);
+            rbCha.setId(character.toString());
+            rbCha.setToggleGroup(characterGroup);
+            rbCha.setStyle("-fx-background-color: white");
+            rbCha.setStyle("-fx-arc-width: 0");
+            rbCha.setStyle("-fx-arc-height: 0");
+            characterBox.getChildren().add(rbCha);
+        }
+        grid.add(characterBox,1,1);
+        characterGroup.selectedToggleProperty().addListener(new ChangeListener<Toggle>() {
+            public void changed(ObservableValue<? extends Toggle> ov, Toggle old_toggle, Toggle new_toggle) {
+                // Has selection.
+                if (characterGroup.getSelectedToggle() != null) {
+                    if(perChoice!= null){
+                        perChoice.setStyle("-fx-border-color: white");
+                    }
+                    perChoice = (ToggleButton) characterGroup.getSelectedToggle();
+                    System.out.println("color="+perChoice.getStyle());
+                    ((ToggleButton) characterGroup.getSelectedToggle()).setStyle("-fx-background-color: turquoise");
+                    System.out.println("Character: " + perChoice.getId());
+                }
+            }
+        });
     }
 
     public void server (String info) {
@@ -75,7 +116,9 @@ public class JoinRoomMenu  implements Initializable {
                     //        // Create the local player
                     Player myPlayer = new Player("Hugues", CharacterFactory.CharacterType.GOLDEN_KNIGHT);
                     if(info=="getConnection"){
-                        myPlayer = new Player(playerName.getText(), CharacterFactory.CharacterType.valueOf(String.valueOf(character.getSelectionModel().getSelectedItem())));
+                        ToggleButton rbCha = (ToggleButton) characterGroup.getSelectedToggle();
+                        myPlayer = new Player(playerName.getText(),
+                                CharacterFactory.CharacterType.valueOf(String.valueOf(rbCha.getId())));
 
                     }
                     //
