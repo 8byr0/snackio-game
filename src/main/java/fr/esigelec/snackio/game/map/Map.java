@@ -189,7 +189,7 @@ public class Map extends ApplicationAdapter {
             this.activeRoom = null;
         } else {
             /*
-             * todo :the name of the room is hard code cause the original code return null
+             * todo :the name of the room is hard code cause the original code return null.
              * */
             this.activeRoom = this.rooms.get("INSIDE");
             if (!this.activeRoom.isCreated()) {
