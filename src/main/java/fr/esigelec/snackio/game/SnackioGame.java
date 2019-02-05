@@ -44,16 +44,11 @@ public class SnackioGame {
     private AbstractGameState gameState;
     public int lives = 3;
 
-
-    public int lives = 3;
     /**
      * Singleton implementation
      *
      * @return existing instance or a new one if not exists
      */
-
-
-
     public static SnackioGame getInstance() {
         if (null == instance) {
             instance = new SnackioGame();
@@ -109,16 +104,12 @@ public class SnackioGame {
         this.triggerPoiListeners(coin, null);
     }
 
-    public void freezeTouched(Freeze freeze, Character character) {
-        System.out.println("You're frozen!");
-        gameRenderer.removePointOfInterest(freeze);
-    }
-
     public void bombTouched(Bomb bomb, Character character) {
         System.out.println("You lost one life!");
         gameRenderer.removePointOfInterest(bomb);
         lives--;
         System.out.println("lives = " + lives);
+
 
     }
 
@@ -140,7 +131,6 @@ public class SnackioGame {
         gameRenderer.removePointOfInterest(randomItem);
 
     }
-
 
 
     /**
