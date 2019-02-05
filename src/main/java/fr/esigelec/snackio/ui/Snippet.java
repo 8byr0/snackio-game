@@ -46,7 +46,7 @@ public class Snippet implements Initializable {
         }
         backButton.setOnAction(this::backPrevious);
         homeButton.setOnAction(this::goBackHome);
-        settingsButton.setOnAction(this::opensettingsView);
+        settingsButton.setOnAction(this::openSettingsView);
         exitButton.setOnAction(this::exit);
     }
 
@@ -67,11 +67,8 @@ public class Snippet implements Initializable {
         MenuController.getInstance(stage).openMenu(previousLocation);
     }
 
-<<<<<<< HEAD
-    public void opensettingsView(ActionEvent actionEvent){
-=======
     private void openSettingsView(ActionEvent actionEvent) {
->>>>>>> refacto: implement AnimatedButton in JoinRoom menu
+
         try {
             FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/menus/controllerConfig.fxml"));
             Parent root1 = fxmlLoader.load();

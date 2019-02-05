@@ -29,13 +29,11 @@ import javafx.util.Duration;
 import java.net.URL;
 import java.util.ResourceBundle;
 
-public class SoloConfigMenu implements Initializable {
-   
+public class SoloMenuController implements Initializable {
+
     // FXML components
     @FXML
     private AnimatedButton openJoinServerMenuButton;
-    @FXML
-    private TextField playerName;
     @FXML
     private AnchorPane anchor, mainAnchorPane;
     @FXML
@@ -61,7 +59,7 @@ public class SoloConfigMenu implements Initializable {
     }
 
     private void connection(ActionEvent actionEvent) {
-        if (!playerName.getText().isEmpty() && mapSelector.getSelectedToggle() != null && characterSelector.getSelectedToggle() != null) {
+        if (mapSelector.getSelectedToggle() != null && characterSelector.getSelectedToggle() != null) {
             launchGame();
         }
     }
@@ -78,11 +76,7 @@ public class SoloConfigMenu implements Initializable {
         try {
             SnackioGame game = SnackioGame.getInstance();
 
-            ToggleButton rbCha = characterSelector.getSelectedToggle();
-            ToggleButton rbMap = mapSelector.getSelectedToggle();
-
-
-            Player myPlayer = new Player(playerName.getText(), characterSelector.getSelectedCharacter());
+            Player myPlayer = new Player("", characterSelector.getSelectedCharacter());
 
             // TODO give a random position instead
             myPlayer.setPosition(new Position(100, 100));
