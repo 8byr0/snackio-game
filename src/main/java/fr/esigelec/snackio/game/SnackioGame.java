@@ -44,16 +44,11 @@ public class SnackioGame {
     private AbstractGameState gameState;
     public int lives = 3;
 
-
-    public int lives = 3;
     /**
      * Singleton implementation
      *
      * @return existing instance or a new one if not exists
      */
-
-
-
     public static SnackioGame getInstance() {
         if (null == instance) {
             instance = new SnackioGame();
@@ -109,17 +104,12 @@ public class SnackioGame {
         this.triggerPoiListeners(coin, null);
     }
 
-    public void freezeTouched(Freeze freeze, Character character) {
-        System.out.println("You're frozen!");
-        gameRenderer.removePointOfInterest(freeze);
-    }
-
     public void bombTouched(Bomb bomb, Character character) {
         System.out.println("You lost one life!");
         gameRenderer.removePointOfInterest(bomb);
         lives--;
         System.out.println("lives = " + lives);
-    
+
 
     }
 
@@ -133,14 +123,13 @@ public class SnackioGame {
         gameRenderer.removePointOfInterest(cookie);
         lives++;
         System.out.println("lives = " + lives);
-    
+
 
     }
 
     public void getRandomItem(RandomItem randomItem, Character character) {
         gameRenderer.removePointOfInterest(randomItem);
     }
-
 
 
     /**
@@ -227,12 +216,12 @@ public class SnackioGame {
         this.playersHashmap.remove(playerID);
     }
 
-    public void addPoiTriggeredListener(PoiTriggeredListener listener){
+    public void addPoiTriggeredListener(PoiTriggeredListener listener) {
         this.poiTriggeredListeners.add(listener);
     }
 
-    private void triggerPoiListeners(iPoi poi, Player player){
-        for(PoiTriggeredListener listener: poiTriggeredListeners){
+    private void triggerPoiListeners(iPoi poi, Player player) {
+        for (PoiTriggeredListener listener : poiTriggeredListeners) {
             listener.poiTriggered(poi, player);
         }
     }
