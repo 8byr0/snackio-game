@@ -6,10 +6,7 @@ import fr.esigelec.snackio.core.exceptions.GameCannotStartException;
 import fr.esigelec.snackio.core.exceptions.NoCharacterSetException;
 import fr.esigelec.snackio.core.exceptions.UnhandledControllerException;
 import fr.esigelec.snackio.game.pois.Bomb;
-<<<<<<< HEAD
 import fr.esigelec.snackio.game.pois.*;
-=======
->>>>>>> feat: implement pois
 import fr.esigelec.snackio.game.pois.bonuses.Cookie;
 import fr.esigelec.snackio.game.pois.maluses.Freeze;
 import fr.esigelec.snackio.game.pois.maluses.Paralysis;
@@ -123,9 +120,12 @@ public class SnackioGame {
         lives--;
         System.out.println("lives = " + lives);
 
-
     }
 
+    public void freezeTouched(Freeze freeze, Character character) {
+        System.out.println("You're frozen!");
+        gameRenderer.removePointOfInterest(freeze);
+    }
 
     public void cookieFound(Cookie cookie, Character character) {
         System.out.println("You get an extra life!");
@@ -138,7 +138,7 @@ public class SnackioGame {
 
     public void getRandomItem(RandomItem randomItem, Character character) {
         gameRenderer.removePointOfInterest(randomItem);
-    
+
     }
 
 
