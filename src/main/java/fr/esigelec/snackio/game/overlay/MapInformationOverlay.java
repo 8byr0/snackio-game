@@ -103,25 +103,25 @@ public class MapInformationOverlay extends ApplicationAdapter {
 
 
         batch.setProjectionMatrix(cam.combined);
-        batch.begin();
+
 
 
         if (state instanceof CoinQuestGameState) {
-//            shapeRenderer.setProjectionMatrix(cam.combined);
-//            shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
-//            shapeRenderer.setColor(Color.RED);
-//            shapeRenderer.rect(80, 80, 100, 10);
-//            shapeRenderer.end();
-//
+            shapeRenderer.setProjectionMatrix(cam.combined);
+            shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
+            shapeRenderer.setColor(Color.RED);
+            shapeRenderer.rect(80, 80, 100, 10);
+            shapeRenderer.end();
+            batch.begin();
             batch.draw(getCurrentFrame(stateTime), 82, 85, COIN_WIDTH, COIN_HEIGHT);
 
             //show the coin information
             font.draw(batch, ((CoinQuestGameState) state).getFetchedCoins()
                             + "/" + ((CoinQuestGameState) state).getCoinsToFetch()
                     , 120, 115);
-
+            batch.end();
         }
-
+        batch.begin();
         if (state instanceof MultiplayerGameState) {
             for (int n = 0; n < ((MultiplayerGameState) state).getActivePlayer().getLives(); n++) {
                 batch.draw((TextureRegion) heartAnimation.getKeyFrame(stateTime, true), Gdx.graphics.getWidth() - 160 + n * 40, 18,
@@ -139,14 +139,14 @@ public class MapInformationOverlay extends ApplicationAdapter {
                 }
 
             }
-            font.draw(batch, "Votre salle: " + ((MultiplayerGameState) state).getRoomName(),
+            font.draw(batch, "Room: " + ((MultiplayerGameState) state).getRoomName(),
                     Gdx.graphics.getWidth() - 450, Gdx.graphics.getHeight() - 80);
-            font.draw(batch, "Vies restants: ", Gdx.graphics.getWidth() - 400, 50);
+            font.draw(batch, "Remaining lives: ", Gdx.graphics.getWidth() - 400, 50);
 
 //            if (state.getGameMode() == GameMode.COINS_QUEST) {
             batch.draw(texture, 70, Gdx.graphics.getHeight() - 85, HEART_WIDTH, HEART_HEIGHT);
 
-                font.draw(batch, " " + SnackioGame.getInstance().lives, 125, Gdx.graphics.getHeight() - 50);
+            font.draw(batch, " " + SnackioGame.getInstance().lives, 125, Gdx.graphics.getHeight() - 50);
 //            }
 
 
