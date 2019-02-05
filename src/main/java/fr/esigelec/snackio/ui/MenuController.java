@@ -17,7 +17,8 @@ public class MenuController {
         SOLO_MENU,
         MULTI_MENU,
         SERVER_CONFIG_MENU,
-        JOIN_ROOM_MENU
+        JOIN_ROOM_MENU,
+        SOLO_CONFIG_MENU
     }
     public static Stage stage;
 
@@ -58,6 +59,9 @@ public class MenuController {
                 break;
             case JOIN_ROOM_MENU:
                 pathToMenuFile = "/menus/JoinRoomMenu.fxml";
+                break;
+            case SOLO_CONFIG_MENU:
+                pathToMenuFile = "/menus/SoloConfigMenu.fxml";
                 break;
             default:
                 Log.warn("Requested menu does not exist. Cannot proceed.");

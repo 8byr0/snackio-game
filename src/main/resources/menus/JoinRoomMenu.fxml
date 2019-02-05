@@ -10,7 +10,8 @@
 <?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.layout.RowConstraints?>
 
-<AnchorPane fx:id="mainAnchorPane" prefHeight="400.0" prefWidth="600.0" styleClass="background" stylesheets="@../CSS/menus.css" xmlns="http://javafx.com/javafx/10.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="fr.esigelec.snackio.ui.JoinRoomMenu">    <SplitPane dividerPositions="0.35" orientation="VERTICAL" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+<AnchorPane fx:id="mainAnchorPane" prefHeight="400.0" prefWidth="600.0" styleClass="background" stylesheets="@../CSS/menus.css" xmlns="http://javafx.com/javafx/10.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="fr.esigelec.snackio.ui.JoinRoomMenu">
+    <SplitPane dividerPositions="0.35" orientation="VERTICAL" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
         <items>
             <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="100.0" prefWidth="160.0">
                 <children>

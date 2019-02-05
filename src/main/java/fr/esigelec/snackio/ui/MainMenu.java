@@ -68,12 +68,16 @@ public class MainMenu  implements Initializable {
     public TranslateTransition characterLeftEnter,characterIntroMove,characterRightEnter,characterLeftTranslateTransition,characterRightTranslateTransition,multiTranslateTransition,soloTranslateTransition;
     @Override
     public void initialize(URL location, ResourceBundle resources) {
+        mainAnchorPane.getChildren().remove(introScene);
+        outro();
+        /*
         if(!flashBack){
             intro();
         }else{
             mainAnchorPane.getChildren().remove(introScene);
             outro();
         }
+        */
         setButtonAnimations();
         openMultiMenuButton.setOnAction(this::openMultiMenu);
         openSoloMenuButton.setOnAction(this::openSoloMenu);
@@ -82,42 +86,7 @@ public class MainMenu  implements Initializable {
     public void openSoloMenu(ActionEvent actionEvent) {
         setOutroOn();
         Timeline startGame = new Timeline(new KeyFrame(Duration.millis(3200),
-                ae ->{
-                    try {
-                        try {
-                            try {
-                                try {
-                                    SnackioGame game = SnackioGame.getInstance();
-
-                                    // Create the local player
-                                    Player myPlayer = new Player("Bob", CharacterFactory.CharacterType.INSPECTOR);
-                                    myPlayer.getCharacter().setPosition(100, 900);
-
-                                    /////////////// NETWORK CONTROL
-                                    // Instantiate Network game engine to control gameplay
-                                    AbstractGameEngine engine = new SoloGameEngine(game, myPlayer, MapFactory.MapType.DESERT_CASTLE, 5);
-                                    // Instantiate a NetClient to exchange with client
-                                    MenuController.getStage().close();
-                                    engine.startGame();
-                                    String[] difficultWords = new String[10];
-                                    difficultWords[0]="you";
-                                    Snackio.main(difficultWords);
-                                    //MenuController.getInstance(stage).openMenu(MenuController.Menus.MULTI_MENU);
-
-                                } catch (NoCharacterSetException e) {
-                                    Log.error(e.getMessage(), e);
-                                }
-                            } catch (GameCannotStartException e) {
-                                Log.error(e.getMessage(), e);
-                            }
-                        } catch (UnhandledControllerException e) {
-                            Log.error(e.getMessage(), e);
-                        }
-                    } catch (
-                            UnhandledCharacterTypeException e) {
-                        Log.error(e.getMessage(), e);
-                    }
-                }));
+                ae ->MenuController.getInstance(stage).openMenu(MenuController.Menus.SOLO_CONFIG_MENU)));
         startGame.play();
 
     }
