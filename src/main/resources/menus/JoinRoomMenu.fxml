@@ -64,7 +64,7 @@
                                 <Font size="16.0"/>
                             </font>
                         </Label>
-                        <TextField fx:id="playerName" maxWidth="150" GridPane.columnIndex="1" GridPane.rowIndex="2"/>
+                        <TextField fx:id="playerNameField" maxWidth="150" GridPane.columnIndex="1" GridPane.rowIndex="2"/>
                     </children>
                 </GridPane>
                 <AnimatedButton fx:id="refreshServersListButton" layoutX="585.0" layoutY="20.0" styleClass="ButtonSub"

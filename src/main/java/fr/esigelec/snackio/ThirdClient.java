@@ -39,21 +39,21 @@ public class ThirdClient {
 
         // Create a Game
 
-        SnackioGame game = SnackioGame.getInstance();
-
-        // Create the local player
-        Player myPlayer = new Player("Hugues", CharacterFactory.CharacterType.GOLDEN_KNIGHT);
-
-        MultiplayerGameState gameState = new MultiplayerGameState(MapFactory.MapType.DESERT_CASTLE, "YOLO");
-        // Instantiate Network game engine to control gameplay
-        AbstractGameEngine engine = new NetworkGameEngine(game, myPlayer, gameState);
-        // Instantiate a NetClient to exchange with client
-        SnackioNetClient cli = new SnackioNetClient();
-        List<InetAddress> servers = cli.getAvailableServers();
-
-        if(servers.size() > 0) {
-            cli.connectServer(servers.get(1), engine);
-        }
-        engine.startGame();
+//        SnackioGame game = SnackioGame.getInstance();
+//
+//        // Create the local player
+//        Player myPlayer = new Player("Hugues", CharacterFactory.CharacterType.GOLDEN_KNIGHT);
+//
+//        MultiplayerGameState gameState = new MultiplayerGameState(MapFactory.MapType.DESERT_CASTLE, "YOLO");
+//        // Instantiate Network game engine to control gameplay
+//        AbstractGameEngine engine = new NetworkGameEngine(game, myPlayer, gameState);
+//        // Instantiate a NetClient to exchange with client
+//        SnackioNetClient cli = new SnackioNetClient();
+//        List<InetAddress> servers = cli.getAvailableServers();
+//
+//        if(servers.size() > 0) {
+//            cli.connectServer(servers.get(1), engine);
+//        }
+//        engine.startGame();
     }
 }
