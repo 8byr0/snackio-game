@@ -1,5 +1,6 @@
 package fr.esigelec.snackio.ui;
 
+import com.badlogic.gdx.utils.async.AsyncTask;
 import com.esotericsoftware.minlog.Log;
 import fr.esigelec.snackio.core.AbstractGameEngine;
 import fr.esigelec.snackio.core.NetworkGameEngine;
@@ -13,11 +14,13 @@ import fr.esigelec.snackio.game.map.MapFactory;
 import fr.esigelec.snackio.networking.client.SnackioNetClient;
 import fr.esigelec.snackio.ui.customButtons.AnimatedButton;
 import fr.esigelec.snackio.ui.customToggles.CharacterPicker;
+import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.GridPane;
 
@@ -29,6 +32,8 @@ import java.util.List;
 import java.util.ResourceBundle;
 
 public class JoinRoomMenu implements Initializable {
+    @FXML
+    public Label refreshServerInfo;
     @FXML
     private SplitPane alfa;
     @FXML
@@ -54,11 +59,13 @@ public class JoinRoomMenu implements Initializable {
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        alfa.setResizableWithParent(mainAnchorPane,false);
+        refreshServerInfo.setVisible(false);
+        server_box.setVisible(false);
+        alfa.setResizableWithParent(mainAnchorPane, false);
         Snippet.setPreviousLocation(MenuController.Menus.MULTI_MENU);
         server("getInformation");
         renderCharacterSelector();
-
+        refreshServersList(null);
         refreshServersListButton.setOnAction(this::refreshServersList);
         joinServerButton.setOnAction(this::connection);
 
@@ -71,8 +78,39 @@ public class JoinRoomMenu implements Initializable {
     }
 
     private void refreshServersList(ActionEvent actionEvent) {
-        server("getInformation");
+//        server("getInformation");
+
+        Thread searchThread = new Thread(() -> {
+            Platform.runLater(() -> {
+                refreshServerInfo.setText("Searching servers on LAN...");
+                refreshServerInfo.setVisible(true);
+                server_box.setVisible(false);
+            });
+
+            SnackioNetClient cli = new SnackioNetClient();
+            List<InetAddress> servers = cli.getAvailableServers();
+            Platform.runLater(() -> {
+                server_box.getItems().setAll(servers);
+            });
+            if (servers.size() > 0) {
+                Platform.runLater(() -> {
+                    server_box.setValue(server_box.getItems().get(0));
+                    server_box.setVisible(true);
+                    refreshServerInfo.setText("");
+                    refreshServerInfo.setVisible(false);
+                });
+
+
+            } else {
+                Platform.runLater(() -> {
+                    server_box.setVisible(false);
+                    refreshServerInfo.setText("No servers found.");
+                });
+            }
+        });
+        searchThread.start();
     }
+
 
     private void renderCharacterSelector() {
         grid.add(characterSelector, 1, 1);
@@ -114,4 +152,5 @@ public class JoinRoomMenu implements Initializable {
             Log.error(e.getMessage(), e);
         }
     }
+
 }

@@ -3,11 +3,13 @@ package fr.esigelec.snackio.networking.server;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.io.IOException;
+import java.lang.reflect.Method;
+import java.net.DatagramPacket;
+import java.net.InetSocketAddress;
 import java.util.HashMap;
 
-import com.esotericsoftware.kryonet.Connection;
-import com.esotericsoftware.kryonet.Listener;
-import com.esotericsoftware.kryonet.Server;
+import com.esotericsoftware.kryo.Kryo;
+import com.esotericsoftware.kryonet.*;
 import com.esotericsoftware.kryonet.rmi.ObjectSpace;
 import com.esotericsoftware.kryonet.rmi.TimeoutException;
 import com.esotericsoftware.minlog.Log;
@@ -97,12 +99,12 @@ public class SnackioNetServer {
             }
         });
 
-
     }
 
     public void start() throws IOException {
         server.bind(NetworkConfig.tcpPort, NetworkConfig.udpPort);
         server.start();
+
 
         // Open a window to provide an easy way to stop the server.
         JFrame frame = new JFrame("Snackio DEBUG server");

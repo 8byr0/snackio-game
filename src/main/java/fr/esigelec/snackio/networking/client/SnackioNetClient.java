@@ -2,12 +2,11 @@ package fr.esigelec.snackio.networking.client;
 
 import java.io.IOException;
 
-import com.esotericsoftware.kryonet.Client;
-import com.esotericsoftware.kryonet.Connection;
-import com.esotericsoftware.kryonet.Listener;
+import com.esotericsoftware.kryonet.*;
 
 import java.awt.EventQueue;
 import java.net.InetAddress;
+import java.util.ArrayList;
 import java.util.List;
 
 import com.esotericsoftware.kryonet.rmi.ObjectSpace;
@@ -35,10 +34,9 @@ public class SnackioNetClient {
     /**
      * Default class constructor
      *
-     * @param engine the game engine to use
+//     * @param  the game engine to use
      */
-    public SnackioNetClient(IGameEngine engine) {
-        gameEngine = engine;
+    public SnackioNetClient() {
 
         client = new Client();
         client.start();
@@ -62,8 +60,6 @@ public class SnackioNetClient {
             }
         });
 
-        // Register game engine so that it can be called from server
-        new ObjectSpace(client).register(NetworkConfig.RMI_GAME_ENGINE_ID, gameEngine);
 
     }
 
@@ -72,7 +68,11 @@ public class SnackioNetClient {
      *
      * @param serverAddress the address of the server. see {@link SnackioNetClient#getAvailableServers()} to find available servers
      */
-    public void connectServer(InetAddress serverAddress) {
+    public void connectServer(InetAddress serverAddress, IGameEngine engine) {
+        gameEngine = engine;
+        // Register game engine so that it can be called from server
+        new ObjectSpace(client).register(NetworkConfig.RMI_GAME_ENGINE_ID, gameEngine);
+
         IRMIExecutablePlayer localPlayer = gameEngine.getPlayer();
 
         new Thread(() -> {
@@ -95,8 +95,7 @@ public class SnackioNetClient {
                         e.printStackTrace();
                     } catch (TimeoutException e) {
                         logger.error("The server motion update request failed due to timeout");
-                    }
-                    catch (NullPointerException e){
+                    } catch (NullPointerException e) {
                         logger.error("A null pointer error occured");
                         e.printStackTrace();
                     }
@@ -132,9 +131,33 @@ public class SnackioNetClient {
      */
     public List<InetAddress> getAvailableServers() {
         List<InetAddress> availableServers;
+
         availableServers = client.discoverHosts(NetworkConfig.udpPort, NetworkConfig.timeout);
+
+        try {
+            availableServers = filterDuplicates(availableServers);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
         return availableServers;
     }
 
+    private List<InetAddress> filterDuplicates(List<InetAddress> addresses) throws IOException {
+        List<InetAddress> filtered = new ArrayList<>();
+        InetAddress localhost = InetAddress.getLocalHost();
+        ArrayList<String> fetchedHosts = new ArrayList<>();
+
+        for (InetAddress address : addresses) {
+            String hostName = address.getHostName();
+            if (!fetchedHosts.contains(hostName)) {
+                filtered.add(address);
+                fetchedHosts.add(hostName);
+            } else {
+                fetchedHosts.add(hostName);
+            }
+        }
+
+        return filtered;
+    }
 
 }

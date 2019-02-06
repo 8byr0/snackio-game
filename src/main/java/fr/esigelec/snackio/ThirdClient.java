@@ -48,11 +48,11 @@ public class ThirdClient {
         // Instantiate Network game engine to control gameplay
         AbstractGameEngine engine = new NetworkGameEngine(game, myPlayer, gameState);
         // Instantiate a NetClient to exchange with client
-        SnackioNetClient cli = new SnackioNetClient(engine);
+        SnackioNetClient cli = new SnackioNetClient();
         List<InetAddress> servers = cli.getAvailableServers();
 
         if(servers.size() > 0) {
-            cli.connectServer(servers.get(0));
+            cli.connectServer(servers.get(1), engine);
         }
         engine.startGame();
     }

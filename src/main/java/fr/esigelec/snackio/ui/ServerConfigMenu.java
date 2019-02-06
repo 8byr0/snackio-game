@@ -93,10 +93,10 @@ public class ServerConfigMenu implements Initializable {
 //                NetworkGameEngine nEngine = new NetworkGameEngine(game, myPlayer,
 //                        mapSelector.getSelectedMap());
 //                List<InetAddress> servers = cli.getAvailableServers();
-                String[] difficultWords = new String[10];
-                difficultWords[0] = "you";
+//                String[] difficultWords = new String[10];
+//                difficultWords[0] = "you";
 
-                SnackioNetServer.main(difficultWords);
+//                SnackioNetServer.main(difficultWords);
                 Thread serverThread = new Thread(()->{
                     try {
                         SnackioNetServer srv = new SnackioNetServer(mapSelector.getSelectedMap(), serverName.getText());
@@ -106,6 +106,7 @@ public class ServerConfigMenu implements Initializable {
                     }
                 });
                 serverThread.start();
+
 //                engine.startGame();
 
             } catch (Exception e) {
