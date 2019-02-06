@@ -7,6 +7,7 @@ import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.media.AudioClip;
 import javafx.stage.Stage;
 import javafx.stage.Modality;
 
@@ -29,6 +30,7 @@ public class Snippet implements Initializable {
     private Button settingsButton;
 
     private Stage stage;
+    private AudioClip audio;
 
     static void setPreviousLocation(MenuController.Menus previous) {
         previousLocation = previous;
@@ -36,6 +38,7 @@ public class Snippet implements Initializable {
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
+        audio= new AudioClip(getClass().getResource("/sound/buttonMenuPress.wav").toString());
         homeButton.setDisable(false);
         if (sert == "YES") {
             backButton.setDisable(true);
@@ -55,6 +58,7 @@ public class Snippet implements Initializable {
     }
 
     private void goBackHome(ActionEvent actionEvent) {
+        audio.play();
         MenuController.getInstance(stage).openMenu(MenuController.Menus.MAIN_MENU);
     }
 
@@ -63,13 +67,13 @@ public class Snippet implements Initializable {
     }
 
     private void backPrevious(ActionEvent actionEvent) {
-
+        audio.play();
         MenuController.getInstance(stage).openMenu(previousLocation);
     }
 
     private void openSettingsView(ActionEvent actionEvent) {
-
         try {
+            audio= new AudioClip(getClass().getResource("/sound/buttonSnippetPress.wav").toString());
             FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/menus/controllerConfig.fxml"));
             Parent root1 = fxmlLoader.load();
             Stage stage = new Stage();

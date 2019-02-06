@@ -29,7 +29,6 @@ import javafx.scene.media.AudioClip;
 import javafx.scene.shape.Rectangle;
 import javafx.stage.Stage;
 import javafx.util.Duration;
-import org.lwjgl.system.CallbackI;
 
 
 import java.util.Timer;
@@ -48,6 +47,8 @@ public class MainMenu  implements Initializable {
     private Music leftStepSound;
 
     private static  boolean flashBack;
+
+    private AudioClip audio;
 
     @FXML
     private ImageView coin,coinBait;
@@ -68,6 +69,7 @@ public class MainMenu  implements Initializable {
     public TranslateTransition characterLeftEnter,characterIntroMove,characterRightEnter,characterLeftTranslateTransition,characterRightTranslateTransition,multiTranslateTransition,soloTranslateTransition;
     @Override
     public void initialize(URL location, ResourceBundle resources) {
+        audio= new AudioClip(getClass().getResource("/sound/buttonMenuPress.wav").toString());
         if(!flashBack){
             intro();
         }else{
@@ -80,6 +82,7 @@ public class MainMenu  implements Initializable {
     }
 
     public void openSoloMenu(ActionEvent actionEvent) {
+        audio.play();
         setOutroOn();
         Timeline startGame = new Timeline(new KeyFrame(Duration.millis(3200),
                 ae ->MenuController.getInstance(stage).openMenu(MenuController.Menus.SOLO_CONFIG_MENU)));
@@ -89,6 +92,7 @@ public class MainMenu  implements Initializable {
 
 
     public void openMultiMenu(ActionEvent actionEvent) {
+        audio.play();
         setOutroOn();
         Timeline getOut = new Timeline(new KeyFrame(Duration.millis(3200),
                 ae -> MenuController.getInstance(stage).openMenu(MenuController.Menus.MULTI_MENU)

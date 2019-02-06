@@ -7,6 +7,7 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
+import javafx.scene.media.AudioClip;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 
@@ -24,9 +25,12 @@ public class MultiMenu implements Initializable {
     FadeTransition openJoinMenuButtonAnimation,openHostMenuButtonAnimation;
     Timeline timeline;
 
+    AudioClip audio;
+
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
+        audio= new AudioClip(getClass().getResource("/sound/buttonMenuPress.wav").toString());
         animation(MIN_OPACITY,MAX_OPACITY,"intro");
         Snippet.setPreviousLocation(MenuController.Menus.MAIN_MENU);
         openJoinMenuButton.setOnAction(this::openJoinMenu);
@@ -35,6 +39,7 @@ public class MultiMenu implements Initializable {
     }
 
     public void openJoinMenu(ActionEvent actionEvent) {
+        audio.play();
         animation(MAX_OPACITY,MIN_OPACITY,"outro");
         timeline = new Timeline(new KeyFrame(
                 Duration.millis(1000),
@@ -45,6 +50,7 @@ public class MultiMenu implements Initializable {
     }
 
     public void openHostMenu(ActionEvent actionEvent) {
+        audio.play();
         animation(MAX_OPACITY,MIN_OPACITY,"outro");
         timeline = new Timeline(new KeyFrame(
                 Duration.millis(1000),

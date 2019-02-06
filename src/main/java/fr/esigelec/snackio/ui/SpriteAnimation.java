@@ -5,6 +5,7 @@ import javafx.animation.Transition;
 import javafx.geometry.Rectangle2D;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.media.AudioClip;
 import javafx.util.Duration;
 
 public class SpriteAnimation extends Transition{
@@ -45,6 +46,8 @@ public class SpriteAnimation extends Transition{
             if (index%columns==1 || index%columns==3) {
                 final int y = (index % columns) * width + offsetX;
                 imageView.setViewport(new Rectangle2D(offsetX, y, width, height));
+                AudioClip audio= new AudioClip(getClass().getResource("/sound/turn_head.wav").toString());
+                audio.play();
                 lastIndex = index;
             }
         }
