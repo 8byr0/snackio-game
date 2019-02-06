@@ -147,13 +147,15 @@ public class GameRenderer extends ApplicationAdapter {
         // Add Characters to map's characters layer
         for (Character character : characters) {
             if (character.created()) {
-                if (character.getRoom().equals(this.snackioMap.getActiveRoom().getName())) {
-                    if (snackioMap.getMap().getLayers().get("characters").getObjects().getIndex(character) == -1) {
-                        snackioMap.getMap().getLayers().get("characters").getObjects().add(character);
-                    }
-                } else {
-                    if (snackioMap.getMap().getLayers().get("characters").getObjects().getIndex(character) != -1) {
-                        snackioMap.getMap().getLayers().get("characters").getObjects().remove(character);
+                if (null != character.getRoom()) {
+                    if (character.getRoom().equals(this.snackioMap.getActiveRoom().getName())) {
+                        if (snackioMap.getMap().getLayers().get("characters").getObjects().getIndex(character) == -1) {
+                            snackioMap.getMap().getLayers().get("characters").getObjects().add(character);
+                        }
+                    } else {
+                        if (snackioMap.getMap().getLayers().get("characters").getObjects().getIndex(character) != -1) {
+                            snackioMap.getMap().getLayers().get("characters").getObjects().remove(character);
+                        }
                     }
                 }
             }
