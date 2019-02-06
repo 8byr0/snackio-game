@@ -432,8 +432,8 @@ public class GameRenderer extends ApplicationAdapter {
         }
 
         snackioMap.dispose();
-        System.exit(0);
     }
+
 
     /**
      * Add a Point of interest to the map
