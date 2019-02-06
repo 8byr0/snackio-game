@@ -41,10 +41,11 @@ public class SoloGameEngine extends AbstractGameEngine {
             poisThread.start();
 
             // Add the first coin
-            Coin firstCoin = new Coin();
             Bomb bomb = new Bomb();
-            this.game.addPointOfInterest(firstCoin);
             this.game.addPointOfInterest(bomb);
+
+            Coin firstCoin = new Coin();
+            this.game.addPointOfInterest(firstCoin);
 
             this.game.addPoiTriggeredListener((poi, triggeringPlayer) -> {
                 if (((CoinQuestGameState) gameState).getFetchedCoins() < ((CoinQuestGameState) gameState).getCoinsToFetch() - 1) {

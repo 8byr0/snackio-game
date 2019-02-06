@@ -22,7 +22,7 @@ import java.util.List;
 /**
  * THIS CLASS IS ONLY TO DEBUG USING MULTIPLE CLIENTS
  */
-public class ThirdClient {
+public class SnackioDebugClient {
     public static void main(String[] args) throws GameCannotStartException, UnhandledCharacterTypeException, NoCharacterSetException, UnhandledControllerException {
         SnackioGame game = SnackioGame.getInstance();
 

@@ -16,5 +16,5 @@ Class-Path: javafx-controls-11.jar lwjgl-3.2.0-natives-windows.jar jor
  wjgl-opengl-3.2.0.jar lwjgl-glfw-3.2.0-natives-windows.jar lwjgl-open
  al-3.2.0-natives-macos.jar lwjgl-jemalloc-3.2.0-natives-macos.jar lwj
  gl-jemalloc-3.2.0.jar lwjgl-3.2.0-natives-linux.jar
-Main-Class: fr.esigelec.snackio.ThirdClient
+Main-Class: fr.esigelec.snackio.SnackioDebugClient
 

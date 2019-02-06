@@ -15,6 +15,8 @@ import com.esotericsoftware.kryonet.rmi.TimeoutException;
 import com.esotericsoftware.minlog.Log;
 import fr.esigelec.snackio.core.IGameEngine;
 import fr.esigelec.snackio.core.IGameState;
+import fr.esigelec.snackio.core.NetworkGameEngine;
+import fr.esigelec.snackio.core.ServerGameEngine;
 import fr.esigelec.snackio.core.exceptions.NoCharacterSetException;
 import fr.esigelec.snackio.core.exceptions.UnhandledControllerException;
 import fr.esigelec.snackio.game.map.MapFactory;
@@ -46,7 +48,7 @@ import javax.swing.*;
  * <p>
  * /!\/!\/!\
  * YOU WILL SEE MANY TIME IN THIS CLASS SOME METHODS EXECUTED WITHIN THREADS.
- * THIS IS NORMAL ANS MUST BE DONE THIS WAY.
+ * THIS IS NORMAL AND MUST BE DONE THIS WAY.
  * The reason is the if you don't, you'll block the server's thread.
  * (This is the same principle as for GUI applications: no heavy calls on main thread)
  * /!\/!\/!\
@@ -55,6 +57,7 @@ public class SnackioNetServer {
     private Server server;
     private HashMap<Integer, NetPlayer> playersHashmap = new HashMap<>();
     private MultiplayerGameState serverState;
+    private ServerGameEngine gameEngine = new ServerGameEngine();
 
     /**
      * Default Class constructor
@@ -62,6 +65,7 @@ public class SnackioNetServer {
      * @throws IOException When the server cannot bind given udpPort
      */
     public SnackioNetServer(MapFactory.MapType mapType, String serverName) throws IOException {
+        // Instantiate a gamestate that'll be shared w/ all connected clients
         serverState = new MultiplayerGameState(mapType, serverName);
 
         server = new Server() {
@@ -101,23 +105,32 @@ public class SnackioNetServer {
 
     }
 
-    public void start() throws IOException {
-        server.bind(NetworkConfig.tcpPort, NetworkConfig.udpPort);
-        server.start();
+    /**
+     * Once your server is ready and initialized, call start to make it
+     * bind given tcp && udp port
+     */
+    public void start() {
+        try {
+            server.bind(NetworkConfig.tcpPort, NetworkConfig.udpPort);
+
+            server.start();
 
 
-        // Open a window to provide an easy way to stop the server.
-        JFrame frame = new JFrame("Snackio DEBUG server");
-        frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-        frame.addWindowListener(new WindowAdapter() {
-            public void windowClosed(WindowEvent evt) {
-                server.stop();
-            }
-        });
-        frame.getContentPane().add(new JLabel("Close to stop the snackio server."));
-        frame.setSize(320, 200);
-        frame.setLocationRelativeTo(null);
-        frame.setVisible(true);
+            // Open a window to provide an easy way to stop the server.
+            JFrame frame = new JFrame("Snackio DEBUG server");
+            frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+            frame.addWindowListener(new WindowAdapter() {
+                public void windowClosed(WindowEvent evt) {
+                    server.stop();
+                }
+            });
+            frame.getContentPane().add(new JLabel("Close to stop the snackio server."));
+            frame.setSize(320, 200);
+            frame.setLocationRelativeTo(null);
+            frame.setVisible(true);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     /**
@@ -235,7 +248,6 @@ public class SnackioNetServer {
             });
             t.start();
         }
-
     }
 
     /**

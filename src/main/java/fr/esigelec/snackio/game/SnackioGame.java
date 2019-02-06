@@ -20,6 +20,7 @@ import fr.esigelec.snackio.game.map.MapFactory;
 import fr.esigelec.snackio.game.pois.bonuses.SpeedBonus;
 import fr.esigelec.snackio.game.pois.listeners.PoiTriggeredListener;
 import fr.esigelec.snackio.game.pois.maluses.SpeedMalus;
+import fr.esigelec.snackio.networking.Position;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -114,7 +115,6 @@ public class SnackioGame {
 
     public void getRandomItem(RandomItem randomItem, Character character) {
         gameRenderer.removePointOfInterest(randomItem);
-
     }
 
 
@@ -222,5 +222,9 @@ public class SnackioGame {
 
     public int getLives() {
         return lives;
+    }
+
+    public Position getRandomPosition() {
+        return null;
     }
 }
