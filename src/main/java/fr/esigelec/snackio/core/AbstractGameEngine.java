@@ -17,7 +17,7 @@ import java.util.ArrayList;
 /**
  * This interface declares all the method that are allowed to be called by SnackioNetServer instance.
  */
-public abstract class AbstractGameEngine implements IGameEngine{
+public abstract class AbstractGameEngine implements IGameEngine {
     protected SnackioGame game;
     private ArrayList<PlayerAddedListener> playerAddedListeners = new ArrayList<>();
     protected Player player;
@@ -28,11 +28,10 @@ public abstract class AbstractGameEngine implements IGameEngine{
      *
      * @param game snackioGame that will be managed by this engine
      */
-    public AbstractGameEngine(SnackioGame game, Player player, MapFactory.MapType type) throws NoCharacterSetException, UnhandledControllerException {
+    public AbstractGameEngine(SnackioGame game, Player player) throws NoCharacterSetException, UnhandledControllerException {
         this.game = game;
         this.player = player;
         this.game.addPlayer(player, true);
-        this.game.setMap(type);
     }
 
     /**
@@ -40,7 +39,7 @@ public abstract class AbstractGameEngine implements IGameEngine{
      *
      * @param poi point of interest to add to the game
      */
-    
+
     public void addPointOfInterest(iPoi poi) {
         game.addPointOfInterest(poi);
     }
@@ -50,7 +49,7 @@ public abstract class AbstractGameEngine implements IGameEngine{
      *
      * @param poi point of interest to remove from the game
      */
-    
+
     public void removePointOfInterest(iPoi poi) {
         game.removePointOfInterest(poi);
     }
@@ -77,13 +76,18 @@ public abstract class AbstractGameEngine implements IGameEngine{
      * Call this method when the Engine is properly configured
      */
     public void startGame() throws GameCannotStartException {
-        // Start the game with my player
-        game.start(gameState);
+        if (null != gameState) {
+            // Start the game with my player
+            game.start(gameState);
+        } else {
+            System.out.println("NO GAME STATE FOUND, CANNOT START GAME");
+        }
     }
 
     /**
      * Update the room of a Player identified by its id
-     * @param id id of the player
+     *
+     * @param id   id of the player
      * @param room name of the room
      */
     public void updatePlayerRoom(int id, String room) throws NoCharacterSetException {
@@ -111,13 +115,13 @@ public abstract class AbstractGameEngine implements IGameEngine{
      *
      * @param player the player to add to the game
      */
-    
+
     public void addPlayer(IRMIExecutablePlayer player) throws NoCharacterSetException, UnhandledControllerException {
-        game.addPlayer((Player)player, false);
-        triggerPlayerAddedListeners((Player)player);
+        game.addPlayer((Player) player, false);
+        triggerPlayerAddedListeners((Player) player);
     }
 
-  /**
+    /**
      * Add a player to the game
      * /!\ This is a server-triggered method so all players added by this method are passive(Network-controlled)
      *
@@ -135,7 +139,7 @@ public abstract class AbstractGameEngine implements IGameEngine{
      * @param position  new position
      * @param direction new direction
      */
-    
+
     public void updatePlayerPosition(int id, Position position, Direction direction) throws NoCharacterSetException {
         Player player = this.game.getPlayer(id);
 
@@ -147,4 +151,12 @@ public abstract class AbstractGameEngine implements IGameEngine{
         }
     }
 
+    public AbstractGameState getGameState() {
+        return gameState;
+    }
+
+    public void setGameState(AbstractGameState gameState) {
+        this.game.setMap(gameState.getMapType());
+        this.gameState = gameState;
+    }
 }

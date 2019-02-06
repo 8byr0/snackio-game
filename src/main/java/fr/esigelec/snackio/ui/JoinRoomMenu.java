@@ -109,19 +109,25 @@ public class JoinRoomMenu implements Initializable {
         try {
             myPlayer = new Player(playerNameField.getText(), characterSelector.getSelectedCharacter());
 
-            MultiplayerGameState gameState = new MultiplayerGameState(MapFactory.MapType.DESERT_CASTLE, "YOLO");
 
             // Instantiate Network game engine to control gameplay
-            AbstractGameEngine engine = new NetworkGameEngine(game, myPlayer, gameState);
+            AbstractGameEngine engine = new NetworkGameEngine(game, myPlayer);
 
             // Instantiate a NetClient to exchange with client
             SnackioNetClient cli = new SnackioNetClient();
 
+            cli.setOnConnectionSuccessfull((gameState) -> {
+                try {
+                    engine.setGameState(gameState);
+                    engine.startGame();
+                } catch (GameCannotStartException e) {
+                    e.printStackTrace();
+                }
+            });
 
             cli.connectServer((InetAddress) server_box.getValue(), engine);
-            engine.startGame();
 
-        } catch (UnhandledCharacterTypeException | GameCannotStartException | NoCharacterSetException | UnhandledControllerException e) {
+        } catch (UnhandledCharacterTypeException | NoCharacterSetException | UnhandledControllerException e) {
             e.printStackTrace();
         }
 

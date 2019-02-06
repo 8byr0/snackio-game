@@ -246,8 +246,7 @@ public class SnackioNetServer {
      */
     public static void main(String[] args) throws IOException {
         Log.set(Log.LEVEL_DEBUG);
-//        new SnackioNetServer();
-        SnackioNetServer srv = new SnackioNetServer(MapFactory.MapType.DESERT_CASTLE, "MY SERVER NAME");
+        SnackioNetServer srv = new SnackioNetServer(MapFactory.MapType.DESERT_CASTLE, "A DEBUG SERVER");
         srv.start();
     }
 }

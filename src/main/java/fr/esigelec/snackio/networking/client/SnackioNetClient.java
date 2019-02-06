@@ -14,6 +14,7 @@ import com.esotericsoftware.kryonet.rmi.TimeoutException;
 import fr.esigelec.snackio.Snackio;
 import fr.esigelec.snackio.core.IGameEngine;
 import fr.esigelec.snackio.core.exceptions.NoCharacterSetException;
+import fr.esigelec.snackio.networking.IConnectionEstablishedListener;
 import fr.esigelec.snackio.networking.models.IRMIExecutablePlayer;
 import fr.esigelec.snackio.networking.models.INetPlayer;
 import fr.esigelec.snackio.networking.NetworkConfig;
@@ -30,6 +31,7 @@ public class SnackioNetClient {
     private INetPlayer serverPlayer;
 
     private IGameEngine gameEngine;
+    private IConnectionEstablishedListener connectionSuccessListener;
 
     /**
      * Default class constructor
@@ -63,6 +65,10 @@ public class SnackioNetClient {
 
     }
 
+    public void setOnConnectionSuccessfull(IConnectionEstablishedListener listener){
+        this.connectionSuccessListener = listener;
+    }
+
     /**
      * Connect a SnackioNetServer
      *
@@ -80,12 +86,15 @@ public class SnackioNetClient {
 
                 client.connect(NetworkConfig.timeout, serverAddress, NetworkConfig.tcpPort, NetworkConfig.udpPort);
 
+                if(null != connectionSuccessListener){
+                    connectionSuccessListener.onSuccess(serverPlayer.getGameState());
+                }
+
                 // Server communication after connection can go here, or in Listener#connected().
                 localPlayer.setID(client.getID());
 
                 serverPlayer.registerPlayer(localPlayer);
 
-                System.out.println(serverPlayer.getGameState().getName());
 
                 localPlayer.addMoveListener(() -> {
                     try {

@@ -17,9 +17,8 @@ public class NetworkGameEngine extends AbstractGameEngine {
      *
      * @param game snackioGame that will be managed by this engine
      */
-    public NetworkGameEngine(SnackioGame game, Player player, MultiplayerGameState gameState) throws NoCharacterSetException, UnhandledControllerException {
-        super(game, player, gameState.getMapType());
-        this.gameState = gameState;
+    public NetworkGameEngine(SnackioGame game, Player player) throws NoCharacterSetException, UnhandledControllerException {
+        super(game, player);
     }
 
     /**
