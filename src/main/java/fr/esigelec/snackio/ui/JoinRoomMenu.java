@@ -1,6 +1,5 @@
 package fr.esigelec.snackio.ui;
 
-import com.esotericsoftware.minlog.Log;
 import fr.esigelec.snackio.core.AbstractGameEngine;
 import fr.esigelec.snackio.core.NetworkGameEngine;
 import fr.esigelec.snackio.core.Player;
@@ -9,7 +8,6 @@ import fr.esigelec.snackio.core.exceptions.NoCharacterSetException;
 import fr.esigelec.snackio.core.exceptions.UnhandledCharacterTypeException;
 import fr.esigelec.snackio.core.exceptions.UnhandledControllerException;
 import fr.esigelec.snackio.game.SnackioGame;
-import fr.esigelec.snackio.game.character.CharacterFactory;
 import fr.esigelec.snackio.game.map.MapFactory;
 import fr.esigelec.snackio.game.state.MultiplayerGameState;
 import fr.esigelec.snackio.networking.client.SnackioNetClient;
@@ -58,9 +56,9 @@ public class JoinRoomMenu implements Initializable {
     public void initialize(URL location, ResourceBundle resources) {
         refreshServerInfo.setVisible(false);
         server_box.setVisible(false);
-        alfa.setResizableWithParent(mainAnchorPane, false);
+        SplitPane.setResizableWithParent(mainAnchorPane, false);
         Snippet.setPreviousLocation(MenuController.Menus.MULTI_MENU);
-        server("getInformation");
+
         renderCharacterSelector();
         refreshServersList(null);
         refreshServersListButton.setOnAction(this::refreshServersList);
@@ -68,15 +66,7 @@ public class JoinRoomMenu implements Initializable {
 
     }
 
-    private void connection(ActionEvent actionEvent) {
-        if (!playerNameField.getText().isEmpty() && !server_box.getSelectionModel().isEmpty() && characterSelector.getSelectedToggle() != null) {
-            server("getConnection");
-        }
-    }
-
     private void refreshServersList(ActionEvent actionEvent) {
-//        server("getInformation");
-
         Thread searchThread = new Thread(() -> {
             Platform.runLater(() -> {
                 refreshServerInfo.setText("Searching servers on LAN...");
@@ -86,9 +76,7 @@ public class JoinRoomMenu implements Initializable {
 
             SnackioNetClient cli = new SnackioNetClient();
             List<InetAddress> servers = cli.getAvailableServers();
-            Platform.runLater(() -> {
-                server_box.getItems().setAll(servers);
-            });
+            Platform.runLater(() -> server_box.getItems().setAll(servers));
             if (servers.size() > 0) {
                 Platform.runLater(() -> {
                     server_box.setValue(server_box.getItems().get(0));
@@ -113,11 +101,11 @@ public class JoinRoomMenu implements Initializable {
         grid.add(characterSelector, 1, 1);
     }
 
-    public void createAndLaunchClient(ActionEvent actionEvent) {
+    private void createAndLaunchClient(ActionEvent actionEvent) {
         SnackioGame game = SnackioGame.getInstance();
 
         // Create the local player
-        Player myPlayer = null;
+        Player myPlayer;
         try {
             myPlayer = new Player(playerNameField.getText(), characterSelector.getSelectedCharacter());
 
@@ -137,43 +125,6 @@ public class JoinRoomMenu implements Initializable {
             e.printStackTrace();
         }
 
-    }
-
-    public void server(String info) {
-        try {
-            SnackioGame game = SnackioGame.getInstance();
-            // Create the local player
-            Player myPlayer = new Player("", CharacterFactory.CharacterType.GOLDEN_KNIGHT);
-            if (info == "getConnection") {
-                myPlayer = new Player(playerNameField.getText(), characterSelector.getSelectedCharacter());
-            }
-
-            // TODO fetch map from server
-//            AbstractGameEngine engine = new NetworkGameEngine(game, myPlayer, MapFactory.MapType.DESERT_CASTLE);
-
-//            SnackioNetClient cli = new SnackioNetClient(engine);
-//            List<InetAddress> servers = cli.getAvailableServers();
-
-//            if (servers.size() > 0) {
-//                joinServerButton.setDisable(false);
-//                //Pour se connecter au server
-//                if (info == "getConnection") {
-//                    System.out.println("connection");
-//                    cli.connectServer(servers.get(0));
-//                }
-//                //Pour recupérer les différents serveurs existants dans
-//                if (info == "getInformation") {
-//                    System.out.println("information");
-//                    server_box.getItems().setAll(servers);
-//                }
-//            } else {
-//                joinServerButton.setDisable(true);
-//                System.out.println("Aucun server");
-//                server_box.getItems().clear();
-//            }
-        } catch (UnhandledCharacterTypeException e) {
-            Log.error(e.getMessage(), e);
-        }
     }
 
 }
