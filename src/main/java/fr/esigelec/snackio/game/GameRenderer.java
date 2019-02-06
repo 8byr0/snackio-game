@@ -123,7 +123,6 @@ public class GameRenderer extends ApplicationAdapter {
             roomsList.add(this.snackioMap);
         }
         int generatedRandom = new Random().nextInt(roomsList.size());
-        System.out.println(generatedRandom);
         return roomsList.get(generatedRandom);
     }
 
@@ -483,7 +482,7 @@ public class GameRenderer extends ApplicationAdapter {
 
         RectangleMapObject test = (RectangleMapObject) room.getMap().getLayers().get("spawns").getObjects().get(tempRandomObj);
 
-
+        // TODO check if there's another poi at the same position
         int tempRandomX = (int) test.getRectangle().getX();
         int tempRandomY = (int) test.getRectangle().getY();
         Position tempRandom = new Position(tempRandomX, tempRandomY);

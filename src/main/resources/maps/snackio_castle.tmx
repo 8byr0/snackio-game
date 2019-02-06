@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.2" tiledversion="1.2.1" orientation="orthogonal" renderorder="right-down" width="50" height="50" tilewidth="32" tileheight="32" infinite="0" nextlayerid="6" nextobjectid="7">
+<map version="1.2" tiledversion="1.2.1" orientation="orthogonal" renderorder="right-down" width="50" height="50" tilewidth="32" tileheight="32" infinite="0" nextlayerid="7" nextobjectid="26">
  <tileset firstgid="1" source="base_out_atlas.tsx"/>
  <layer id="1" name="ground" width="50" height="50">
   <data encoding="csv">
@@ -124,6 +124,23 @@
     <property name="room_name" value="BACK_TO_MAIN"/>
    </properties>
   </object>
+ </objectgroup>
+ <objectgroup id="6" name="spawns">
+  <object id="9" x="819" y="542"/>
+  <object id="10" x="1252" y="666"/>
+  <object id="11" x="749" y="816"/>
+  <object id="12" x="1088" y="807"/>
+  <object id="13" x="415.152" y="1051.52"/>
+  <object id="14" x="378.788" y="209.091"/>
+  <object id="15" x="175.758" y="551.515"/>
+  <object id="16" x="236.364" y="1284.85"/>
+  <object id="17" x="1506.06" y="1230.3"/>
+  <object id="18" x="1409.09" y="1403.03"/>
+  <object id="20" x="1351.52" y="318.182"/>
+  <object id="22" x="757.576" y="363.636"/>
+  <object id="23" x="1072.73" y="236.364"/>
+  <object id="24" x="854.545" y="1033.33"/>
+  <object id="25" x="1030.3" y="1212.12"/>
  </objectgroup>
  <objectgroup id="5" name="characters"/>
 </map>

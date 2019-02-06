@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.2" tiledversion="1.2.1" orientation="orthogonal" renderorder="right-down" width="50" height="50" tilewidth="32" tileheight="32" infinite="0" nextlayerid="6" nextobjectid="10">
+<map version="1.2" tiledversion="1.2.1" orientation="orthogonal" renderorder="right-down" width="50" height="50" tilewidth="32" tileheight="32" infinite="0" nextlayerid="7" nextobjectid="22">
  <tileset firstgid="1" source="base_out_atlas.tsx"/>
  <layer id="1" name="ground" width="50" height="50">
   <data encoding="csv">
@@ -117,6 +117,20 @@
     <property name="room_name" value="BACK_TO_MAIN"/>
    </properties>
   </object>
+ </objectgroup>
+ <objectgroup id="6" name="spawns">
+  <object id="10" x="121.212" y="93.9394" width="96.9697" height="12.1212"/>
+  <object id="11" x="133.333" y="254.545" width="36.3636" height="12.1212"/>
+  <object id="12" x="1109.09" y="212.121" width="57.5758" height="6.06061"/>
+  <object id="13" x="796.97" y="721.212" width="48.4848" height="27.2727"/>
+  <object id="14" x="203.03" y="936.364" width="39.3939" height="12.1212"/>
+  <object id="15" x="333.333" y="1230.3" width="30.303" height="27.2727"/>
+  <object id="16" x="1236.36" y="1145.45" width="54.5455" height="24.2424"/>
+  <object id="17" x="1330.3" y="718.182" width="42.4242" height="12.1212"/>
+  <object id="18" x="709.091" y="263.636" width="45.4545" height="42.4242"/>
+  <object id="19" x="475.758" y="366.667" width="42.4242" height="12.1212"/>
+  <object id="20" x="245.455" y="545.455" width="54.5455" height="15.1515"/>
+  <object id="21" x="727.273" y="1257.58" width="78.7879" height="18.1818"/>
  </objectgroup>
  <objectgroup id="4" name="obstacles">
   <object id="5" x="-44.0002" y="1578" width="722.667" height="41.3333"/>

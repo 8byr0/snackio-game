@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.2" tiledversion="1.2.1" orientation="orthogonal" renderorder="right-down" width="100" height="100" tilewidth="32" tileheight="32" infinite="0" nextlayerid="38" nextobjectid="103">
+<map version="1.2" tiledversion="1.2.1" orientation="orthogonal" renderorder="right-down" width="100" height="100" tilewidth="32" tileheight="32" infinite="0" nextlayerid="39" nextobjectid="156">
  <tileset firstgid="1" source="base_out_atlas.tsx"/>
  <tileset firstgid="1025" source="terrain_atlas.tsx"/>
  <group id="13" name="environment">
@@ -2278,6 +2278,7 @@
   <object id="97" x="362.182" y="3041.27" width="11.8182" height="79.6364"/>
   <object id="98" x="549.75" y="2949.5" width="20.25" height="59.75"/>
   <object id="101" x="586" y="897" width="748" height="681"/>
+  <object id="103" x="582" y="894" width="746" height="578"/>
  </objectgroup>
  <objectgroup id="25" name="triggers">
   <object id="76" name="CAVE_ENTRANCE_EXT" type="door" x="554.182" y="2665.82">
@@ -2297,4 +2298,58 @@
   </object>
  </objectgroup>
  <objectgroup id="36" name="characters"/>
+ <objectgroup id="38" name="spawns">
+  <object id="104" x="110" y="1350"/>
+  <object id="105" x="312" y="1344"/>
+  <object id="106" x="256" y="1826"/>
+  <object id="107" x="376" y="1970"/>
+  <object id="108" x="240" y="2278"/>
+  <object id="109" x="884" y="2300"/>
+  <object id="110" x="1414" y="2244"/>
+  <object id="111" x="1736" y="2274"/>
+  <object id="112" x="1840" y="2016"/>
+  <object id="113" x="2000" y="1604"/>
+  <object id="114" x="1596" y="1306"/>
+  <object id="115" x="1548" y="1558"/>
+  <object id="116" x="1714" y="1628"/>
+  <object id="117" x="1656" y="1880"/>
+  <object id="118" x="1202" y="1838"/>
+  <object id="119" x="892" y="1790"/>
+  <object id="120" x="638" y="1792"/>
+  <object id="121" x="476" y="568"/>
+  <object id="122" x="174" y="544"/>
+  <object id="123" x="244" y="880"/>
+  <object id="124" x="808" y="518"/>
+  <object id="125" x="924" y="640"/>
+  <object id="126" x="1224" y="740"/>
+  <object id="127" x="1030" y="740"/>
+  <object id="128" x="816" y="808"/>
+  <object id="129" x="770" y="710"/>
+  <object id="130" x="714" y="718"/>
+  <object id="131" x="262" y="378"/>
+  <object id="132" x="86" y="310"/>
+  <object id="133" x="1774" y="196"/>
+  <object id="134" x="1384" y="264"/>
+  <object id="135" x="1846" y="504"/>
+  <object id="136" x="1024" y="2914"/>
+  <object id="137" x="1460" y="2888"/>
+  <object id="138" x="1482" y="2986"/>
+  <object id="139" x="1168" y="3086"/>
+  <object id="140" x="678" y="2796"/>
+  <object id="141" x="1064" y="2716"/>
+  <object id="142" x="2382" y="3150"/>
+  <object id="143" x="1910" y="3038"/>
+  <object id="144" x="2114" y="2858"/>
+  <object id="145" x="2000" y="2892" width="110" height="58"/>
+  <object id="146" x="2000" y="2892"/>
+  <object id="147" x="3028" y="2666"/>
+  <object id="148" x="3028" y="2666"/>
+  <object id="149" x="2788" y="2598"/>
+  <object id="150" x="2902" y="2456"/>
+  <object id="151" x="2402" y="2362"/>
+  <object id="152" x="2736" y="2904" width="420" height="52"/>
+  <object id="153" x="3156" y="2956"/>
+  <object id="154" x="2540" y="2582"/>
+  <object id="155" x="2102" y="2408"/>
+ </objectgroup>
 </map>
