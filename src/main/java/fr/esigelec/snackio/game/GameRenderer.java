@@ -335,7 +335,6 @@ public class GameRenderer extends ApplicationAdapter {
             Polygon poly = obj.getPolygon();
 
             if (isCollision(poly, feetsProjection)) {
-                System.out.println("Colliding poly");
                 found = obj;
                 break;
             }
@@ -346,7 +345,6 @@ public class GameRenderer extends ApplicationAdapter {
             Rectangle rectangle = rectangleObject.getRectangle();
 
             if (Intersector.overlaps(rectangle, feetsProjection)) {
-                System.out.println("Colliding rect " + rectangleObject.getName() + " at : " + rectangle.getX() + "-" + rectangle.getY());
                 found = rectangleObject;
                 break;
             }

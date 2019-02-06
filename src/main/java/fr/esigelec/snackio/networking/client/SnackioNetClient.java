@@ -41,7 +41,6 @@ public class SnackioNetClient {
     public SnackioNetClient() {
 
         client = new Client();
-        client.start();
 
         // Register the classes that will be sent over the network.
         NetworkConfig.register(client);
@@ -76,25 +75,24 @@ public class SnackioNetClient {
      */
     public void connectServer(InetAddress serverAddress, IGameEngine engine) {
         gameEngine = engine;
+        client.start();
+
         // Register game engine so that it can be called from server
         new ObjectSpace(client).register(NetworkConfig.RMI_GAME_ENGINE_ID, gameEngine);
 
         IRMIExecutablePlayer localPlayer = gameEngine.getPlayer();
 
-        new Thread(() -> {
+        Thread connectionThread = new Thread(() -> {
             try {
 
                 client.connect(NetworkConfig.timeout, serverAddress, NetworkConfig.tcpPort, NetworkConfig.udpPort);
 
-                if(null != connectionSuccessListener){
-                    connectionSuccessListener.onSuccess(serverPlayer.getGameState());
-                }
+
 
                 // Server communication after connection can go here, or in Listener#connected().
                 localPlayer.setID(client.getID());
 
                 serverPlayer.registerPlayer(localPlayer);
-
 
                 localPlayer.addMoveListener(() -> {
                     try {
@@ -121,6 +119,10 @@ public class SnackioNetClient {
 
                 });
 
+                if(null != connectionSuccessListener){
+                    connectionSuccessListener.onSuccess(serverPlayer.getGameState());
+                }
+
             } catch (IOException ex) {
                 ex.printStackTrace();
                 System.exit(1);
@@ -128,7 +130,8 @@ public class SnackioNetClient {
                 logger.error("Attempting to perform operations on a Player whose Character is not set");
                 e.printStackTrace();
             }
-        }).start();
+        });
+        connectionThread.start();
 
     }
 

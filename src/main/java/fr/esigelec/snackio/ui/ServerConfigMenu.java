@@ -84,21 +84,9 @@ public class ServerConfigMenu implements Initializable {
                 Player myPlayer = new Player(playerName.getText(),
                         characterSelector.getSelectedCharacter());
 
-                // Instantiate Network game engine to control gameplay
-//                AbstractGameEngine engine = new NetworkGameEngine(game, myPlayer,
-//                        mapSelector.getSelectedMap());
-
-                // Instantiate a NetClient to exchange with client
-//                SnackioNetClient cli = new SnackioNetClient(engine);
-//                NetworkGameEngine nEngine = new NetworkGameEngine(game, myPlayer,
-//                        mapSelector.getSelectedMap());
-//                List<InetAddress> servers = cli.getAvailableServers();
-//                String[] difficultWords = new String[10];
-//                difficultWords[0] = "you";
-
-//                SnackioNetServer.main(difficultWords);
                 Thread serverThread = new Thread(()->{
                     try {
+                        Log.set(Log.LEVEL_DEBUG);
                         SnackioNetServer srv = new SnackioNetServer(mapSelector.getSelectedMap(), serverName.getText());
                         srv.start();
                     } catch (IOException e) {

@@ -16,6 +16,7 @@ import fr.esigelec.snackio.game.state.MultiplayerGameState;
 import fr.esigelec.snackio.networking.client.SnackioNetClient;
 
 import java.net.InetAddress;
+import java.net.UnknownHostException;
 import java.util.List;
 
 /**
@@ -23,37 +24,36 @@ import java.util.List;
  */
 public class ThirdClient {
     public static void main(String[] args) throws GameCannotStartException, UnhandledCharacterTypeException, NoCharacterSetException, UnhandledControllerException {
-//        SnackioGame game = SnackioGame.getInstance();
-//
-//        // Create the local player
-//        Player myPlayer = new Player("Bob", CharacterFactory.CharacterType.INSPECTOR);
-//        myPlayer.getCharacter().setPosition(100,900);
-//
-//        /////////////// NETWORK CONTROL
-//        // Instantiate Network game engine to control gameplay
-//        AbstractGameEngine engine = new SoloGameEngine(game, myPlayer, MapFactory.MapType.DESERT_CASTLE, 5);
-//        // Instantiate a NetClient to exchange with client
-//
-//        engine.startGame();
+        SnackioGame game = SnackioGame.getInstance();
+
+        // Create the local player
+        Player myPlayer;
+        try {
+            myPlayer = new Player("HUUU", CharacterFactory.CharacterType.INDIANA);
 
 
-        // Create a Game
+            // Instantiate Network game engine to control gameplay
+            AbstractGameEngine engine = new NetworkGameEngine(game, myPlayer);
 
-//        SnackioGame game = SnackioGame.getInstance();
-//
-//        // Create the local player
-//        Player myPlayer = new Player("Hugues", CharacterFactory.CharacterType.GOLDEN_KNIGHT);
-//
-//        MultiplayerGameState gameState = new MultiplayerGameState(MapFactory.MapType.DESERT_CASTLE, "YOLO");
-//        // Instantiate Network game engine to control gameplay
-//        AbstractGameEngine engine = new NetworkGameEngine(game, myPlayer, gameState);
-//        // Instantiate a NetClient to exchange with client
-//        SnackioNetClient cli = new SnackioNetClient();
-//        List<InetAddress> servers = cli.getAvailableServers();
-//
-//        if(servers.size() > 0) {
-//            cli.connectServer(servers.get(1), engine);
-//        }
-//        engine.startGame();
+            // Instantiate a NetClient to exchange with client
+            SnackioNetClient cli = new SnackioNetClient();
+
+            cli.setOnConnectionSuccessfull((gameState) -> {
+                try {
+                    engine.setGameState(gameState);
+                    engine.startGame();
+                } catch (GameCannotStartException e) {
+                    e.printStackTrace();
+                }
+            });
+
+            cli.connectServer(InetAddress.getByName("127.0.0.1"), engine);
+
+        } catch (UnhandledCharacterTypeException | NoCharacterSetException | UnhandledControllerException e) {
+            e.printStackTrace();
+        } catch (UnknownHostException e) {
+            e.printStackTrace();
+        }
+
     }
 }
