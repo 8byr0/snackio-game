@@ -101,7 +101,7 @@ public class GameRenderer extends ApplicationAdapter {
         for (iPoi poi : pointsOfInterest) {
             poi.create();
             poi.setRoom(this.getRandomRoom(true));
-            poi.setPosition(this.getRandomPosition(poi.getRoom(), poi.getActualProjection()));
+            poi.setPosition(this.getRandomPoiPosition(poi.getRoom(), poi.getActualProjection()));
         }
 
         overlay.create();
@@ -122,8 +122,9 @@ public class GameRenderer extends ApplicationAdapter {
         if (includeMainRoom) {
             roomsList.add(this.snackioMap);
         }
-
-        return roomsList.get(new Random().nextInt(roomsList.size()));
+        int generatedRandom = new Random().nextInt(roomsList.size());
+        System.out.println(generatedRandom);
+        return roomsList.get(generatedRandom);
     }
 
     /**
@@ -171,7 +172,7 @@ public class GameRenderer extends ApplicationAdapter {
             } else {
                 poi.create();
                 poi.setRoom(this.getRandomRoom(true));
-                poi.setPosition(this.getRandomPosition(poi.getRoom(), poi.getActualProjection()));
+                poi.setPosition(this.getRandomPoiPosition(poi.getRoom(), poi.getActualProjection()));
             }
         }
 
@@ -329,6 +330,7 @@ public class GameRenderer extends ApplicationAdapter {
             Polygon poly = obj.getPolygon();
 
             if (isCollision(poly, feetsProjection)) {
+                System.out.println("Colliding poly");
                 found = obj;
                 break;
             }
@@ -339,6 +341,7 @@ public class GameRenderer extends ApplicationAdapter {
             Rectangle rectangle = rectangleObject.getRectangle();
 
             if (Intersector.overlaps(rectangle, feetsProjection)) {
+                System.out.println("Colliding rect " + rectangleObject.getName() + " at : " + rectangle.getX() + "-" + rectangle.getY());
                 found = rectangleObject;
                 break;
             }
@@ -474,25 +477,39 @@ public class GameRenderer extends ApplicationAdapter {
      * @param projection the projection of the object on the map
      * @return a Position on the map
      */
-    private Position getRandomPosition(Map room, Rectangle projection) {
-        float mapWidth = room.getMapWidthInPixels();
-        float mapHeight = room.getMapWidthInPixels();
+    private Position getRandomPoiPosition(Map room, Rectangle projection) {
+        float mapMaxSpawn = room.getMap().getLayers().get("spawns").getObjects().getCount();
+        int tempRandomObj = generateRandomInRange(0, mapMaxSpawn);
 
-        int tempRandomX = generateRandomInRange(0, mapWidth);
-        int tempRandomY = generateRandomInRange(0, mapHeight);
+        RectangleMapObject test = (RectangleMapObject) room.getMap().getLayers().get("spawns").getObjects().get(tempRandomObj);
+
+
+        int tempRandomX = (int) test.getRectangle().getX();
+        int tempRandomY = (int) test.getRectangle().getY();
         Position tempRandom = new Position(tempRandomX, tempRandomY);
-
-        while ((null != isCharacterCollidingMapObject(room.getMap().getLayers().get("triggers").getObjects(), projection) ||
-                (null != isCharacterCollidingMapObject(room.getMap().getLayers().get("obstacles").getObjects(), projection)))) {
-            tempRandom.x = generateRandomInRange(0, mapWidth);
-            tempRandom.y = generateRandomInRange(0, mapHeight);
-        }
         return tempRandom;
+//
+//        float mapWidth = room.getMapWidthInPixels();
+//        float mapHeight = room.getMapWidthInPixels();
+//
+//        int tempRandomX = generateRandomInRange(0, mapWidth);
+//        int tempRandomY = generateRandomInRange(0, mapHeight);
+//        Position tempRandom = new Position(tempRandomX, tempRandomY);
+//
+//        while ((null != isCharacterCollidingMapObject(room.getMap().getLayers().get("triggers").getObjects(), projection) ||
+//                (null != isCharacterCollidingMapObject(room.getMap().getLayers().get("obstacles").getObjects(), projection)))) {
+//            tempRandom.x = generateRandomInRange(0, mapWidth);
+//            tempRandom.y = generateRandomInRange(0, mapHeight);
+//            System.out.println(room.getName());
+//            System.out.println(tempRandom.x + " - " + tempRandom.y);
+//        }
+//        return tempRandom;
     }
 
     /**
      * Get a random value in a given range
      * TODO move this to a dedicated class
+     *
      * @param min range min
      * @param max range max
      * @return int value between min and max
