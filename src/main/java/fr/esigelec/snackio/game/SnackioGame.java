@@ -60,22 +60,7 @@ public class SnackioGame {
      * Private Constructor that's called by singleton method
      */
     private SnackioGame() {
-        // Add a few bonuses / maluses
-        // TODO remove this from here
-        PointOfInterest speedBonus = new SpeedBonus();
-        addPointOfInterest(speedBonus);
 
-        PointOfInterest speedMalus = new SpeedMalus();
-        addPointOfInterest(speedMalus);
-
-        PointOfInterest Paralysis = new Paralysis();
-        addPointOfInterest(Paralysis);
-
-        PointOfInterest Freeze = new Freeze();
-        addPointOfInterest(Freeze);
-
-        PointOfInterest Cookie = new Cookie();
-        addPointOfInterest(Cookie);
     }
 
     /**

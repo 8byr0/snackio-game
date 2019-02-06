@@ -7,6 +7,8 @@ import fr.esigelec.snackio.game.SnackioGame;
 import fr.esigelec.snackio.game.map.MapFactory;
 import fr.esigelec.snackio.game.pois.Bomb;
 import fr.esigelec.snackio.game.pois.Coin;
+import fr.esigelec.snackio.game.pois.POIFactory;
+import fr.esigelec.snackio.game.pois.iPoi;
 import fr.esigelec.snackio.game.state.CoinQuestGameState;
 
 import javax.swing.*;
@@ -24,6 +26,19 @@ public class SoloGameEngine extends AbstractGameEngine {
         gameState = new CoinQuestGameState(type, coinsToFetch);
         setGameState(gameState);
         Thread gameThread = new Thread(() -> {
+            Thread poisThread = new Thread(() -> {
+                while (((CoinQuestGameState) gameState).getFetchedCoins() < ((CoinQuestGameState) gameState).getCoinsToFetch() - 1) {
+                    iPoi random = POIFactory.getRandom();
+                    addPointOfInterest(random);
+                    try {
+                        Thread.sleep(5000);
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+                }
+            });
+
+            poisThread.start();
 
             // Add the first coin
             Coin firstCoin = new Coin();

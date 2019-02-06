@@ -164,14 +164,16 @@ public class GameRenderer extends ApplicationAdapter {
 
 
         for (iPoi poi : pointsOfInterest) {
-            if (poi.isCreated()) {
-                if (poi.getRoom().getName().equals(this.snackioMap.getActiveRoom().getName())) {
-                    poi.render();
+            if (null != poi) {
+                if (poi.isCreated()) {
+                    if (poi.getRoom().getName().equals(this.snackioMap.getActiveRoom().getName())) {
+                        poi.render();
+                    }
+                } else {
+                    poi.create();
+                    poi.setRoom(this.getRandomRoom(true));
+                    poi.setPosition(this.getRandomPoiPosition(poi.getRoom(), poi.getActualProjection()));
                 }
-            } else {
-                poi.create();
-                poi.setRoom(this.getRandomRoom(true));
-                poi.setPosition(this.getRandomPoiPosition(poi.getRoom(), poi.getActualProjection()));
             }
         }
 
@@ -286,10 +288,14 @@ public class GameRenderer extends ApplicationAdapter {
      */
     private void isCharacterTriggeringPOI(Character character, Rectangle characterProjection) {
         for (iPoi poi : pointsOfInterest) {
-            if (character.getRoom().equals(poi.getRoom().getName())) {
-                if (Intersector.overlaps(poi.getActualProjection(), characterProjection)) {
-                    poi.execute(character);
-                    break;
+            if (null != poi) {
+                if (null != poi.getRoom()) {
+                    if (character.getRoom().equals(poi.getRoom().getName())) {
+                        if (Intersector.overlaps(poi.getActualProjection(), characterProjection)) {
+                            poi.execute(character);
+                            break;
+                        }
+                    }
                 }
             }
         }
