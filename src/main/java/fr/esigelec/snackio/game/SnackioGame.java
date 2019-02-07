@@ -104,6 +104,21 @@ public class SnackioGame {
         gameRenderer.removePointOfInterest(freeze);
     }
 
+    public void paralysis(Paralysis paralysis, Character character) {
+        System.out.println("You're confused!");
+        gameRenderer.removePointOfInterest(paralysis);
+    }
+
+    public void speedUp(SpeedBonus speedBonus, Character character) {
+        System.out.println("Speed Up!");
+        gameRenderer.removePointOfInterest(speedBonus);
+    }
+
+    public void speedDown(SpeedMalus speedMalus, Character character) {
+        System.out.println("Speed Down!");
+        gameRenderer.removePointOfInterest(speedMalus);
+    }
+
     public void cookieFound(Cookie cookie, Character character) {
         System.out.println("You get an extra life!");
         gameRenderer.removePointOfInterest(cookie);

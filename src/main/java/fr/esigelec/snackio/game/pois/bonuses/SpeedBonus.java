@@ -2,6 +2,7 @@ package fr.esigelec.snackio.game.pois.bonuses;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.audio.Music;
+import fr.esigelec.snackio.game.SnackioGame;
 import fr.esigelec.snackio.game.character.Character;
 import fr.esigelec.snackio.game.pois.PointOfInterest;
 import fr.esigelec.snackio.game.util.StaticTexture;
@@ -35,7 +36,7 @@ public class SpeedBonus extends PointOfInterest {
             Timer timer = new Timer(this.durationInSeconds * 1000, new ActionListener() {
                 @Override
                 public void actionPerformed(ActionEvent arg0) {
-                    character.setSpeed(initialSpeed);
+                    character.setSpeed(7);
                     character.removeActivePOI(self);
                 }
             });
@@ -44,6 +45,7 @@ public class SpeedBonus extends PointOfInterest {
 
             character.addActivePOI(this);
         }
+        SnackioGame.getInstance().speedUp(this, character);
     }
 
 }

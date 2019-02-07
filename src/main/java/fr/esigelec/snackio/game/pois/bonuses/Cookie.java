@@ -33,7 +33,7 @@ public class Cookie extends PointOfInterest {
             Timer timer = new Timer(this.durationInSeconds * 1000, new ActionListener() {
                 @Override
                 public void actionPerformed(ActionEvent arg0) {
-                    character.setSpeed(initialSpeed);
+                    character.setSpeed(7);
                     character.removeActivePOI(self);
                 }
             });

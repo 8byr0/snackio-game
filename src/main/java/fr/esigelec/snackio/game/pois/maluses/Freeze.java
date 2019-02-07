@@ -34,10 +34,10 @@ public class Freeze extends PointOfInterest{
             int speedCoefficient = 0;
             character.setSpeed(initialSpeed * speedCoefficient);
 
-            Timer timer = new Timer(this.durationInSeconds * 400, new ActionListener() {
+            Timer timer = new Timer(this.durationInSeconds * 800, new ActionListener() {
                 @Override
                 public void actionPerformed(ActionEvent arg0) {
-                    character.setSpeed(initialSpeed);
+                    character.setSpeed(7);
                     character.removeActivePOI(self);
                 }
             });
